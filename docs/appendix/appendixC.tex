@@ -10,13 +10,7 @@ In this appendix, we include some plots made during the process of model validat
 	
 	\item QQPlots;
 	
-	\item Correlation;
-	
-	\item Hurst exponent;
-	
-	\item Mean inter-packet times;
-	
-	\item Standard deviation of inter-packet times;
+	\item Cost history and data linearization from linear regression;
 	
 \end{itemize}
 
@@ -25,58 +19,58 @@ In this appendix, we include some plots made during the process of model validat
 	\centering
 	\label{fig:aproximation-original-cdf-bigFlows}
 	\subfloat[Chauchy]{
-		\includegraphics[width=78mm]{figures/apC/cdf/bigFlows_Logscale_-_Cauchy_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/bigFlows_Log_-_Cauchy_aproximation_vs_Original_set}
 	}
 	\subfloat[Exponential(LR)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/bigFlows_Logscale_-_Exponential_aproximation_(linear_regression)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/bigFlows_Log_-_Exponential_aproximation_(linear_regression)_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Exponential(Me)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/bigFlows_Logscale_-_Exponential_aproximation_(mean)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/bigFlows_Log_-_Exponential_aproximation_(mean)_vs_Original_set}
 	}
 	\subfloat[Normal]{
-		\includegraphics[width=78mm]{figures/apC/cdf/bigFlows_Logscale_-_Normal_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/bigFlows_Log_-_Normal_aproximation_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Pareto(LR)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/bigFlows_Logscale_-_Pareto_aproximation_(linear_regression)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/bigFlows_Log_-_Pareto_aproximation_(linear_regression)_vs_Original_set}
 	}
 	\subfloat[Pareto(MLH)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/bigFlows_Logscale_-_Pareto_aproximation_(maximum_likehood)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/bigFlows_Log_-_Pareto_aproximation_(maximum_likehood)_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Weibull]{
-		\includegraphics[width=78mm]{figures/apC/cdf/bigFlows_Logscale_-_Weibull_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/bigFlows_Log_-_Weibull_aproximation_vs_Original_set}
 	}
-	\caption{CDF functions for the approximations of \textit{bigFlows-pcap} inter  packet times, of many stochastic functions.}
+	\caption{CDF functions for the approximations of \textit{lan-gateway-pcap} inter  packet times, of many stochastic functions.}
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
 	\label{fig:aproximation-original-cdf-wan}
 	\subfloat[Chauchy]{
-		\includegraphics[width=78mm]{figures/apC/cdf/wan_Logscale_-_Cauchy_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Wan_Log_-_Cauchy_aproximation_vs_Original_set}
 	}
 	\subfloat[Exponential(LR)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/wan_Logscale_-_Exponential_aproximation_(linear_regression)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Wan_Log_-_Exponential_aproximation_(linear_regression)_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Exponential(Me)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/wan_Logscale_-_Exponential_aproximation_(mean)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Wan_Log_-_Exponential_aproximation_(mean)_vs_Original_set}
 	}
 	\subfloat[Normal]{
-		\includegraphics[width=78mm]{figures/apC/cdf/wan_Logscale_-_Normal_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Wan_Log_-_Normal_aproximation_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Pareto(LR)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/wan_Logscale_-_Pareto_aproximation_(linear_regression)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Wan_Log_-_Pareto_aproximation_(linear_regression)_vs_Original_set}
 	}
 	\subfloat[Pareto(MLH)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/wan_Logscale_-_Pareto_aproximation_(maximum_likehood)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Wan_Log_-_Pareto_aproximation_(maximum_likehood)_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Weibull]{
-		\includegraphics[width=78mm]{figures/apC/cdf/wan_Logscale_-_Weibull_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Wan_Log_-_Weibull_aproximation_vs_Original_set}
 	}
 	\caption{CDF functions for the approximations of \textit{wan-pcap} inter  packet times, of many stochastic functions.}
 \end{figure}
@@ -86,30 +80,30 @@ In this appendix, we include some plots made during the process of model validat
 	\centering
 	\label{fig:aproximation-original-cdf-lan}
 	\subfloat[Chauchy]{
-		\includegraphics[width=78mm]{figures/apC/cdf/lan_Logscale_-_Cauchy_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Lan_Log_-_Cauchy_aproximation_vs_Original_set}
 	}
 	\subfloat[Exponential(LR)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/lan_Logscale_-_Exponential_aproximation_(linear_regression)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Lan_Log_-_Exponential_aproximation_(linear_regression)_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Exponential(Me)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/lan_Logscale_-_Exponential_aproximation_(mean)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Lan_Log_-_Exponential_aproximation_(mean)_vs_Original_set}
 	}
 	\subfloat[Normal]{
-		\includegraphics[width=78mm]{figures/apC/cdf/lan_Logscale_-_Normal_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Lan_Log_-_Normal_aproximation_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Pareto(LR)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/lan_Logscale_-_Pareto_aproximation_(linear_regression)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Lan_Log_-_Pareto_aproximation_(linear_regression)_vs_Original_set}
 	}
 	\subfloat[Pareto(MLH)]{
-		\includegraphics[width=78mm]{figures/apC/cdf/lan_Logscale_-_Pareto_aproximation_(maximum_likehood)_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Lan_Log_-_Pareto_aproximation_(maximum_likehood)_vs_Original_set}
 	}
 	\hspace{0mm}
 	\subfloat[Weibull]{
-		\includegraphics[width=78mm]{figures/apC/cdf/lan_Logscale_-_Weibull_aproximation_vs_Original_set}
+		\includegraphics[width=62mm]{figures/apC/cdf/Lan_Log_-_Weibull_aproximation_vs_Original_set}
 	}
-	\caption{CDF functions for the approximations of \textit{lan-diurnal-pcap} inter  packet times, of many stochastic functions.}
+	\caption{CDF functions for the approximations of \textit{lan-diurnal-firewall-pcap} inter  packet times, of many stochastic functions.}
 \end{figure}
 
 
@@ -117,28 +111,28 @@ In this appendix, we include some plots made during the process of model validat
 %	\centering
 %	\label{fig:aproximation-original-cdf-skype}
 %	\subfloat[Chauchy]{
-%		\includegraphics[width=78mm]{figures/apC/qq/skype_QQplot_-_Cauchy}
+%		\includegraphics[width=62mm]{figures/apC/qq/skype_QQplot_-_Cauchy}
 %	}
 %	\subfloat[Exponential(LR)]{
-%		\includegraphics[width=78mm]{figures/apC/qq/skype_QQplot_-_Exponential(LR)}
+%		\includegraphics[width=62mm]{figures/apC/qq/skype_QQplot_-_Exponential(LR)}
 %	}
 %	\hspace{0mm}
 %	\subfloat[Exponential(Me)]{
-%		\includegraphics[width=78mm]{figures/apC/qq/skype_QQplot_-_Exponential(Me)}
+%		\includegraphics[width=62mm]{figures/apC/qq/skype_QQplot_-_Exponential(Me)}
 %	}
 %	\subfloat[Normal]{
-%		\includegraphics[width=78mm]{figures/apC/qq/skype_QQplot_-_Normal}
+%		\includegraphics[width=62mm]{figures/apC/qq/skype_QQplot_-_Normal}
 %	}
 %	\hspace{0mm}
 %	\subfloat[Pareto(LR)]{
-%		\includegraphics[width=78mm]{figures/apC/qq/skype_QQplot_-_Pareto(LR)}
+%		\includegraphics[width=62mm]{figures/apC/qq/skype_QQplot_-_Pareto(LR)}
 %	}
 %	\subfloat[Pareto(MLH)]{
-%		\includegraphics[width=78mm]{figures/apC/qq/skype_QQplot_-_Pareto(MLH)}
+%		\includegraphics[width=62mm]{figures/apC/qq/skype_QQplot_-_Pareto(MLH)}
 %	}
 %	\hspace{0mm}
 %	\subfloat[Weibull]{
-%		\includegraphics[width=78mm]{figures/apC/qq/skype_QQplot_-_Weibull}
+%		\includegraphics[width=62mm]{figures/apC/qq/skype_QQplot_-_Weibull}
 %	}
 %	\caption{CDF functions for the approximations of \textit{skype-pcap} inter  packet times, of many stochastic functions.}
 %\end{figure}
@@ -148,62 +142,61 @@ In this appendix, we include some plots made during the process of model validat
 	\centering
 	\label{fig:qq-bigFlows}
 	\subfloat[Chauchy]{
-		\includegraphics[width=78mm]{figures/apC/qq/bigFlows_QQplot_-_Cauchy}
+		\includegraphics[width=62mm]{figures/apC/qq/bigFlows_QQplot_-_Cauchy}
 	}
 	\subfloat[Exponential(LR)]{
-		\includegraphics[width=78mm]{figures/apC/qq/bigFlows_QQplot_-_Exponential(LR)}
+		\includegraphics[width=62mm]{figures/apC/qq/bigFlows_QQplot_-_Exponential(LR)}
 	}
 	\hspace{0mm}
 	\subfloat[Exponential(Me)]{
-		\includegraphics[width=78mm]{figures/apC/qq/bigFlows_QQplot_-_Exponential(Me)}
+		\includegraphics[width=62mm]{figures/apC/qq/bigFlows_QQplot_-_Exponential(Me)}
 	}
 	\subfloat[Normal]{
-		\includegraphics[width=78mm]{figures/apC/qq/bigFlows_QQplot_-_Normal}
+		\includegraphics[width=62mm]{figures/apC/qq/bigFlows_QQplot_-_Normal}
 	}
 	\hspace{0mm}
 	\subfloat[Pareto(LR)]{
-		\includegraphics[width=78mm]{figures/apC/qq/bigFlows_QQplot_-_Pareto(LR)}
+		\includegraphics[width=62mm]{figures/apC/qq/bigFlows_QQplot_-_Pareto(LR)}
 	}
 	\subfloat[Pareto(MLH)]{
-		\includegraphics[width=78mm]{figures/apC/qq/bigFlows_QQplot_-_Pareto(MLH)}
+		\includegraphics[width=62mm]{figures/apC/qq/bigFlows_QQplot_-_Pareto(MLH)}
 	}
 	\hspace{0mm}
 	\subfloat[Weibull]{
-		\includegraphics[width=78mm]{figures/apC/qq/bigFlows_QQplot_-_Weibull}
+		\includegraphics[width=62mm]{figures/apC/qq/bigFlows_QQplot_-_Weibull}
 	}
-	\caption{CDF functions for the approximations of \textit{bigFlows-pcap} inter  packet times, of many stochastic functions.}
+	\caption{CDF functions for the approximations of \textit{lan-gateway-pcap} inter  packet times, of many stochastic functions.}
 \end{figure}
-
 
 
 \begin{figure}[ht!]
 	\centering
 	\label{fig:qq-lan}
 	\subfloat[Chauchy]{
-		\includegraphics[width=78mm]{figures/apC/qq/lan_QQplot_-_Cauchy}
+		\includegraphics[width=62mm]{figures/apC/qq/Lan_QQplot_-_Cauchy}
 	}
 	\subfloat[Exponential(LR)]{
-		\includegraphics[width=78mm]{figures/apC/qq/lan_QQplot_-_Exponential(LR)}
+		\includegraphics[width=62mm]{figures/apC/qq/Lan_QQplot_-_Exponential(LR)}
 	}
 	\hspace{0mm}
 	\subfloat[Exponential(Me)]{
-		\includegraphics[width=78mm]{figures/apC/qq/lan_QQplot_-_Exponential(Me)}
+		\includegraphics[width=62mm]{figures/apC/qq/Lan_QQplot_-_Exponential(Me)}
 	}
 	\subfloat[Normal]{
-		\includegraphics[width=78mm]{figures/apC/qq/lan_QQplot_-_Normal}
+		\includegraphics[width=62mm]{figures/apC/qq/Lan_QQplot_-_Normal}
 	}
 	\hspace{0mm}
 	\subfloat[Pareto(LR)]{
-		\includegraphics[width=78mm]{figures/apC/qq/lan_QQplot_-_Pareto(LR)}
+		\includegraphics[width=62mm]{figures/apC/qq/Lan_QQplot_-_Pareto(LR)}
 	}
 	\subfloat[Pareto(MLH)]{
-		\includegraphics[width=78mm]{figures/apC/qq/lan_QQplot_-_Pareto(MLH)}
+		\includegraphics[width=62mm]{figures/apC/qq/Lan_QQplot_-_Pareto(MLH)}
 	}
 	\hspace{0mm}
 	\subfloat[Weibull]{
-		\includegraphics[width=78mm]{figures/apC/qq/lan_QQplot_-_Weibull}
+		\includegraphics[width=62mm]{figures/apC/qq/Lan_QQplot_-_Weibull}
 	}
-	\caption{CDF functions for the approximations of \textit{lan-diurnal-pcap} inter  packet times, of many stochastic functions.}
+	\caption{CDF functions for the approximations of \textit{lan-diurnal-firewall-pcap} inter  packet times, of many stochastic functions.}
 \end{figure}
 
 
@@ -212,105 +205,254 @@ In this appendix, we include some plots made during the process of model validat
 	\centering
 	\label{fig:qq-wan}
 	\subfloat[Chauchy]{
-		\includegraphics[width=78mm]{figures/apC/qq/wan_QQplot_-_Cauchy}
+		\includegraphics[width=62mm]{figures/apC/qq/Wan_QQplot_-_Cauchy}
 	}
 	\subfloat[Exponential(LR)]{
-		\includegraphics[width=78mm]{figures/apC/qq/wan_QQplot_-_Exponential(LR)}
+		\includegraphics[width=62mm]{figures/apC/qq/Wan_QQplot_-_Exponential(LR)}
 	}
 	\hspace{0mm}
 	\subfloat[Exponential(Me)]{
-		\includegraphics[width=78mm]{figures/apC/qq/wan_QQplot_-_Exponential(Me)}
+		\includegraphics[width=62mm]{figures/apC/qq/Wan_QQplot_-_Exponential(Me)}
 	}
 	\subfloat[Normal]{
-		\includegraphics[width=78mm]{figures/apC/qq/wan_QQplot_-_Normal}
+		\includegraphics[width=62mm]{figures/apC/qq/Wan_QQplot_-_Normal}
 	}
 	\hspace{0mm}
 	\subfloat[Pareto(LR)]{
-		\includegraphics[width=78mm]{figures/apC/qq/wan_QQplot_-_Pareto(LR)}
+		\includegraphics[width=62mm]{figures/apC/qq/Wan_QQplot_-_Pareto(LR)}
 	}
 	\subfloat[Pareto(MLH)]{
-		\includegraphics[width=78mm]{figures/apC/qq/wan_QQplot_-_Pareto(MLH)}
+		\includegraphics[width=62mm]{figures/apC/qq/Wan_QQplot_-_Pareto(MLH)}
 	}
 	\hspace{0mm}
 	\subfloat[Weibull]{
-		\includegraphics[width=78mm]{figures/apC/qq/wan_QQplot_-_Weibull}
+		\includegraphics[width=62mm]{figures/apC/qq/Wan_QQplot_-_Weibull}
 	}
 	\caption{CDF functions for the approximations of \textit{wan-pcap} inter  packet times, of many stochastic functions.}
 \end{figure}
 
 
-\begin{figure}[ht!]
-	\centering
-	\label{fig:correlation-hurst-bigflows}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/bigFlows_Correlation}
-		\label{correlation-skype-pcap}
-	}
-	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/bigFlows_Hurst_Exponent}
-	}
-	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/bigFlows_Mean}
-	}
-	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/bigFlows_Standard_Deviation}
-		\label{hurst-skype-pcap}
-	}
-	\caption{Statistical parameters of \textit{bigflows-pcap} and its approximations}
-\end{figure}
 
+
+%% Skype
 \begin{figure}[ht!]
 	\centering
-	\label{fig:correlation-hurst-lan}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/lan_Correlation}
-		\label{correlation-skype-pcap}
+	\label{fig:lr-skype}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Cauchy_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Cauchy_-_Linearized_data_and_linear_fitting.png}
 	}
 	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/lan_Hurst_Exponent}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Exponential_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Exponential_-_Linearized_data_and_linear_fitting.png}
 	}
 	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/lan_Mean}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Pareto_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Pareto_-_Linearized_data_and_linear_fitting.png}
 	}
 	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/lan_Standard_Deviation}
-		\label{hurst-skype-pcap}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Weibull_-_Cost_J(iterations)_convergence.pdf}
 	}
-	\caption{Statistical parameters of \textit{lan-diurnal-pcap} and its approximations}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/Skype_Weibull_-_Linearized_data_and_linear_fitting.png}
+	}
+	\caption{Data linearization, and linear regression cost history, from gradient descendent for \textit{skype-pcap}.}
 \end{figure}
 
 
+%% bigFlows
 \begin{figure}[ht!]
 	\centering
-	\label{fig:correlation-hurst-wan}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/wan_Correlation}
-		\label{correlation-skype-pcap}
+	\label{fig:lr-bigFlows}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Cauchy_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Cauchy_-_Linearized_data_and_linear_fitting.png}
 	}
 	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/wan_Hurst_Exponent}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Exponential_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Exponential_-_Linearized_data_and_linear_fitting.png}
 	}
 	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/wan_Mean}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Pareto_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Pareto_-_Linearized_data_and_linear_fitting.png}
 	}
 	\hspace{0mm}
-	\subfloat[]{
-		\includegraphics[width=75mm]{figures/apC/val/wan_Standard_Deviation}
-		\label{hurst-skype-pcap}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Weibull_-_Cost_J(iterations)_convergence.pdf}
 	}
-	\caption{Statistical parameters of \textit{wan-pcap} and its approximations}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/bigFlows_Weibull_-_Linearized_data_and_linear_fitting.png}
+	}
+	\caption{Data linearization, and linear regression cost history, from gradient descendent for \textit{lan-gateway-pcap}.}
 \end{figure}
 
 
 
+%% Wan
+\begin{figure}[ht!]
+	\centering
+	\label{fig:lr-wan}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Cauchy_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Cauchy_-_Linearized_data_and_linear_fitting.png}
+	}
+	\hspace{0mm}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Exponential_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Exponential_-_Linearized_data_and_linear_fitting.png}
+	}
+	\hspace{0mm}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Pareto_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Pareto_-_Linearized_data_and_linear_fitting.png}
+	}
+	\hspace{0mm}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Weibull_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/Wan_Weibull_-_Linearized_data_and_linear_fitting.png}
+	}
+	\caption{Data linearization, and linear regression cost history, from gradient descendent for \textit{wan-pcap}.}
+\end{figure}
+
+                
+
+%% lanDiurnal
+\begin{figure}[ht!]
+	\centering
+	\label{fig:lr-lanDiurnal}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Cauchy_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Cauchy]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Cauchy_-_Linearized_data_and_linear_fitting.png}
+	}
+	\hspace{0mm}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Exponential_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Exponential]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Exponential_-_Linearized_data_and_linear_fitting.png}
+	}
+	\hspace{0mm}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Pareto_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Pareto]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Pareto_-_Linearized_data_and_linear_fitting.png}
+	}
+	\hspace{0mm}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Weibull_-_Cost_J(iterations)_convergence.pdf}
+	}
+	\subfloat[Weibull]{
+		\includegraphics[width=62mm]{figures/apC/lr/Lan_Weibull_-_Linearized_data_and_linear_fitting.png}
+	}
+	\caption{Data linearization, and linear regression cost history, from gradient descendent for \textit{lan-diurnal-firewall-pcap}.}
+\end{figure}
+
+
+
+
+
+
+\begin{comment}
+
+	\begin{figure}[ht!]
+		\centering
+		\label{fig:correlation-hurst-bigflows}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/bigFlows_Correlation}
+			\label{correlation-skype-pcap}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/bigFlows_Hurst_Exponent}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/bigFlows_Mean}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/bigFlows_Standard_Deviation}
+			\label{hurst-skype-pcap}
+		}
+		\caption{Statistical parameters of \textit{lan-gateway-pcap} and its approximations}
+	\end{figure}
+
+	\begin{figure}[ht!]
+		\centering
+		\label{fig:correlation-hurst-lan}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Lan_Correlation}
+			\label{correlation-skype-pcap}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Lan_Hurst_Exponent}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Lan_Mean}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Lan_Standard_Deviation}
+			\label{hurst-skype-pcap}
+		}
+		\caption{Statistical parameters of \textit{lan-diurnal-firewall-pcap} and its approximations}
+	\end{figure}
+
+
+	\begin{figure}[ht!]
+		\centering
+		\label{fig:correlation-hurst-wan}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Wan_Correlation}
+			\label{correlation-skype-pcap}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Wan_Hurst_Exponent}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Wan_Mean}
+		}
+		\hspace{0mm}
+		\subfloat[]{
+			\includegraphics[width=75mm]{figures/apC/val/Wan_Standard_Deviation}
+			\label{hurst-skype-pcap}
+		}
+		\caption{Statistical parameters of \textit{wan-pcap} and its approximations}
+	\end{figure}
+
+\end{comment}
 
 
 
