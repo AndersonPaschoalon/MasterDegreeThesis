@@ -6,21 +6,19 @@
 \section{Motivation}
  
 
-Emerging technologies such as SDN and NFV can be considered great promises that are going to  drastically change the development and operation of computer networks if established in large scale. However, its enabling technologies such as virtualization still pose challenges as for performance,  reliability, and security\cite{nfv-challenges}. Closed hardware solutions are easier to pass on Service Layer Agreement since they have a much more predictable behavior. Since it is expected that virtualization will affect performance negatively, these VNFs have to keep their degradation as small as possible. Therefore, guaranteeing the Service Layer Agreements becomes now a harder question. There is a demand for more reliable methods to ensure SLAs, over different types of loads.
+Emerging technologies such as Software Defined Networking (SDN) and Network Function Virtualizatoin (NFV) are  considered promising approaches to  drastically change the development and operation of computer networks. However, enabling technologies such as virtualization still pose challenges as for performance,  reliability, and security\cite{nfv-challenges}. Closed hardware solutions are easier to pass on Service Layer Agreement (SLA) since they have a much more predictable behavior. Since virtualization commonly affects performance, Virtual Network Functions (VNFs) have to keep their degradation as small as possible. Therefore, guaranteeing SLAs becomes now a harder question. There is a demand for more reliable methods to ensure SLAs, over different types of loads.
 
 
 It is already a well-known fact that the type of traffic used on performing tests matters. Studies show that  realistic Ethernet traffic provides different and variable load characteristics on routers\cite{harpoon-validation}, even with the same average bandwidth consumption. This fact indicates that tests that employ constant bit rate traffic generator tools are not enough for a complete validation of new technologies. There are many reasons for this behavior, which includes a grater traffic burstiness and variable packet sizes.
 
 
 A burstier traffic can cause packet losses and buffer overflows on network \cite{burstiness-queue-lenght} \cite{modelling-of-self-similar} \cite{empirical-interarrival-study}; thus degenerating network performance\footnote{Packet-trains periods and inter-packet times affect traffic burstiness}, and  measurement accuracy\cite{legotg-paper} \cite{background-traffic-matter}. Another key question is how applications will deal with packets, since it is a well-known fact that applications have a huge performance degradation in processing small packets\cite{comparative-trafficgen-tools}. A realistic synthetic traffic must not have a single one but rater use variable packet sizes \cite{packet-distribution-model}. 
-
-
-Furthermore realistic traffic generators are an essential security research\cite{ditg-paper}, since generation of realistic workloads is important for evaluation of firewall middleboxes. It includes studies of intrusion, anomaly detection, and malicious workloads\cite{ditg-paper}. Over a virtualized enviroment a realistic workload is expected to have an even larger inpact.
+Furthermore, realistic traffic generators are an essential security research\cite{ditg-paper}, since generation of realistic workloads is important for evaluation of firewall middleboxes. It includes studies of intrusion, anomaly detection, and malicious workloads\cite{ditg-paper}. Over a virtualized enviroment a realistic workload is expected to have an even larger inpact.
 
 
 Another critical point is the flow-oriented operation of SDN networks, in which each new flow arriving on an SDN switch demands an extra communication with the controller, that may cause a bottleneck. Since its operation relies on queries on flow tables, a stress load must have the same flow properties of an actual Internet Service Provider. 
 
-Therefore, there is a demand for the study of the impact of a realistic traffic on this new sort of environment. How VNFs and virtualized middle-boxes and SDN testbeds will behave if stressed with a realistic traffic load in comparison to a constant rate traffic is a relevant subject.
+Therefore, there is a demand for new studies around realistic traffic on this new sort of environment. How VNFs and virtualized middle-boxes and SDN testbeds will behave if stressed with a realistic traffic load in comparison to a constant rate traffic is a relevant subject offering multiple opportunities to be explored.
 
 
 
@@ -35,7 +33,7 @@ Some traffic generator tools offer support emulation of single application workl
 
 Many tools support a larger set of protocols and high-throughput for traffic generation, such Seagull and Ostinato. Others are also able to control inter-packet times and packet sizes using stochastic models, like D-ITG\cite{ditg-paper}, sourcesOnOff\cite{sourcesonoff-paper}, and MoonGen. All of them offer a complex configuration framework, but its custumization is all up to the user. So, there is no simple way for the user to create a synthetic and realistic traffic scenario. 
 
-We also have a variety of APIs that enable the creation of traffic and custom packets, which include low-level APIs, such as Linux Socket API,  Libpcap, Libtins, DPDK, Pcapplusplus, libcrafter, impacket, scapy and many others. These APIs provide a finer controll and customization over each packet, and are used to implement traffic generators. For example, Ostinato and TCPreplay uses Libpcap, and MoonGen uses DPDK. In addition, many of the listed traffic generators provides their own (high-level) APIs, such as Ostinato Python API, D-ITG C API, and MoonGen LUA API. 
+There is also a variety of APIs that enable the creation of traffic and custom packets, which include low-level APIs, such as Linux Socket API,  Libpcap, Libtins, DPDK, Pcapplusplus, libcrafter, impacket, scapy and many others. These APIs provide a finer controll and customization over each packet, and are used to implement traffic generators. For example, Ostinato and TCPreplay uses Libpcap, and MoonGen uses DPDK. In addition, many of the listed traffic generators provides their own (high-level) APIs, such as Ostinato Python API, D-ITG C API, and MoonGen LUA API. 
 
 
 
@@ -53,10 +51,10 @@ We also have a variety of APIs that enable the creation of traffic and custom pa
 %\end{itemize}
 
 
-There is a  have a large variety of open-source tools available for custom traffic generation, but reproducing a realistic traffic scenario is a hard matter. Selecting the right framework, a good traffic model, and the right configuration, is by itself a complex research project\cite{legotg-paper}\cite{selfsimilar-ethernet}. Since it usually is not the main goal of the project, but just a mean of validation, many times a simplistic and unrealistic solution is selected due the limited resources such as time and labor.  Creating a realistic traffic through these tools is a manual process and demands implementation of scripts or programs leveraging human (and scarce) expertise on network traffic characteristics  and experimental evaluation. 
+Multiple open-source tools are available ffeaturing custom traffic generation, but reproducing a realistic traffic scenario is a hard matter. Selecting the right framework, a good traffic model, and the right configuration, is by itself a complex research project\cite{legotg-paper}\cite{selfsimilar-ethernet}. Since it usually is not the main goal of the project, but just a mean of validation, many times a simplistic and unrealistic solution is selected due the limited resources such as time and labor.  Creating a realistic traffic through these tools is a manual process and demands implementation of scripts or programs leveraging human (and scarce) expertise on network traffic characteristics  and experimental evaluation. 
 
 
-There are few solutions on the open source community available that aiming to fill this gap, such as Harpoon\cite{harpoon-paper} and Swing\cite{swing-paper}.They capture traces to set internal parameters, providing an easier configuration. However they have their issues as well. Harpoon does not configure parameters at packet level\cite{harpoon-paper} and is not supported by newer Linux kernels, what may be a huge problem with setup and configuration. Swing\cite{swing-paper} only generates TCP and UDP traffic, and have limitations on throughputs rates\cite{swing-paper} \cite{legotg-paper}. Because its traffic generation engine is coupled to its modeling framework, you cannot opt to (easily) use a newer/faster packet generation library. The only way of replacing the traffic engine is changing and recompiling the original code which is a hard and  error prone activity\cite{legotg-paper}. Again, we fall in the same issue, a complex task that is usually not the goal of the project. In the table~\ref{tab:related-work} we give a brief summary of what we have available on some open-source traffic-generators tools. 
+There are few solutions in the open source community available that aiming to fill this gap, such as Harpoon\cite{harpoon-paper} and Swing\cite{swing-paper}.They capture traces to set internal parameters, providing an easier configuration. However they have their issues as well. Harpoon does not configure parameters at packet level\cite{harpoon-paper} and is not supported by newer Linux kernels, what may be a huge problem with setup and configuration. Swing\cite{swing-paper} only generates TCP and UDP traffic, and have limitations on throughput rates\cite{swing-paper} \cite{legotg-paper}. Because its traffic generation engine is coupled to its modeling framework, you cannot opt to (easily) use a newer/faster packet generation library. The only way of replacing the traffic engine is changing and recompiling the original code which is a hard and  error prone activity\cite{legotg-paper}. Again, we fall in the same issue, a complex task that is usually not the goal of the project. In the table~\ref{tab:related-work} we give a brief summary of what we have available on some open-source traffic-generators tools. 
 
 % Another matter is the large variety of tools, and different methods of configuration and its limitations. To create a custom traffic, a user must read large manuals, and custom-design scripts. One of our bigger proposals is create a tool able to automatically do this processes. So The user may design his custom traffic by creating his own Compact Trace Descriptor, and create a traffic using many different tools, like Ostinato, D-ITG, Iperf, but not caring about how to proper configure each of them. In the table ~\ref{tab:related-work} we summarize our current scenario.
 
@@ -94,7 +92,7 @@ There are few solutions on the open source community available that aiming to fi
 \section{Problem Statement}
 
 
-Based on what we stated,  we are going to formalize our research targets, and define que requet list to fulfill these gaps. Our main research targets in this work are:
+Based on the provided context,  we next o formalize our research targets, and identified a set of requirements to fulfill existing gaps. The main research targets of this work are:
 
 \begin{itemize}
 	
@@ -102,19 +100,19 @@ Based on what we stated,  we are going to formalize our research targets, and de
 	
 	\item Define what a realistic Ethernet traffic is, and a set of metrics to measure the realism and the similarity between an original and a synthetic traffic.
 	
-	\item Research the main apporoaches and methods found of the literature for realistic traffic generation. 
+	\item Research the main approaches and methods found of the literature for realistic traffic generation. 
 	
 	\item Create a general method for modeling and parameterization of Ethernet traffic;
 	
-	\item Create a self-configurable tool that observes and uses real network traffic, and try to mimic and reproduce its behavior characteristics, \textit{avoiding} the storage of \textit{pcap} files.
+	\item Create a self-configurable tool that observes and uses real network traffic, and try to mimic and reproduce its behavior characteristics, \textit{avoiding} the storage of huge \textit{pcap} files.
 	
 \end{itemize}
 
-Hence, we will define a requeriment list for the tool we are going to develop and present in this research:
+Towards the above-stated objectives, we identified a set of requirements of the envisioned traffic generation tool:
 
 \begin{itemize}
 	
-	\item Autoconfigurable: It must be able to extract data from a real traffic and store in a database, and use it to parametrize its traffic model. It must be able to obtain data from real-time traffics and from \textit{pcap} files;
+	\item Auto-configurable: It must be able to extract data from a real traffic and store in a database, and use it to parametrize its traffic model. It must be able to obtain data from real-time traffics and from \textit{pcap} files;
 	
 	\item Technology independent: It must have a flow-based abstract model for traffic generation, not attached to any specific technology.
 	
@@ -124,7 +122,7 @@ Hence, we will define a requeriment list for the tool we are going to develop an
 	
 	\item Simple usage: It must be easy to use. It has to take as input a Compact Trace Descriptor, just as a traffic replay engine (such as TCPreplay) would take a \textit{pcap} file;
 	
-	\item Traffic generation programmability: It must have what we call \textit{traffic generation progamability}. The compact trace descriptor must be simple and easy to read. That way, the user may want to create his custom traffic, in a platform agnostic way. The traffic programmability must be flow-oriented;
+	\item Traffic generation programmability: It must have what we call \textit{traffic generation progamability}. The compact trace descriptor must be simple and easy to read. That way, the user may want to create his custom traffic, in a platform agnostic way. %The traffic programmability must be flow-oriented;
 	
 	\item Flow-oriented: The traffic modeling and generation must be flow-oriented. Each flow must be modeled and generated separately.
 	
@@ -162,19 +160,19 @@ Hence, we will define a requeriment list for the tool we are going to develop an
 In this introductory chapter, we presented an abstract of state of the art, a problem statement, and proposed an approach for research and requirements for development.
 
 %2nd-review
-In the chapter section~\ref{ch:literature-review}, we go more in-depth on some subjects mentioned here. First, we present an extensive survey on open-source traffic generator tools. We summarize the benefits, and features supported by each one. After, we offer a brief review of essential topics on realistic traffic generation. We are defining some central concepts we are going to use in this work, such as self-similarity, and heavy-tailed functions. Then, we discuss some techniques of validation of traffic generator tools and some practical examples. We also will analyze some related works. 
+In the Chapter 2~\ref{ch:literature-review}, we go more in-depth on some subjects mentioned here. First, we present an extensive survey on open-source traffic generator tools. We summarize the benefits, and features supported by each one. After, we offer a brief review of essential topics on realistic traffic generation. We are defining some central concepts we are going to use in this work, such as self-similarity, and heavy-tailed functions. Then, we discuss some techniques of validation of traffic generator tools and some practical examples. We also will analyze some related works. 
 
 %2nd-review
-Chapter ~\ref{ch:architecture} introduces the methodology used in our project. We describe \textit{SIMITAR} low-level requirements and define an architecture and their algorithms.  We also present its classes design and explain how \textit{SIMITAR} we can expand to any traffic generator engine or library, with an API, CLI interface. We use the Iperf as an example. We explain its operation and suggest some use cases.
+Chapter~\ref{ch:architecture} introduces the methodology used in our project. We describe \textit{SIMITAR} low-level requirements and define an architecture and their algorithms.  We also present its classes design and explain how \textit{SIMITAR} we can expand to any traffic generator engine or library, with an API, CLI interface. We use the Iperf as an example. We explain its operation and suggest some use cases.
 
 %2nd-review
-In the chapter~\ref{ch:modeling-evaluation} we go deep in some subjects pointed in the previous chapter. We present how the modeling process works, using a defined data set (which we are going to use in the rest of the work). We also show some evaluation methods to check the modeling quality. We also describe our used and developed algorithms.
+In Chapter~\ref{ch:modeling-evaluation}, we go deep in some subjects pointed in the previous chapter. We present how the modeling process works, using a defined data set (which we are going to use in the rest of the work). We also show some evaluation methods to check the modeling quality. We also describe our used and developed algorithms.
 
 %2nd-review
-In the chapter ~\ref{ch:validation}, we define a set of metrics based on previous tests on validation of traffic generators found in the literature. Here, we focus on packet, flow, and scaling metrics. we test \textit{SIMITAR} in an emulated SDN testbed with Mininet, using OpenDayLight as controller\cite{web-opendaylight}. 
+In Chapter ~\ref{ch:validation}, we define a set of metrics based on previous tests on validation of traffic generators found in the literature. Here, we focus on packet, flow, and scaling metrics. we test \textit{SIMITAR} in an emulated SDN testbed with Mininet, using OpenDayLight as controller\cite{web-opendaylight}. 
 
 % On chapter Use Cases~\ref{ch:use-cases}, we present two use cases of our tool. One using an NFV testbed, and other handling an SDN p4 switch. Here we focus on QoS metrics, such as mean RTT. %use tools such as Tcptrace and NFPA  on the use cases
 
 % 2nd-review
-Finally, on chapter Conclusion and Future Work~\ref{ch:conclusion}, we summarized our work and highlighted future actions to improve \textit{SIMITAR} on realism and performance.
+Finally, Chapter~\ref{ch:conclusion} on Conclusion and Future Work summarizes our work and highlights future actions to improve \textit{SIMITAR} on realism and performance along other future research avenues.
 
