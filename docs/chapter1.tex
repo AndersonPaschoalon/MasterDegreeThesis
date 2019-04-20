@@ -2,177 +2,130 @@
 \chapter{Introduction}\label{ch:introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%3nd-review
+%4th-review
 \section{Motivation}
  
 
-Emerging technologies such as Software Defined Networking (SDN) and Network Function Virtualizatoin (NFV) are  considered promising approaches to  drastically change the development and operation of computer networks. However, enabling technologies such as virtualization still pose challenges as for performance,  reliability, and security\cite{nfv-challenges}. Closed hardware solutions are easier to pass on Service Layer Agreement (SLA) since they have a much more predictable behavior. Since virtualization commonly affects performance, Virtual Network Functions (VNFs) have to keep their degradation as small as possible. Therefore, guaranteeing SLAs becomes now a harder question. There is a demand for more reliable methods to ensure SLAs, over different types of loads.
+The type of traffic used for performing evaluation matters; this is a fact. Studies show that realistic Ethernet traffic provides different and variable load characteristics on routers\cite{harpoon-validation}, even with the same average bandwidth consumption, showing that constant traffic is not sufficient for complete technology validation. This conclusion indicates that tests which employ traffic generators with constant rates are not enough for complete validation of new technologies. Bursty traffic can cause packet losses and buffer overflows, impacting network performance and measurement accuracy\cite{burstiness-queue-lenght}. Small packets tend to degrade application performance\cite{comparative-trafficgen-tools}.  Furthermore, realistic traffic is essential on security research, such as for the evaluation of firewall middleboxes, studies on intrusion, and malicious workloads\cite{ditg-paper}. 
 
+New networking scenarios such as SDN and virtualized networks (NFV and VNFs) become harder to predict in terms of performance compared to hardware-based technologies, due to the multiple layers of software and platform parameters demanding validation in a broadening range of use cases~\cite{nfv-challenges}.   Another critical question about the interaction between application- network has had the flow-oriented operation of SDN networks, in which each new flow arriving on an SDN switch demands further communication with the controller. Therefore the controller can be a bottleneck on the switches performance.  Also,  new types of traffic patterns introduced by IoT and Machine-to-Machine communication\cite{machine2machine}  increase the complexity of the network traffic characterization, turning pre-defined models used by traffic generators obsolete. 
 
-It is already a well-known fact that the type of traffic used on performing tests matters. Studies show that  realistic Ethernet traffic provides different and variable load characteristics on routers\cite{harpoon-validation}, even with the same average bandwidth consumption. This fact indicates that tests that employ constant bit rate traffic generator tools are not enough for a complete validation of new technologies. There are many reasons for this behavior, which includes a grater traffic burstiness and variable packet sizes.
+Furthermore, realistic traffic generators are essential security research, since the generation of realistic workloads is essential for evaluation of firewall middleboxes. It includes studies of intrusion, anomaly detection, and malicious workloads. By realistic, we refer to traffic that represents well the traffic features, such as protocols, payloads, and protocols, able to emulate benign and malicious workloads. 
 
-
-A burstier traffic can cause packet losses and buffer overflows on network \cite{burstiness-queue-lenght} \cite{modelling-of-self-similar} \cite{empirical-interarrival-study}; thus degenerating network performance\footnote{Packet-trains periods and inter-packet times affect traffic burstiness}, and  measurement accuracy\cite{legotg-paper} \cite{background-traffic-matter}. Another key question is how applications will deal with packets, since it is a well-known fact that applications have a huge performance degradation in processing small packets\cite{comparative-trafficgen-tools}. A realistic synthetic traffic must not have a single one but rater use variable packet sizes \cite{packet-distribution-model}. 
-Furthermore, realistic traffic generators are an essential security research\cite{ditg-paper}, since generation of realistic workloads is important for evaluation of firewall middleboxes. It includes studies of intrusion, anomaly detection, and malicious workloads\cite{ditg-paper}. Over a virtualized enviroment a realistic workload is expected to have an even larger inpact.
-
-
-Another critical point is the flow-oriented operation of SDN networks, in which each new flow arriving on an SDN switch demands an extra communication with the controller, that may cause a bottleneck. Since its operation relies on queries on flow tables, a stress load must have the same flow properties of an actual Internet Service Provider. 
-
-Therefore, there is a demand for new studies around realistic traffic on this new sort of environment. How VNFs and virtualized middle-boxes and SDN testbeds will behave if stressed with a realistic traffic load in comparison to a constant rate traffic is a relevant subject offering multiple opportunities to be explored.
-
+Aiming to address these gaps, this dissertation introduces SIMITAR, an auto-configurable network traffic generator. SIMITAR stands for \textit{SnIffing, ModellIng, and TrAffic geneRation}, which correspond to the main operation processes of the proposed framework.  SIMITAR has an application independent traffic model, that can represent a wide variety of scenarios. It also decouples the traffic modeling and packet-generation layer, using a factory design pattern, enabling its application on different scenarios, and technology update, via technology abstraction.  SIMITAR code and all scripts used in this paper are available at GitHub\cite{projeto-github} for validation, experiment reproducibility, and re-use purposes. 
 
 
 \section{Related Work}
 
 
-The open-source community offers a huge variety of workload generators and benchmarking tools \cite{ditg-paper}\cite{validate-trafficgen}\cite{comparative-trafficgen-tools}\cite{performance-trafficgen}. Most of these tools were built for specific purposes and goals, so that each uses different methods of traffic generation, and enable controll of different features, such as: bits/bytes per second; packets per seconds; packet-sizes; protocols, header or payload customization; inter-packet times and On/Off periods; starting and sending time; and emulation of applications, such as Web server/client communication, VoIP, HTTP, FTP, p2p applications, and many more.
+\begin{table*}[ht!]
+    \centering
+    \caption{Comparison of existing traffic generation tools.}
+    \scalebox{0.80}{ 
+    \begin{tabular}{ccccc}
+        \hline
+        \rowcolor[HTML]{9B9B9B} 
+        \hline
+        \textbf{Solution}     & \textbf{Auto-configurable} & \textbf{Realistic Traffic} & \textbf{Traffic Custumization} & \textbf{Extensibility} \\ \hline
+        Harpoon     & yes              & yes               & yes                   & \textbf{no}   \\
+        \rowcolor[HTML]{C0C0C0} 
+        D-ITG                & \textbf{no}      & yes               & yes                   & \textbf{no}   \\
+        Swing                & yes              & yes               & \textbf{no}           & \textbf{no}   \\
+        \rowcolor[HTML]{C0C0C0} 
+        Ostinato             & \textbf{no}      & \textbf{no}       & yes                   & yes           \\
+        LegoTG               & \textbf{no}      & \textbf{no}       & yes                   & yes           \\
+        \rowcolor[HTML]{C0C0C0} 
+        sourcesOnOff          & \textbf{no}      & yes               & yes                   & \textbf{no}   \\
+        Iperf                & \textbf{no}      & \textbf{no}       & yes                   & \textbf{no}   \\ 
+        \rowcolor[HTML]{C0C0C0} 
+        SIMITAR          & yes      & yes               & yes                   & yes   \\ \hline
+    \end{tabular}
+    }
+    \label{tab:related-work}
+\end{table*}
 
 
-Some traffic generator tools offer support emulation of single application workloads, however, this does not correspond to real complex scenarios. Other tools work as packet replay engines, such as TCPreplay and TCPivo. While is possible to produce a realistic workload at high rates using this tools, they comes with some drawbacks. Firstly, the storage space required becomes huge for long-term and high-speed traffic capture traces, lastly, obtaining good traffic traces is sometimes hard, due privacy issues and fewer good sources. 
 
+Traffic generators are tools to transfer or inject network packets in a controlled manner,  aiming not at the actual data transfer data but at the functional validation and performance benchmarking of devices under test (DUT) for varying technologies or scenarios. The open-source community offers a vast variety of traffic generators. Since most have been built for specific goals,  each uses different methods for traffic generation, and offer control over different traffic features, such as throughput, packet-sizes, protocols, and so on\cite{ditg-paper}. 
 
-Many tools support a larger set of protocols and high-throughput for traffic generation, such Seagull and Ostinato. Others are also able to control inter-packet times and packet sizes using stochastic models, like D-ITG\cite{ditg-paper}, sourcesOnOff\cite{sourcesonoff-paper}, and MoonGen. All of them offer a complex configuration framework, but its custumization is all up to the user. So, there is no simple way for the user to create a synthetic and realistic traffic scenario. 
+Traffic generators can be classified into two main groups: replay engines\cite{sourcesonoff-paper} and model-based tools. Replay engines, such as TCPReplay and TCPivo\cite{tcpivo-paper}, work replicating in a given network interface a given packet capture file. These tools can generate realistic traffic but have their constraints. They are deterministic since will always reproduce the same traffic from the packet capture. Replay engines require storage of packet capture, what can be a problem for traffics of high bandwidth traffic. Also, they assume the user has access to packet captures appropriate for his testing purposes, which is not always true, due to a limited number of public sources. Model-based tools rely on software models to replicate one or more characteristics of the traffic. 
 
-There is also a variety of APIs that enable the creation of traffic and custom packets, which include low-level APIs, such as Linux Socket API,  Libpcap, Libtins, DPDK, Pcapplusplus, libcrafter, impacket, scapy and many others. These APIs provide a finer controll and customization over each packet, and are used to implement traffic generators. For example, Ostinato and TCPreplay uses Libpcap, and MoonGen uses DPDK. In addition, many of the listed traffic generators provides their own (high-level) APIs, such as Ostinato Python API, D-ITG C API, and MoonGen LUA API. 
-
-
-
-%They can give a good control of the traffic and high rates. Es example of controllable features we can list:
+%Following the taxonomy presented by Botta et al.\cite{do-you-trust}:
 %\begin{itemize}
-%\item Throughput, the number of bytes, number of packets.
-%\item Protocols. Most of the tools give support to network and transport protocols. Many also offer support to Link and Application protocols;
-%\item Header and payload configuration. Support for header customization includes source and destination port/addresses, QoS parameters, flags, etc. Some traffic generators also allow customizing payload bytes.
-%\item Inter-packet times. Some tools offer a set of stochastic distributions to control inter-packet times. The user can use these stochastic functions to emulate realistic inter-arrival times.
-%\item On/off periods: support of packet trains periods. Many offer stochastic models to control it. 
-%\item Sending time and start-time: the user can use these features to control flows timings.  
-%\item Packet-size: support for different packet sizes. Some tools offer constant values or stochastic distributions to control packet sizes.
-%\item Paralell flows configuration.
-%\item Emulation of specific applications: common examples are 
+%\item \textbf{Application-level traffic generators}: they try to emulate network applications simulating real workloads stochastically and(or) responsively. Eg.: Surge, D-ITG\footnote{D-ITG works mainly on packet-level but can emulate some applications}.
+%\item \textbf{Flow-level traffic generators}: they can reproduce features of flows, such as flow duration, a diurnal behavior. Eg.: Harpoon\cite{harpoon-validation}.
+%\item \textbf{Packet-level traffic generators}: most traffic generators available fall in this class. They aim to reproduce physical features such as inter-packet times, packet size, bandwidth and packets per second. Eg.: Iperf\cite{web-iperf}, Ostinato\cite{web-ostinato}, D-ITG\cite{ditg-paper}, sourcesOnOff\cite{sourcesonoff-paper}.
+%\item \textbf{Multi-level traffic generators}: it proposes to take into account existing interaction among each layer of the network stack. Eg.: Swing\cite{swing-paper}.
 %\end{itemize}
 
-
-Multiple open-source tools are available ffeaturing custom traffic generation, but reproducing a realistic traffic scenario is a hard matter. Selecting the right framework, a good traffic model, and the right configuration, is by itself a complex research project\cite{legotg-paper}\cite{selfsimilar-ethernet}. Since it usually is not the main goal of the project, but just a mean of validation, many times a simplistic and unrealistic solution is selected due the limited resources such as time and labor.  Creating a realistic traffic through these tools is a manual process and demands implementation of scripts or programs leveraging human (and scarce) expertise on network traffic characteristics  and experimental evaluation. 
-
-
-There are few solutions in the open source community available that aiming to fill this gap, such as Harpoon\cite{harpoon-paper} and Swing\cite{swing-paper}.They capture traces to set internal parameters, providing an easier configuration. However they have their issues as well. Harpoon does not configure parameters at packet level\cite{harpoon-paper} and is not supported by newer Linux kernels, what may be a huge problem with setup and configuration. Swing\cite{swing-paper} only generates TCP and UDP traffic, and have limitations on throughput rates\cite{swing-paper} \cite{legotg-paper}. Because its traffic generation engine is coupled to its modeling framework, you cannot opt to (easily) use a newer/faster packet generation library. The only way of replacing the traffic engine is changing and recompiling the original code which is a hard and  error prone activity\cite{legotg-paper}. Again, we fall in the same issue, a complex task that is usually not the goal of the project. In the table~\ref{tab:related-work} we give a brief summary of what we have available on some open-source traffic-generators tools. 
-
-% Another matter is the large variety of tools, and different methods of configuration and its limitations. To create a custom traffic, a user must read large manuals, and custom-design scripts. One of our bigger proposals is create a tool able to automatically do this processes. So The user may design his custom traffic by creating his own Compact Trace Descriptor, and create a traffic using many different tools, like Ostinato, D-ITG, Iperf, but not caring about how to proper configure each of them. In the table ~\ref{tab:related-work} we summarize our current scenario.
-
-
-
-\begin{table}[ht!]
-	\centering
-	\caption{Current scenario of traffic generation}
-	\scalebox{0.87}{
-	\begin{tabular}{cccccc}
-		\hline
-		\rowcolor[HTML]{9B9B9B} 
-		Solution    & User Space  & Autoconfigurable & Realistic Traffic & Traffic Custumization & Extensibility \\ \hline
-		Harpoon      & \textbf{no} & yes              & yes               & yes                   & \textbf{no}   \\
-		\rowcolor[HTML]{C0C0C0} 
-		D-ITG        & yes         & \textbf{no}      & yes               & yes                   & \textbf{no}   \\
-		Swing        & yes         & yes              & yes               & \textbf{no}           & \textbf{no}   \\
-		\rowcolor[HTML]{C0C0C0} 
-		Ostinato     & yes         & \textbf{no}      & \textbf{no}       & yes                   & yes           \\
-		LegoTG       & yes         & \textbf{no}      & \textbf{no}       & yes                   & yes           \\
-		\rowcolor[HTML]{C0C0C0} 
-		sourcesOnOff & yes         & \textbf{no}      & yes               & yes                   & \textbf{no}   \\
-		Iperf        & yes         & \textbf{no}      & \textbf{no}       & yes                   & \textbf{no}   \\ \hline
-	\end{tabular}
-	}
-	\label{tab:related-work}
-\end{table}
-
-%Since synthetic traffic traces generation is mature in academia, the creation of custom network workloads through the configuration of  open-source tools is an affordable task. But it is not often available in an automatic way, and most of the times is a challenging question\cite{legotg-paper}, and still, requires expert knowledge. It requires time, study, and is vulnerable to human mistakes and lack of validation. Such work may require weeks to complete a realistic reproduction of a single scenario, so most of the time it is just not done. We argue that widely (i.e. affordable) existing approaches can be regarded as simplistic often point solutions to more general cases. 
-
-
-% Also, just choosing which workload generator tool may fit better for the user needs is not a simple question. Tools like D-ITG\footnote{\href{http://traffic.comics.unina.it/software/ITG/}{http://traffic.comics.unina.it/software/ITG/}} provide support to many different stochastic functions, Ostinato\footnote{\href{http://ostinato.org/}{http://ostinato.org/}} provides a larger support for protocols, and a higher throughput for each thread\cite{comparative-trafficgen-tools}, and others like Seagull\footnote{\href{http://gull.sourceforge.net/doc/WP_Seagull_Open_Source_tool_for_IMS_testing.pdf}{http://gull.sourceforge.net/doc/WP\_Seagull\_Open\_Source\_tool\_for\_IMS\_testing.pdf}} are responsive. 
+Model-based tools have their limitations as well. Traffic generators that emulate the applications,  are designed to represent only specific scenarios on computer networking, and are not enough to represent a large variety of scenarios. Many  traffic generator tools only offer constant-rate and Poisson models, which does not represent well the complexity of internet traffic\cite{selfsimilar-ethernet}. Other tools such as D-ITG offer dozens of parameters and models to be configured, but delegate to the user the task of creating, validate and script his traffic model. To the best of our knowledge, we found only two open-source auto-configurable tools: Swing and Harpoon.  However, none of them has an extensible architecture, which turns supporting modern and fast I/O APIs (such as DPDK\cite{web-dpdk}) a hard task. Table~\ref{tab:related-work} present a summary of the above mentioned features for some relevant traffic generators: Swing\cite{swing-paper}, Harpoon\cite{harpoon-validation}, sourcesOnOff\cite{sourcesonoff-paper}, D-ITG\cite{ditg-paper}, Iperf\cite{web-iperf}, Ostinato\cite{web-ostinato} and LegoTG\cite{legotg-paper}.
 
 
 \section{Problem Statement}
 
 
-Based on the provided context,  we next o formalize our research targets, and identified a set of requirements to fulfill existing gaps. The main research targets of this work are:
+Based on the provided context, we defined a set of targets for our research:
+
+
+\begin{enumerate}
+
+	\item \textbf{Research Topic I}:  Survey open-source Ethernet workload tools and address features each one has. We wanted to know the existing solutions, innovation points on the current state of affairs, and how can we some could be integrated and reused by our solution;
+	
+	\item \textbf{Research Topic II}: Study the characterization and mathematical modeling of Ethernet traffic, what are the best models and challenges. 
+	
+	\item \textbf{Research Topic III}: Define what realistic traffic generation is, and how to measure if any synthetic traffic is realistic or not. 
+	
+	\item \textbf{Design}: Create a general method for modeling and parameterization of Ethernet traffic;
+	
+	\item \textbf{Development}:  Create a self-configurable tool that observes and uses real network traffic, and reproduce its behavior characteristics, avoiding the storage of large pcap files. 
+	
+\end{enumerate}
+
+Towards the above-stated objectives, we  had identified a set of requirements of the envisioned traffic generation tool should meet:
 
 \begin{itemize}
-	
-	\item Survey open-source Ethernet workload tools, addressing different features of each one. In this step, we want to evaluate the existing solution ready to use for network researchers and developers, and what can be used and integrated into our project as part of our solution;
-	
-	\item Define what a realistic Ethernet traffic is, and a set of metrics to measure the realism and the similarity between an original and a synthetic traffic.
-	
-	\item Research the main approaches and methods found of the literature for realistic traffic generation. 
-	
-	\item Create a general method for modeling and parameterization of Ethernet traffic;
-	
-	\item Create a self-configurable tool that observes and uses real network traffic, and try to mimic and reproduce its behavior characteristics, \textit{avoiding} the storage of huge \textit{pcap} files.
-	
-\end{itemize}
 
-Towards the above-stated objectives, we identified a set of requirements of the envisioned traffic generation tool:
+\item \textbf{Auto-configurable}: It must be able to extract data from real traffic and store in a database, and use it to parametrize its traffic model. It must be able to obtain data from real-time traffics and from pcap files;
 
-\begin{itemize}
-	
-	\item Auto-configurable: It must be able to extract data from a real traffic and store in a database, and use it to parametrize its traffic model. It must be able to obtain data from real-time traffics and from \textit{pcap} files;
-	
-	\item Technology independent: It must have a flow-based abstract model for traffic generation, not attached to any specific technology.
-	
-	\item Human readable: it must produce a human-readable file as output that describes our traffic using our abstract model. We call this file a Compact Trace Descriptor;
-	
-	\item Extensibility: the traffic modeling and generation must be decoupled. Ideally, it must able to use as traffic generator engine any library or traffic generator tool;
-	
-	\item Simple usage: It must be easy to use. It has to take as input a Compact Trace Descriptor, just as a traffic replay engine (such as TCPreplay) would take a \textit{pcap} file;
-	
-	\item Traffic generation programmability: It must have what we call \textit{traffic generation progamability}. The compact trace descriptor must be simple and easy to read. That way, the user may want to create his custom traffic, in a platform agnostic way. %The traffic programmability must be flow-oriented;
-	
-	\item Flow-oriented: The traffic modeling and generation must be flow-oriented. Each flow must be modeled and generated separately.
-	
+\item \textbf{Technology independent}: It must have a flow-based abstract model for traffic generation, not attached to any specific technology.
+
+\item \textbf{Extensibility}: traffic modeling and generation must be decoupled. Ideally, it must be able to use as a traffic generator engine any library or traffic generator tool;
+
+\item \textbf{Simple usage}: It must be easy to use. It has to take as input a Compact Trace Descriptor, just as a traffic replay engine (such as TCPreplay) would take a pcap file;
+
+\item \textbf{ Human readable model}: it must produce a human-readable file as output that describes our traffic using our abstract model. We call this file a Compact Trace Descriptor(CTD);
+
+\item \textbf{Traffic generation programmability}: It must have what we call traffic generation programmability. The compact trace descriptor must be simple and easy to read. That way, the user may want to create our custom traffic, in a platform agnostic way.
+
+\item \textbf{Flow-oriented}: traffic modeling and generation must be flow-oriented. Each flow must be modeled and generated separately.
+
 \end{itemize}
 
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.4]{figures/ch1/dev-cicle}
+    \caption{Spiral research and development procedure}
+    \label{fig:dev-cicle}
+\end{figure}
 
+We have adopted a spiral procedure of development, as suggested Sommerville on \textit{Software Engineering}\cite{sommerville}, but adapted to an academic research process. Figure ~\ref{fig:dev-cicle} shows the model of development we had adopted. It had four main phases: 
 
+\begin{enumerate}
+    \item \textit{Requirements (Working Plan)};
+    \item \textit{Design (research 1)};
+    \item \textit{Development (prototyping/codding)};
+    \item \textit{Preparation (research 2)}.
+\end{enumerate}
 
-
-
-%These targets summarize a target of research, based on what we have exposed until now. We also will define some extra features, we want to have on our tool:
-%\begin{itemize}
-%\item Traffic Flow Programmability: the tool records this parameterization on a light-weight and human-readable version of a \textit{pcap} file. So the user can create his own models of traffic based on flows, in a platform-independent manner. He will not have to learn how to configure and script each tool.
-%\item Easy expansion: The sniffing, modeling, and traffic generation processes must work separately, so updates will be easy to manage. Also, the traffic generation is flow-oriented (it generates each flow individually). Thus the scheduling of each flow is platform-independent. In this way, is much easier to expand the support for new traffic generation engines.
-%\end{itemize}
-
-
-%Now, we are going to formalize these exposed concepts in a proposal of research and development. Or main targets here are:
-%\begin{itemize}
-%\item Survey the available open-source Ethernet workload tools available, addressing its different features;
-%\item Define what is a realistic Ethernet traffic, and the man approaches found in literature;
-%\item Create a general method for modeling and parameterization of Ethernet traffic, aiming to mimic a provided input;
-%\item Create a software \textit{tool} able of \textit{learning} patterns and characteristics of real network traffic traces, and auto-configure the network traffic workloads, allowing to reproduce network traffic with similar (but not equal) characteristics, avoiding storage of \textit{pcap} files. 
-%\item It must have a flow-oriented operation, and be able to choose the best features to represent each flow traffic. It will generate realistic Ethernet traffic based on these features learned, using available open source tools and APIs;
-%\end{itemize}
-
-%We also aim some advantages from the addition features: data visualization, packet acceleration, and distributed operation. Providing data visualization, it will not just work as a workload generator, but as a benchmark tool, providing statistics and performance analysis. Using packet acceleration, we will be able to produce a high throughput at the wire, and at the same time generate a trace as realistic as possible. Through a distributed operation of multiple instances, it will be easier to control its operation in a virtualized environment.  Finally, a project guideline is to reuse as much code and components as possible from the open-source community.
-
+On the \textbf{Requirements phase}, we create tasks,  formalized on \textit{Working Plans} documents.  These tasks should cover the whole process. On the \textbf{Design (research 1) phase}, where the focus of the research are related works. We research on literature to learn about topics defined by the task, to help we design our solutions. On this step, during the initial phases of the project,  we also conceived the architecture along with UML diagrams. Some small changes are inevitable, but structural changes turn to be impractical on later phases. The next phase is the \textbf{Development phase}. It is the prototyping and coding phase.  The last is the \textbf{Preparation phase} when we evaluate the results achieved on the Development phase, and we go back to research again,  aiming to prepare the next \textit{Working Plan}.  On this phase, the focus of the research is on points of innovation.
 
 
 \section{Document Overview}
 
 
-In this introductory chapter, we presented an abstract of state of the art, a problem statement, and proposed an approach for research and requirements for development.
+In this introductory chapter, we had presented an abstract of state of the art, and the main goals of our research. \textit{\textbf{Chapter~\ref{ch:literature-review}}} presents an extensive survey on open-source traffic generator tools, summarizing the benefits, and features supported by each one. The chapter offers a  review of topics on realistic traffic generation and defines important concepts on network traffic modeling; such as self-similarity and heavy-tailed distributions. Also, the chapter presents a survey on techniques for validating traffic generator tools 
 
-%2nd-review
-In the Chapter 2~\ref{ch:literature-review}, we go more in-depth on some subjects mentioned here. First, we present an extensive survey on open-source traffic generator tools. We summarize the benefits, and features supported by each one. After, we offer a brief review of essential topics on realistic traffic generation. We are defining some central concepts we are going to use in this work, such as self-similarity, and heavy-tailed functions. Then, we discuss some techniques of validation of traffic generator tools and some practical examples. We also will analyze some related works. 
+\textit{\textbf{Chapter~\ref{ch:architecture}}} presents \textit{SIMITAR} traffic generator. We describe its low-level requirements and define an architecture and their algorithms.  We explain its operation and suggest some use cases. In \textit{\textbf{Chapter~\ref{ch:modeling-evaluation}}} we go deep on the modeling process we had developed for our traffic generator. We validate the effectiveness of Information Criteria AIC and BIC as a method selection of stochastic models for  Ethernet traffic.  We also discuss some other algorithms we developed such as \textit{calcOnOff} and the application protocol guesser. In \textit{\textbf{Chapter~\ref{ch:validation}}}, we define a set of metrics based on previous tests on validation of traffic generators found in the literature. Here, we focus on the packet, flow, and scaling metrics. We test our tool in an emulated SDN testbed with Mininet\cite{web-mininet}, using OpenDayLight\cite{web-opendaylight} as a controller. 
 
-%2nd-review
-Chapter~\ref{ch:architecture} introduces the methodology used in our project. We describe \textit{SIMITAR} low-level requirements and define an architecture and their algorithms.  We also present its classes design and explain how \textit{SIMITAR} we can expand to any traffic generator engine or library, with an API, CLI interface. We use the Iperf as an example. We explain its operation and suggest some use cases.
-
-%2nd-review
-In Chapter~\ref{ch:modeling-evaluation}, we go deep in some subjects pointed in the previous chapter. We present how the modeling process works, using a defined data set (which we are going to use in the rest of the work). We also show some evaluation methods to check the modeling quality. We also describe our used and developed algorithms.
-
-%2nd-review
-In Chapter ~\ref{ch:validation}, we define a set of metrics based on previous tests on validation of traffic generators found in the literature. Here, we focus on packet, flow, and scaling metrics. we test \textit{SIMITAR} in an emulated SDN testbed with Mininet, using OpenDayLight as controller\cite{web-opendaylight}. 
-
-% On chapter Use Cases~\ref{ch:use-cases}, we present two use cases of our tool. One using an NFV testbed, and other handling an SDN p4 switch. Here we focus on QoS metrics, such as mean RTT. %use tools such as Tcptrace and NFPA  on the use cases
-
-% 2nd-review
-Finally, Chapter~\ref{ch:conclusion} on Conclusion and Future Work summarizes our work and highlights future actions to improve \textit{SIMITAR} on realism and performance along other future research avenues.
-
+\textit{\textbf{Chapter~\ref{ch:future-work}}}  highlights future actions to improve SIMITAR on realism and performance along with other future research avenues, including improving its computational performance, expand it to new APIs of traffic generation and calibration of its constants. Finally, we end the work presentation with a conclusion( \textit{\textbf{chapter~\ref{ch:conclusion}}}).
