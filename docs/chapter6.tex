@@ -82,7 +82,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
     \label{fig:dpdk-kni}
 \end{figure}
 
-\textbf{[A.4]} One possibility to improve the traffic generation performance issue DPDK Kernel NIC Interface (KNI interfaces) 2. DPDK KNI interfaces allow applications from the user’s space to interact with DPDK ports. In this way, we may achieve a faster packet processing.
+\textbf{[A.4]} One possibility to improve the traffic generation performance issue DPDK Kernel NIC Interface (\acrfull{KNI} interfaces) 2. DPDK KNI interfaces allow applications from the user’s space to interact with DPDK ports. In this way, we may achieve a faster packet processing.
 
 \subsection{Multi-thread C++ Sniffer}
 
@@ -116,7 +116,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{[C] Calibration}
+\section{Calibration}
 
 
 \subsection{ \texttt{min\_time}}
@@ -183,7 +183,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 \item An analysis of the effectiveness of each parameterization method, and the best performance of each metric of quality measurement: correlation,  mean inter-packet time and Hurst exponent; 
 \item Use of new stochastic methods functions, such as Log-Normal, Gamma, Poison, Binomial, Beta, and Chi-squared;
 \item Use of Markovian-chain and Envelope processes;
-\item Use other information criteria, such as AICc, MDL, nMDL\cite{information-criteria} and DIC\cite{dic-paper}.
+\item Use other information criteria, such as \acrfull{AICc}, \acrfull{MDL}, \acrfull{nMDL}\cite{information-criteria} and \acrfull{DIC}\cite{dic-paper}.
 \end{itemize}
 
 \subsection{How how to craft malicious flows?}
@@ -217,7 +217,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 
 \subsection{Traffic generation based on Generative Adversarial Networks (GANs)}
 
-\textbf{[E.7]} Other promising technology on controlling features can be the usage of Generative Adversarial Networks, also called GANs\cite{gans-paper}. This is a type of neural network used usually used on image synthesis, as we can see in figure~\ref{fig:gans-example}. We could apply the GAN to generate matrixes of features: inter-packet times, flows, protocols, packet sizes and so on(figure~\ref{fig:color-maps}).  Then, apply this matrix of features to synthesize network traffic. 
+\textbf{[E.7]} Other promising technology on controlling features can be the usage of Generative Adversarial Networks, also called \acrfull{GAN}s\cite{gans-paper}. This is a type of neural network used usually used on image synthesis, as we can see in figure~\ref{fig:gans-example}. We could apply the GAN to generate matrixes of features: inter-packet times, flows, protocols, packet sizes and so on(figure~\ref{fig:color-maps}). Then, apply this matrix of features to synthesize network traffic. 
 
 % GANs example
 \begin{figure}[!ht]
@@ -250,7 +250,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 \end{figure}
 %\clearpage
 
-\subsection{ Realistic WAN, Wifi and IoT traffic}
+\subsection{Realistic WAN, Wifi and IoT traffic}
 
 \textbf{[E.8]} Expand the support for protocols and API of traffic generation to create synthetic traffic in different environments:
 \begin{itemize}

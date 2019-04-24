@@ -1,23 +1,49 @@
-\chapter{Publications}
-\label{ap:publications}
+\chapter{UML Project Diagrams}\label{ap:uml}
 
-\begin{itemize}
-	\item IX DCA/FEEC/University of Campinas (UNICAMP) Workshop (EADCA
-	\item X DCA/FEEC/University of Campinas (UNICAMP) Workshop (EADCA)
-	\item Using BIC and AIC for Ethernet traffic model selection. Is it worth?
-	\item SIMITAR: realistic and autoconfigurable traffic generation
-\end{itemize}
+%\begin{table}[ht!]
+%	\centering
+%	\caption{Components Implementation}
+%	\label{tab:components-implementation}
+%	\begin{tabular}{l r}
+%		\toprule
+%		\textbf{Component} & \textbf{Implementation}\\
+%		\midrule
+%		Sniffer			& Python \\
+%		Sqlite Database	& Python \\
+%		TraceAnalyzer	& C++ \\
+%		FlowGenerator	& C++ \\
+%		\bottomrule
+%	\end{tabular}
+%\end{table}
 
 
-\includepdf[pages=-]{figures/apE/eadca-article2016.pdf}
 
-\includepdf[pages=-]{figures/apE/eadca-article2017.pdf}
 
-\includepdf[pages=-]{figures/apE/paperAicBic.pdf}
+\begin{figure*}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{figures/apD/sniffer}
+	\caption{Sniffer UML Class Diagram}
+	\label{fig:uml-sniffer}
+\end{figure*}
 
-\includepdf[pages=-]{figures/apE/paperSimitar.pdf}
 
-%\section{Generic Paper 3}
-%\includepdf[pages=-]{figures/apE/paper3.pdf}
+\clearpage
 
+\begin{figure*}[]
+	\centering
+	\begin{turn}{90}
+	\includegraphics[width=1.5\textwidth]{figures/apD/trace-analyzer}
+	\end{turn}
+	\caption{TraceAnalyzer UML Class Diagram}
+	\label{fig:uml-trace-analyzer}
+\end{figure*}
+
+\clearpage
+
+\begin{figure*}[]
+	\centering
+	\includegraphics[width=0.9\textwidth]{figures/apD/flow-generator}
+	\caption{FlowGenerator UML Class Diagram}
+	\label{fig:uml-flow-generator}
+\end{figure*}
 
