@@ -11,10 +11,10 @@ This chapter describes in-depth the implementation of the traffic modeling algor
 
 Many consolidate works investigate the nature of internet traffic, and many others on the modeling of stochastic functions for specific scenarios. However, there are not as many on model choice automation. In the second section, we discuss and cross-validate our methodology for automating the choice of inter-packet times processes. We select inter-packet times models using information criteria ($AIC$ and $BIC$) to rank the models from the best to the worst.  Since, to the best of our knowledge, there was no previous validation of the effectiveness of $AIC$ and BIC for ranking information criteria, we developed our cross-validation methodology to test their effectiveness.  
 
-In the third section, we present our algorithm called "calcOnOff", a method to estimate packet trains periods (ON and OFF times) of an arbitrary flow, which do not rely on header fields, but just times between packets. Finally, the fourth section shows our strategy for guessing application protocols from flows, protocols using common transport header fields.
+In the third section, we present our algorithm called "\texttt{calcOnOff}", a method to estimate packet trains periods (ON and OFF times) of an arbitrary flow, which do not rely on header fields, but just times between packets. Finally, the fourth section shows our strategy for guessing application protocols from flows, protocols using common transport header fields.
 
 
-We use refer to two different cost functions on this chapter. The first is the Gadient Descendent Cost function, we refer as $J_\nabla$, since nabla ($\nabla$) is the notation used to represent gradients. The second is our cross-validation cost function, we refer as $J_M$, since it is used to rank stochastic models($M$).
+We use refer to two different cost functions on this chapter. The first is the Gadient Descendent Cost function, we refer as $J_\nabla$, since nabla ($\nabla$) is the notation used to represent gradients. The second is our cross-validation cost function, we refer as $J_M$, since it is used to rank stochastic models ($M$).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,12 +151,12 @@ In the parameters estimation (step 4), there is an exception, since the Pareto s
 \begin{figure}[ht!]
 \centering
 \subfloat[Linearized interarrival data]{
-  \includegraphics[height=50mm]{figures/ch4/Skype_Weibull_-_Linearized_data_and_linear_fitting}
+  \includegraphics[height=50mm]{figures/apC/lr/Skype_Weibull_-_Linearized_data_and_linear_fitting}
   \label{fig:linearization}
 }
 %\hspace{0mm}
 \subfloat[Cost function $J_\nabla$ of the linear regression]{
-  \includegraphics[height=50mm]{figures/ch4/Skype_Weibull_-_Cost_J(iterations)_convergence}
+  \includegraphics[height=50mm]{figures/apC/lr/Skype_Weibull_-_Cost_J(iterations)_convergence}
   \label{fig:cost}
 }
 \label{fig:linearization-cost}
@@ -219,7 +219,7 @@ BIC = k\ln(n) - \ln(L(\boldsymbol{\hat{\theta}}|\boldsymbol{x}))
 In both cases, the preferred model $M_i$, is the one with the smaller value of $AIC_i$ or $BIC_i$.
 
 
-\subsection{Cross-validation method: Theoretical Foundation of the Cost Function \textit{J\textsubscript{M}}}
+\subsection{Cross-validation method: Theoretical Foundation of the Cost Function}
 
 To test if $AIC$ and $BIC$ do perform well, we had to answer two questions:
 
@@ -295,14 +295,53 @@ J_M(M) = \phi(Cr, m_2) + \phi(Me, m_2) + \phi(Hr, m_2) = 1 + 1 + 1 = 3
 Although model $m_1$, if used for traffic generation would perform well on the throughput representation, it is not fair that it goes ahead of the second model $m_2$, which performed pretty well on all the metrics. Therefore, we can safely say that  $m_2$ a better representation of inter-packet times, according to metrics typically adopted in the literature of network traffic and stochastic analysis. 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Results}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation table
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{sidewaystable}[!htp]
+\caption{Experimental results, including the estimated parameters and the BIC and AIC values of the four pcap traces.}
+\scalebox{0.90}{ 
+\centering
+\begin{threeparttable}[t]
+\begin{tabular}{lcccccccc}
+\hline
+\multicolumn{9}{c}{Trace}                                                                                                                                                 \\ \cline{2-9} 
+Function        & AIC         &           & \multicolumn{2}{c}{Parameters}                           & AIC       & BIC       & \multicolumn{2}{c}{Parameters}                     \\ \hline
+\multicolumn{5}{c}{skype-pcap}                                                                       & \multicolumn{4}{c}{lan-firewall-pcap}                                      \\ \hline
+Cauchy          & $6.94E+03$  & $6.95E+03$  & $\gamma : 1.71E-04$     & $x_0 : 1.88E-01$     & $-2.29E+05$ & $-2.29E+05$ & $\gamma : 1.93E-02$     & $x_0 : -4.97E-02$    \\
+Exponential(LR) & $-4.70E+01$ & $-4.28E+01$ & \multicolumn{2}{c}{$\lambda : 1.79E+00$}              & $-2.22E+06$ & $-2.22E+06$ & \multicolumn{2}{c}{$\lambda : 4.05E-01$}            \\
+Exponential(Me) & $-2.16E+02$ & $-2.12E+02$ & \multicolumn{2}{c}{$\lambda : 3.45E+00$}          & $3.63E+05$  & $3.63E+05$  & \multicolumn{2}{c}{$\lambda : 1.13E+02$}        \\
+Normal          & $1.21E+03$  & $1.22E+03$  & $\mu : 2.90E-01$      & $\sigma : 6.95E-01$    & $-1.48E+06$ & $-1.48E+06$ & $\mu : 8.85E-03$      & $\sigma : 3.49E-02$    \\
+Pareto(LR)      & $3.38E+03$  & $3.39E+03$  & $\alpha : 4.28E-01$     & $x_m :  5.00E-08$     & $Inf \tnote{1}$       & $Inf \tnote{1}$       & $\alpha : 2.51E-01$     & $x_m :  5.00E-08$     \\
+Pareto(MLH)     & $1.88E+02$  & $1.97E+02$  & $\alpha : 7.48E-02$ & $x_m :  5.00E-08$ & $-1.80E+06$ & $-1.80E+06$ & $\alpha : 1.15E-01$ & $x_m :  5.00E-08$ \\
+Weibull         & $-1.15E+03$ & $-1.14E+03$ &                             & $\beta : 9.68E-02$ & $-1.97E+06$ & $-1.97E+06$ & $\alpha : 3.46E-01$    & $\beta : 1.79E-03$ \\ \hline
+\multicolumn{5}{c}{lan-gateway-pcap}                                                                 & \multicolumn{4}{c}{wan-pcap}                                               \\ \hline
+Cauchy          & $3.65E+06$  & $3.65E+06$  & $\gamma : 1.95$         & $x_0 : -4.45E+03$    & $2.99E+07$  & $2.99E+07$  & $\gamma : 8.17E+02$     & $x_0 : -4.45E+03$    \\
+Exponential(LR) & $3.67E+06$  & $3.67E+06$  & \multicolumn{2}{c}{$\lambda : 9.75E-03$}              & $2.84E+07$  & $2.84E+07$  & \multicolumn{2}{c}{$\lambda : 2.20E-05$}            \\
+Exponential(Me) & $-5.44E+06$ & $-5.44E+06$ & \multicolumn{2}{c}{$\lambda : 2.64E+03$}          & $-3.29E+07$ & $-3.29E+07$ & \multicolumn{2}{c}{$\lambda : 6.58E+05$}        \\
+Normal          & $-4.67E+06$ & $-4.67E+06$ & $\mu : 3.79E-04$      & $\sigma : 1.00E-06$    & $-3.19E+07$ & $-3.19E+07$ & $\mu : 2.00E-06$      & $\sigma : 1.00E-06$    \\
+Pareto(LR)      & $-5.13E+06$ & $-5.13E+06$ & $\alpha : 1.49E-01$     & $x_m :  5.00E-08$     & $4.51E+07$  & $4.51E+07$  & $\alpha :  4.00E-14 \tnote{2}$     & $x_m :  5.00E-08$     \\
+Pareto(MLH)     & $-5.13E+06$ & $-5.13E+06$ & $\alpha : 1.36E-01$ & $x_m :  5.00E-08$ & $-3.13E+07$ & $-3.13E+07$ & $\alpha : 3.39E-01$ & $x_m : 5.00E-08$ \\
+Weibull         & $-5.50E+06$ & $-5.50E+06$ & $\alpha : 2.81E-01$    & $\beta : 1.00E-06$ & $-2.73E+07$ & $-2.73E+07$ & $\alpha : 7.64E-02$    & $\beta : 1.00E-06$ \\ \hline
+\end{tabular}
+            \begin{tablenotes}
+            \item[1] The computation of the likelihood function has exceeded the computational precision used, so it was the highest AIC and BIC  for this trace.
+            \item[2] The linear regression did not converge to a valid value, so we used a small value instead to perform the computations.
+            \end{tablenotes}
+\end{threeparttable}
+}
+\label{tab:prototype-results}
+\end{sidewaystable}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Logscale Skype
 %%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[ht!]
+\begin{figure}[pht!]
 \centering
 \subfloat[Chauchy]{
   \includegraphics[width=62mm]{figures/ch4/Skype_Log_-_Cauchy_aproximation_vs_Original_set}
@@ -332,10 +371,11 @@ Although model $m_1$, if used for traffic generation would perform well on the t
 \label{fig:aproximation-original-cdf}
 \end{figure}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%
 % QQplots Skype
 %%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[ht!]
+\begin{figure}[pht!]
     \centering
     \subfloat[Chauchy]{
         \includegraphics[width=62mm]{figures/ch4/Skype_QQplot_-_Cauchy}
@@ -365,194 +405,149 @@ Although model $m_1$, if used for traffic generation would perform well on the t
     \label{fig:qq-skype}
 \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%
-% Simulation table
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{sidewaystable}[!hp]
-    \centering
-    \caption{3 Results of the octave prototype, include $BIC$ and $AIC$ values, para estimated parameters for our pcap traces}
-        \begin{threeparttable}[t]
-        \begin{tabular}{lcccccccccc}
-            \hline
-            & \multicolumn{10}{c}{Trace} \\ \cline{2-11} 
-            Function        & Order & $AIC$  & $BIC$  & \multicolumn{2}{c}{Parameters}  
-            & Order & $AIC$ & $BIC$  & \multicolumn{2}{c}{Parameters} \\ \hline 
-            
-            & \multicolumn{5}{c}{skype-pcap}  & \multicolumn{5}{c}{lan-diurnal-firewall-pcap}   \\ \hline 
-            Cauchy          &    7 & $1.35e4$    & $2.19e4$    & $\gamma:2.75e-4$ & $x_0:2.19e-1$    
-            &    5 & $-2.85e7$   & $-2.85e7$   & $\gamma:9.63e-3$ & $x_0:-3.61e-3$    \\
-            Exponential(LR) &    3 & $9.69e1$   & $1.02e2$   & \multicolumn{2}{c}{$\lambda:1.51$}   
-            &    6 & $1.79e6$    & $1.79e6$    & \multicolumn{2}{c}{$\lambda:8.51e-1$}    \\
-            Exponential(Me) &    2 & $-4.26e2$   & $-4.28e3$   & \multicolumn{2}{c}{$\lambda:3.32$}   
-            &    4 & $-3.12e7$   & $-3.12e7$   & \multicolumn{2}{c}{$ \lambda:58.78$} \\
-            Normal          &    5 & $2.42e3$    & $3.31e3$    & $\mu:3.01e-1 $    & $\sigma:7.49e-1$ 
-            &    7 & $Inf \tnote{1}$       & $Inf \tnote{a}$       & $\mu:1.70e-2$     & $\sigma:8.56e-2$ \\
-            Pareto(LR)      &    6 & $6.4e3$   & $-8.27e3$   & $\alpha:4.14e-1$ & $x_m:5e-8$    
-            &    3 & $-4.60e7$   & $-4.60e7$   & $\alpha:2.55e-1$ & $ x_m:5e-8$    \\
-            Pareto(MLH)     &    4 & $3.62e2$   & $3.72e2$   & $\alpha:7.47e-2$ & $x_m:5e-8$    
-            &    2 & $-5.03e7$   & $-5.03e7$   & $\alpha:1.15e-1$ & $ x_m:5e-8$    \\
-            Weibull         &    1 & $-2.29e3$   & $-2.28e3$  & $\alpha:5.22e-1$ & $\beta:9.77e-2$  
-            &    1 & $-5.60e7$   & $-5.60e7$   & $\alpha:3.34e-1$ & $\beta:1.83e-3$  \\ \hline    
-            & \multicolumn{5}{c}{lan-gateway-pcap} & \multicolumn{5}{c}{wan-pcap}  \\ \hline
-            Cauchy          &    6 & $7.14e6$    & $7.14e6$   & $\gamma:1.94e0$ &$x_0:-7.25$    
-            &    7 & $5.99e7$    & $5.99e7$   & $ \gamma:8.28e2$ &$x_0:-4.52e3$    \\
-            Exponential(LR) &    7 & $7.33e6$    & $7.33e6$   & \multicolumn{2}{c}{$\lambda:1.489e-1$}   
-            &    6 & $5.68e7$    & $ 5.68e7$  & \multicolumn{2}{c}{$\lambda:2.2e-5$}   \\
-            Exponential(Me) &    2 & $-1.09e7$   & $-1.09e7$  & \multicolumn{2}{c}{$\lambda:2.64e3$}   
-            &    1 & $-6.58e7$   & $-6.58e7$  & \multicolumn{2}{c}{$\lambda:6.58e5$} \\
-            Normal          &    5 & $-9.35e6$   & $-9.35e6$  & $\mu:3.79e-4$   &$\sigma:6.60e-4$ 
-            &    2 & $-6.39e7$   & $-6.39e7$  & $\mu:2e-6$     & $\sigma:1e-6$ \\
-            Pareto(LR)      &    4 & $-1.02e7$   & $-1.02e7$  & $\alpha:1.489e-1 $ & $x_m:5e-8 $    
-            &    4 & $-5.31e7$   & $-5.31e7$  & $\alpha:4e-14\tnote{b}$ & $x_m:5e-8 $    \\
-            Pareto(MLH)     &    3 & $-1.03e7$   & $-1.03e7$  & $\alpha:1.362e-1$ & $x_m:5e-8 $    
-            &    5 & $-6.25e7$   & $-6.25e7$  & $\alpha:3.39e-1$ & $x_m:5e-8 $    \\
-            Weibull         &    1 & $-1.10e7$   & $-1.10e7$  & $\alpha:2.81e-1$ & $\beta:5.54e-4$  
-            &    3 & $-5.46e7$   & $-5.46e7$  & $\alpha:7.64e-2$ & $\beta:1e-6$  \\ \hline
-        \end{tabular}
-            \begin{tablenotes}
-            \item[1] The computation of the likelihood function has exceeded the computational precision used, so it was the highest $AIC$ and BIC  for this trace.
-            \item[2] The linear regression did not converge to a valid value, so we used a small value("infinitesimal") instead to perform the computations.
-            \end{tablenotes}
-        \end{threeparttable}
-    \label{tab:prototype-results}
-\end{sidewaystable}
 
-%%%%%%%%%%%%%%%%%%%%%%%
-% AIC BIC  diff
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{table}[]
+\begin{figure}[ph]
 \centering
-\caption{Relative difference between $AIC$ and $BIC$.}
-\begin{tabular}{ccccc}
-\hline
-& skype-pcap  & \begin{tabular}[c]{@{}c@{}}lan-gateway-\\ pcap\end{tabular} & wan-pcap    & \begin{tabular}[c]{@{}c@{}}lan-diurnal-\\ firewall-pcap\end{tabular} \\ \hline
-Weibull         & -0.434838\% & -0.000211\%                                                 & -0.000048\% & -0.000047\%                                                          \\
-Normal          & 0.409772\%  & -0.000248\%                                                 & -           & -0.000041\%                                                          \\
-Exponential(LR) & 5.006892\%  & 0.000158\%                                                  & 0.000753\%  & 0.000022\%                                                           \\
-Exponential(Me) & -1.174737\% & -0.000106\%                                                 & -0.000043\% & -0.000019\%                                                          \\
-Pareto(LR)      & 0.155122\%  & -0.000226\%                                                 & -0.000058\% & 0.000028\%                                                           \\
-Pareto(MLH)     & 2.712815\%  & -0.000226\%                                                 & -0.000053\% & -0.000041\%                                                          \\
-Cauchy          & 0.073890\%  & 0.000324\%                                                  & -0.000094\% & 0.000043\%                                                           \\ \hline
-\end{tabular}
-\label{tab:aic-bic-diff}
-\end{table}
-
 %%%%%%%%%%%%%%%%%%%%%%%
 % Skype  - Correlation, Hurst, Mean Standard Deviation
 %%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \subfloat[Correlation]{
-        \includegraphics[width=62mm]{figures/ch4/Skype_Correlation}
+        \includegraphics[width=60mm]{figures/ch4/Skype_Correlation}
         \label{correlation-skype}
     }
     \hspace{0mm}
     \subfloat[Hust Exponent]{
-        \includegraphics[width=62mm]{figures/ch4/Skype_Hurst_Exponent}
+        \includegraphics[width=60mm]{figures/ch4/Skype_Hurst_Exponent}
         \label{hurst-skype}
     }
     \hspace{0mm}
     \subfloat[Mean]{
-        \includegraphics[width=62mm]{figures/ch4/Skype_Mean}
+        \includegraphics[width=60mm]{figures/ch4/Skype_Mean}
         \label{mean-skype}
     }
     \hspace{0mm}
     \subfloat[Standard Deviation]{
-        \includegraphics[width=62mm]{figures/ch4/Skype_Standard_Deviation}
+        \includegraphics[width=60mm]{figures/ch4/Skype_Standard_Deviation}
         \label{std-skype}
     }
     \caption{Statistical parameters of \textit{skype-pcap} and its approximations}
     \label{fig:correlation-hurst-skype-pcap}
 \end{figure}
-
 %%%%%%%%%%%%%%%%%%%%%%%
-% bigFlows -  Correlation, Hurst, Mean Standard Deviation
+% lan-gateway -  Correlation, Hurst, Mean Standard Deviation
 %%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \subfloat[Correlation]{
-        \includegraphics[width=62mm]{figures/ch4/bigFlows_Correlation}
-        \label{bigFlows-correlation-skype}
+        \includegraphics[width=60mm]{figures/ch4/bigFlows_Correlation}
+        \label{lan-gateway-correlation-skype}
     }
     \hspace{0mm}
     \subfloat[Hust Exponent]{
-        \includegraphics[width=62mm]{figures/ch4/bigFlows_Hurst_Exponent}
-        \label{bigFlows-hurst-skype}
+        \includegraphics[width=60mm]{figures/ch4/bigFlows_Hurst_Exponent}
+        \label{lan-gateway-hurst-skype}
     }
     \hspace{0mm}
     \subfloat[Mean]{
-        \includegraphics[width=62mm]{figures/ch4/bigFlows_Mean}
-        \label{bigFlows-mean-skype}
+        \includegraphics[width=60mm]{figures/ch4/bigFlows_Mean}
+        \label{lan-gateway-mean-skype}
     }
     \hspace{0mm}
     \subfloat[Standard Deviation]{
-        \includegraphics[width=62mm]{figures/ch4/bigFlows_Standard_Deviation}
-        \label{bigFlows-std-skype}
+        \includegraphics[width=60mm]{figures/ch4/bigFlows_Standard_Deviation}
+        \label{lan-gateway-std-skype}
     }
     \caption{Statistical parameters of \textit{lan-gateway-pcap} and its approximations}
     \label{fig:correlation-hurst-lan-gateway-pcap}
 \end{figure}
+\end{figure}
 
+\begin{figure}[ph]
 %%%%%%%%%%%%%%%%%%%%%%%
 % lanDirunal  - correlation, Hurst, Mean Standard Deviation
 %%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \subfloat[Correlation]{
-        \includegraphics[width=62mm]{figures/ch4/Lan_Correlation}
+        \includegraphics[width=60mm]{figures/ch4/Lan_Correlation}
         \label{Lan-correlation-skype}
     }
     \hspace{0mm}
     \subfloat[Hust Exponent]{
-        \includegraphics[width=62mm]{figures/ch4/Lan_Hurst_Exponent}
+        \includegraphics[width=60mm]{figures/ch4/Lan_Hurst_Exponent}
         \label{Lan-hurst-skype}
     }
     \hspace{0mm}
     \subfloat[Mean]{
-        \includegraphics[width=62mm]{figures/ch4/Lan_Mean}
+        \includegraphics[width=60mm]{figures/ch4/Lan_Mean}
         \label{Lan-mean-skype}
     }
     \hspace{0mm}
     \subfloat[Standard Deviation]{
-        \includegraphics[width=62mm]{figures/ch4/Lan_Standard_Deviation}
+        \includegraphics[width=60mm]{figures/ch4/Lan_Standard_Deviation}
         \label{Lan-std-skype}
     }
-    \caption{Statistical parameters of \textit{Lan-pcap} and its approximations}
+    \caption{Statistical parameters of \textit{lan-firewall-pcap} and its approximations}
     \label{fig:correlation-hurst-Lan-pcap}
 \end{figure}
-
 %%%%%%%%%%%%%%%%%%%%%%%
 % Wan - correlation, Hurst, Mean Standard Deviation
 %%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \subfloat[Correlation]{
-        \includegraphics[width=62mm]{figures/ch4/Wan_Correlation}
+        \includegraphics[width=60mm]{figures/ch4/Wan_Correlation}
         \label{Wan-correlation-skype}
     }
     \hspace{0mm}
     \subfloat[Hust Exponent]{
-        \includegraphics[width=62mm]{figures/ch4/Wan_Hurst_Exponent}
+        \includegraphics[width=60mm]{figures/ch4/Wan_Hurst_Exponent}
         \label{Wan-hurst-skype}
     }
     \hspace{0mm}
     \subfloat[Mean]{
-        \includegraphics[width=62mm]{figures/ch4/Wan_Mean}
+        \includegraphics[width=60mm]{figures/ch4/Wan_Mean}
         \label{Wan-mean-skype}
     }
     \hspace{0mm}
     \subfloat[Standard Deviation]{
-        \includegraphics[width=62mm]{figures/ch4/Wan_Standard_Deviation}
+        \includegraphics[width=60mm]{figures/ch4/Wan_Standard_Deviation}
         \label{Wan-std-skype}
     }
     \caption{Statistical parameters of \textit{wan-pcap} and its approximations}
     \label{fig:correlation-hurst-wan-pcap}
 \end{figure}
+\end{figure}
 
+
+\begin{figure}[ph]
+%%%%%%%%%%%%%%%%%%%%%%%
+% AIC BIC  diff
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+\centering
+\caption{Relative difference(\%) between $AIC$ and $BIC$.}
+\scalebox{0.90}{ 
+\begin{tabular}{ccccc}
+\hline
+                & skype-pcap & \begin{tabular}[c]{@{}l@{}}lan-gateway\\ -pcap\end{tabular} & wan-pcap & \begin{tabular}[c]{@{}l@{}}lan-firewall\\ -pcap\end{tabular} \\ \hline
+Weibull         & $7.47E-01$   & $3.96E-04$                                                    & $8.86E-05$ & $9.21E-04$                                                     \\
+Normal          & $7.04E-01$   & $4.66E-04$                                                    & $7.58E-05$ & $NaN$                                                          \\
+Exponential(LR) & $9.54E+00$   & $2.97E-04$                                                    & $4.26E-05$ & $2.81E-03$                                                     \\
+Exponential(Me) & $2.00E+00$   & $2.00E-04$                                                    & $3.68E-05$ & $6.90E-04$                                                     \\
+Pareto(LR)      & $2.53E-01$   & $4.25E-04$                                                    & $5.36E-05$ & $1.13E-03$                                                     \\
+Pareto(MLH)     & $4.45E+00$   & $4.25E-04$                                                    & $7.74E-05$ & $1.04E-03$                                                     \\
+Cauchy          & $1.23E-01$   & $5.97E-04$                                                    & $8.08E-05$ & $8.90E-03$                                                     \\ \hline
+\end{tabular}
+}
+\label{tab:aic-bic-diff}
+\end{table}
 %%%%%%%%%%%%%%%%%%%%%%%
 %validation Cost function
 %%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[t!]
+\begin{figure}[H]
     \centering
     \subfloat[\textit{skype-pcap}]{
         \includegraphics[width=62mm]{figures/ch4/Skype_costFunction}
@@ -564,7 +559,7 @@ Cauchy          & 0.073890\%  & 0.000324\%                                      
         \label{cost-lan-gateway-pcap}
     }
     \hspace{0mm}
-    \subfloat[\textit{lan-firewall-diurnal-pcap}]{
+    \subfloat[\textit{lan-firewall-pcap}]{
         \includegraphics[width=62mm]{figures/ch4/Lan_costFunction}
         \label{cost-lan-pcap}
     }
@@ -576,66 +571,106 @@ Cauchy          & 0.073890\%  & 0.000324\%                                      
     \caption{Cost function $J_M$ for each one of the data-sets used in this validation process}
     \label{fig:cost-function}
 \end{figure}
+\end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%
-%validation Cost function
-%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!ht]
+%%%%%%%%%%%%%%%%%%%%%%%
+% AIC / BIC order
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{figures/ch4/aic-bic-order}
+    \includegraphics[scale=0.8]{figures/ch4/aic-bic-order.eps}
     \caption{Comparision of the quality order of each model given by $AIC$ and $BIC$}
     \label{fig:aic-bic-order}
 \end{figure}
-
-
-\begin{figure}[ht!]
-\includegraphics[scale=0.8]{figures/ch4/cost-function-summary}
+%%%%%%%%%%%%%%%%%%%%%%%
+% Cost function order
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{figures/ch4/cost-function-summary.eps}
 \caption{$J_M$ for each one of the datasets used in this validation process.}
 \label{fig:model-order-cost}
 \end{figure}
-
-\begin{figure}[ht!]
-\includegraphics[scale=0.8]{figures/ch4/aicbic-costfunction-relative-diff}
-\caption{Comparison of the model selection order for $BIC$/$AIC$ and  $J_M$ for each \textit{pcap}.}
-\label{fig:cost-function_vs_aic-bic}
 \end{figure}
 
 
-Here in this chapter we only discuss the approximation and QQplots achieved obtained by the \textit{pcap} \textit{skype-pcap}. All the other comments will be referent to the general results. The other fitting and QQ plots are provided on appendix~\ref{ap:aditional-plots} as a reference. \\
+\begin{figure}[!ht]
+%%%%%%%%%%%%%%%%%%%%%%%
+% CDFs eample
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{figures/ch4/cdfs}
+\caption{Inter-packet times CDF function and stochastic models for \textit{firewall-pacap}.}
+\label{fig:lan-firewall-cdf}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%
+% relative diff
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.75]{figures/ch4/aicbic-costfunction-relative-diff}
+\caption{Comparison of the model selection order for $BIC$/$AIC$ and  $J_M$ for each \textit{pcap}.}
+\label{fig:cost-function_vs_aic-bic}
+\end{figure}
+\end{figure}
 
 
-\noindent \textbf{CDF plots}
+Here in this chapter we only discuss the approximation and QQplots achieved obtained by the \textit{pcap} \textit{skype-pcap}. All the other comments will be referent to the general results. The other fitting and QQ plots are provided on appendix~\ref{ap:aditional-plots} as a reference. 
+We divided our analysis into 5 steps:
+\begin{enumerate}
+    \item \textit{CDF plots}
+    \item \textit{QQplots}
+    \item \textit{AIC} and \textit{BIC}
+    \item \textit{Correlation, Hurst Exponent, Mean, and Standard Deviation} 
+    \item  \textit{AIC} and \textit{BIC} vs. $\boldsymbol{J_M}$ 
+\end{enumerate} 
 
-Figure16  shows the CDF plots for \textit{skype-pcap}. They are on log-scale, which provide a better visualization for small time scales. For the normal process, all values smaller than zero were set to zero. Visually, the best fit seems to be the Weibull trough linear regression -- what is going to be confirmed by both $AIC$/$BIC$ and $J_M$. We see that the Cauchy fitting is imposing almost constant traffic, with the inter-packet time close to the mean. The exponential plots do not represent well the small values, because of its random variable to describing values close to the average; but,  tent to fail to represent small and higher values.
-On the other hand, a self-similar process like Weibull and Pareto have had a higher dispersion.  The Normal distribution has an "off-set" since a fraction of the randomly generated values has negative times, which we zeroed. Pareto(MLH) has a slow convergence, which means this distribution may generate values of inter-packet times too large. We initially expected a good performance of heavy-tailed functions. However, Cauchy for \textit{skype-pcap} and most of the tests did not present a proper fitting. The quick convergence to infinity of the tangent function, compared to exponential, is the cause for this lousy fitting. \\
+\smallskip \noindent \textbf{\textit{CDF plots}}
+
+Figure~\ref{fig:aproximation-original-cdf}  shows the CDF plots for \textit{skype-pcap}. They are on log-scale, which provide a better visualization for small time scales. 
+
+\begin{itemize}
+    \item We initially expected a good performance of heavy-tailed processes, but it depended on each case.
+    \item Visually, the best result have seemed to be
+    the Weibull trough linear regression, followed by Exponential(Me) -- what the $AIC$/$BIC$ analysis (figure~\ref{fig:aic-bic-order}) have confirmed. Also, Figure~\ref{fig:correlation-hurst-skype-pcap} show Weibull having the best Correlation and Hurst exponent, and the third best mean; while Exponential(Me) have had the best mean and the second best Correlation and Hurst exponent. 
+    \item The Cauchy process have imposed an almost constant traffic, with the average inter-packet time close to the mean. Figure~\ref{fig:correlation-hurst-skype-pcap} confirms this observation since the process standard deviation is small, and the mean inter-packet time is close to the original (the second best);
+    \item Exponential processes did not represented well small and larger values, compared to heavy-tailed processes, but were good to describe values closer to the average. On the other hand, a self-similar processes, such as Weibull and Pareto, have had a higher dispersion. The random-generated values were more wide-spared over the time -- what did not necessarily have implied on quality, as we are going to see. For example, Pareto(MLH) tended to over-estimate the amount of long values of inter-packet times, having a slower convergence of the CDF to one compared to the other processes -- about 20\% of the values are larger than 10 seconds. Cauchy for most of the case as a good process to represent the mean inter-packet times, but did no performed so well on other metrics (Figures      ~\ref{fig:correlation-hurst-wan-pcap}, ~\ref{fig:correlation-hurst-Lan-pcap}, ~\ref{fig:correlation-hurst-lan-gateway-pcap}, and  ~\ref{fig:correlation-hurst-skype-pcap})
+    \item For the normal process, all values smaller than zero were zeroed, what have caused a vertical "off-set" on its CDF distribution. 
+\end{itemize}
+
+\smallskip  \noindent  \textbf{\textit{QQplots}}
+
+On the QQplots(figure~\ref{fig:qq-skype}) we have observed that the original data had a much more influential heavy-tail effect when compared to the randomly generated on Cauchy, Exponential(Me), Pareto(LR), and Pareto(MLH) (appendix~\ref{ap:revision-probability}). We can observe  the The original data(samples) had a much influential heavy-tail effect compared to  the estimated data. We  verified this by the almost horizontal line made of blue dot-marks. On the other hand, Weibull process have had a much similar \textit{QQplot} compared to the samples.
+Also we can identify a right-skew for Exponential(LR), Exponential(Me) and Pareto(MLH), and a left-skew for Cauchy, Pareto(LR) and Weibull.  On the other hand, the Normal distribution have presented a bi-modal behavior -- The first mode is on zero (since we zeroed all values smaller than zero), and the second, is close to the the average.
 
 
- \noindent  \textbf{QQplots}
+\smallskip \noindent  \textbf{\textit{AIC} and \textit{BIC}}
 
-Looking at the QQplots(figure~\ref{fig:qq-skype}), we can observe on Cauchy, Exponential(Me), Pareto(LR) and Pareto(MLH), the samples (original data) has a much havier-tail effect than in the estimated data. We can verify this by the almost horizontal lines formed by the blue dot-marks. However, the Weibull distribution follows much closer to the original data, with a slight left skew. Also, it is possible to see that the sample has a right skew compared to the estimation of Exponential(LR), Exponential(Me) and Pareto(MLH). On the other hand, Cauchy, Pareto(LR) and Weibull and have a left skew. The Normal samples have presented a bimodal behavior. The first mode is on zero (since we zeroed all values smaller than zero), and the second, the average.\\
+The calculated values for $AIC$, $BIC$, and processes parameters for all the traces are in table~\ref{tab:prototype-results}. We have verified in all cases  that the difference between $BIC$ and $AIC$ for a given process was always smaller compared to the difference between the values of a same criteria but among different processes to represent the same traffic. In another words, changing the criteria matter less than changing the process distribution. In our study,  $AIC$ and $BIC$ always have pointed to the same model ordering (figure ~\ref{fig:aic-bic-order}).
 
-
-\noindent  \textbf{$AIC$ and $BIC$}
-
-The results for the $AIC$, $BIC$, and parameters of all four traces are in table~\ref{tab:prototype-results}. For all \textit{pcap} experiments, we verify that the difference between $BIC$ and $AIC$ for a given function is always smaller than its value among different distributions. As shown in Figure~\ref{fig:aic-bic-order}, $AIC$ and $BIC$ criteria always point to the same model ordering. On table~\ref{tab:aic-bic-diff} we calculate the relative difference between $AIC$ and $BIC$ values found\footnote{ 
-To calc the relative difference $r_\%$ shown on table~\ref{tab:aic-bic-diff} we used this formula:
+To compare these values of the information criteria, we calculated on the table  table~\ref{tab:aic-bic-diff} the relative difference between $AIC$ and $BIC$\footnote{ 
+To calculate the relative difference $r_\%$ shown on table~\ref{tab:aic-bic-diff} we used this formula:
 \begin{equation}
     r_\% = \frac{|V_1-V_2|}{\frac{(V_1+V_2)}{2}}\cdot100 
 \end{equation}
-}. We verify that their values tend to converge when the dataset increases -- \textit{skype-pcap} is the small one. This result is an indication that, for inter-packet times, using $AIC$ or $BIC$ to pick a model will have a smaller impact as the dataset is increased. For \textit{skype-pcap}, the most significant relative difference was 5\%. For the other pcaps, with a greater dataset, the differences were always small than 0.001\%. We explain that by the value of the first element in Eq.~\ref{eq:aic} does not increase whereas in Eq.~\ref{eq:bic} it increases logarithmically to the size of the dataset. The second value grows proportionally to $n\cdot \log(n)$, where $n$ is the size of the dataset. Another important observation is the fact that the exponential function was able to provide the best fitting for the \textit{wan-pcap}. The reasons for this behavior are both results of much great traffic with no long-range gaps. Also, the precision of the measurement, not too far from the measured time-scales of inter packet-times, may have hide "deeper" fractal characteristics of the traffic.
+}. The table indicate that the $AIC$ and $BIC$ converged to a common value as  the dataset size increasead\footnote{from the small to the larger dataset we have \textit{skype-pcap}, \textit{lan-gateway-pcap}, \textit{wan-pcap}, and \textit{lan-firewall-pcap}}. 
+This result have indicated that, if the dataset is large enough, $AIC$ and $BIC$ will point to the same result. As table~\ref{tab:aic-bic-diff} shows, 9.54\% for Exponential(LR) was the larger difference between the information criteria. For the other pcaps, with a greater dataset, the differences were always small than 0.001\%. But, even the \textit{lan-firewall-pcap} being the largest one, the relative difference between its $AIC$ and $BIC$ is small than the ones form \textit{wan-pcap} and \textit{lan-gateway-pcap}. However, we have that information criteria depends on the likelihood value, and this on the individual probability of each value. We note that the standard deviation for packet times in \textit{lan-firewall-pcap} is considerably larger~\ref{fig:correlation-hurst-Lan-pcap}. This may be one of the possible causes for this observed behavior.
 
 
-Correlation, Hurst Exponent, Average, Standard Deviation analysis -- on the figures~\ref{fig:correlation-hurst-skype-pcap} to ~\ref{fig:correlation-hurst-wan-pcap} we show the plots created from the properties from random data generated by each model approximation, compared to the original data. For the Hurst exponent, Average and Standard Deviation plot, the red-horizontal line represents the value for the original dataset. It also represents an ideal correlation of 100\%. Analyzing the quality of $AIC$ and $BIC$ as criteria of choose on \textit{skype-pcap}, based on the results from figure~\ref{fig:correlation-hurst-skype-pcap} we see that concerning Correlation and Self-similarity it picked the right model: Weibull. Also regarding the average packet rate and dispersion, it is still one of the best choices. On these metrics, Exponential(Me) and Exponential(LR) had the best performance. Not by chance, these functions $AIC$ and $BIC$ presented as the second and third best options. We show the cost function $J_M$, able to summarize all the primary metrics in a single number, in figure~\ref{fig:cost-function}. All these results are abstracted by the cost function $J_M$. As we can see, on all pcaps, the best function selected by $BIC$ and $AIC$(table~\ref{tab:prototype-results}) also had the small cost(figure~\ref{fig:cost-function}), standing as first or second best choice for this metric as well. Cost Function $J_M$ -- For \textit{skype-pcap}, according to $BIC$ and $AIC$ estimates, Weibull and Exponential(Me) are the two best options. The cost function $J_M$ used for cross-validation provide the same order. The following models are not in the same order, but there is no opposite correspondence. Moreover, no choice pointed by $AIC$ and $BIC$ stands far from the one indicated by $J_M$.
-Additionally, for \textit{wan-pcap} and \textit{lan-firewall-pcap}, the function pointed by $AIC$ and $BIC$ was the same one as pointed by $J_M$ as well: Exponential(Me) and Weibull, respectively. On \textit{lan-gateway-pcap}, the first two guess values are flipped. However, we can notice that the difference between the $AIC$ and $BIC$ from these two models was small than 1\%, which indicate a close level of quality from the models.\\
+
+\smallskip \noindent  \textbf{\textit{Correlation, Hurst Exponent, Mean, and Standard Deviation}} 
+
+In Figures ~\ref{fig:correlation-hurst-skype-pcap}, ~\ref{fig:correlation-hurst-lan-gateway-pcap}, and ~\ref{fig:correlation-hurst-wan-pcap}, and  ~\ref{fig:correlation-hurst-Lan-pcap} we show the results of properties calculated for each of the simulations of the stochastic processes: Correlation, Exponent of Hurst, Mean and Standard deviation. Each figure represents a different pcap file. The red horizontal line represents the value of the original traffic. Analyzing the quality of $AIC$ and $BIC$ on \textit{skype-pcap}, based on the figure results we see that concerning Correlation and Self-similarity it picked the right model: Weibull. Also regarding the average packet rate and dispersion, it is still one of the best choices. On regarding to the Mean, Exponential(Me) and Cauchy had the best performances. Regarding to the Standard Deviation, Exponential(Me) and Exponential(LR) had the best performance. Not by chance, Exponential(Me) $AIC$ and $BIC$ presented as the second best option. Comparing the results of the figures with the order suggested by AIC to BIC(Figure ~\ref{fig:aic-bic-order}), we noticed that the best ranked models showed a good performance in the metrics in general. We show the cost function $J_M$, able to summarize all the primary metrics in a single number, in figure~\ref{fig:cost-function}. All these results are abstracted by the cost function $J_M$. 
 
 
- \noindent  \textbf{$AIC$ / $BIC$ vs. $J_M$}
+\smallskip \noindent  \textbf{\textit{AIC} and \textit{BIC} vs. $\boldsymbol{J_M}$ } 
 
 Table~\ref{tab:prototype-results} summarizes the estimates obtained  for $AIC$, $BIC$, and the stochastic process estimated parameters for all \textit{pcap} traces. Each model order is graphically presented in Figure ~\ref{fig:aic-bic-order}.  For all \textit{pcap} experiments, we verify that the difference between $BIC$ and $AIC$ for a given function is always smaller than its value among different distributions. As shown in the table~\ref{tab:prototype-results}, $AIC$ and $BIC$ criteria always pointed to the same model ordering. Table~\ref{tab:aic-bic-diff} presents the percentage difference between the obtained values. We verify that their values tend to converge when the dataset increases. 
 
-
-Figure~\ref{fig:model-order-cost} illustrates the cost function values for all the models on each \textit{pcap} file. For example, for \textit{skype-pcap}, $BIC$ and $AIC$ points that  Weibull and Exponential (Me) are the best representation for the traffic. The cost function used for cross-validation points both as best options, along with Exponential(LR).  To simplify the visualization and comparison of the differences between the rankings given by both methodologies, we created the plot~\ref{fig:model-order}.
-The Figure~\ref{fig:model-order} presents a chart with the relative differences from the order of each model. Taking as a reference the position of each model given by $J$, we sorted them from the better to the worst (0 to 6, on the x-axis), and measured the position distance with the ones given by the information criteria. Since the worst case for this value is 6(opposite correspondence), we draw a line on the average: the expected value in the case no positive or negative correspondence existed between both information criteria and $J$. Using the $\phi$ operator, as defined before, we can calculate the ranking delta, as explained, for the \textit{i-th} model by:
+Figure~\ref{fig:cost-function} illustrates the cost function values for all the models on each \textit{pcap} file. For example, for \textit{skype-pcap}, $BIC$ and $AIC$ points that  Weibull and Exponential (Me) are the best representation for the traffic. The cost function used for cross-validation points both as best options, along with Exponential(LR).  To simplify the visualization and comparison of the differences between the rankings given by both methodologies, we created the plot~\ref{fig:cost-function_vs_aic-bic}.
+The Figure~\ref{fig:cost-function_vs_aic-bic} presents a chart with the relative differences from the order of each model. Taking as a reference the position of each model given by $J$, we sorted them from the better to the worst (0 to 6, on the x-axis), and measured the position distance with the ones given by the information criteria. Since the worst case for this value is 6(opposite correspondence), we draw a line on the average: the expected value in the case no positive or negative correspondence existed between both information criteria and $J$. Using the $\phi$ operator, as defined before, we can calculate the ranking delta, as explained, for the \textit{i-th} model by:
 
 \begin{equation}
 \delta(m_i) = \phi(Jv, m_i) - \phi(IC, m_i)
@@ -696,7 +731,7 @@ This procedure receives as input values:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ALGORITHM CALC-ON-OFF
-\begin{algorithm}[t!]
+\begin{algorithm}[pt!]
     \caption{calcOnOff}
     \label{alg:calcOnOff}
     \begin{algorithmic}[1]

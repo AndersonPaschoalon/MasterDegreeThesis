@@ -1,8 +1,11 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Traffic Generators Survey}\label{ap:traffic-gen-survey}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Traffic Generators Survey}
-\label{ap:traffic-gen-survey}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+This appendix contains the cut-content of chapter~\ref{ch:literature-review}, serving now as complementary material. In the first section we show an extensive survey on traffic generator tools, and on the second, some use-cases of traffic-generators validation.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,12 +23,12 @@ Some others mentioned tools \cite{web-ditg} we were not able to find any referen
 \subsection{Traffic Generators - Feature Survey}
 
 
-Tables ~\ref{tab:packet-level-tg}, ~\ref{tab:multi-level-tg}, ~\ref{tab:app-level-tg}, and ~\ref{tab:replay-tg} is presented a survey of of the main features of such tools, such as support for Operational systems, protocols, stochastic functions available for traffic generation, and traffic generator class. Some free, but not open-source, traffic generators are listed as well. 
+Tables ~\ref{tab:packet-level-tg1}, ~\ref{tab:multi-level-tg2}, ~\ref{tab:app-level-tg3}, and ~\ref{tab:replay-tg1} is presented a survey of of the main features of such tools, such as support for Operational systems, protocols, stochastic functions available for traffic generation, and traffic generator class. Some free, but not open-source, traffic generators are listed as well. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PACKET-LEVEL TGS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{table}[]
+\begin{table}[ht!]
 \centering
 \caption{Summary of packet-level traffic generators.}
 \scalebox{0.7}{
@@ -65,14 +68,14 @@ mxtraf                                                                  & Linux 
 \begin{tabular}[c]{@{}c@{}}Jigs Traffic \\ Generator (JTG)\end{tabular} & Linux                                                                                                                          & TCP, UDP, IPv4-6                                                                                                                                                                                                                                    & constant                                                                                                                   & CLI                                                                                        \\ \hline
 \end{tabular}
 }
-\label{tab:packet-level-tg}
+\label{tab:packet-level-tg1}
 \end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MULTI/FLOW-LEVEL TGS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{table}[]
+\begin{table}[ht!]
 \centering
 \caption{Summary of multi-level and flow-level traffic generators.}
 \scalebox{0.7}{
@@ -90,7 +93,7 @@ LiTGen                                                               & -        
 EAR                                                                  & Linu                                                                                               & \begin{tabular}[c]{@{}c@{}}IEEE 802.11, ICMP, UDP, \\ TCP, TFTP, Telnet\end{tabular}     & \begin{tabular}[c]{@{}c@{}}"Event Reproduction Ratio" techinique - \\ wireless IEEE 802.11\end{tabular}    & -                          \\ \hline
 \end{tabular}
 }
-\label{tab:multi-level-tg}
+\label{tab:multi-level-tg2}
 \end{table}
 
 
@@ -98,7 +101,7 @@ EAR                                                                  & Linu     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % APPLICATION-LEVEL TGS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{table}[]
+\begin{table}[ht!]
 \centering
 \caption{Summary of application-level traffic generators. }
 \scalebox{0.7}{
@@ -120,14 +123,14 @@ ParaSynTG                                                   & -                 
 NetSpec                                                     & LInux                                                                                           & \begin{tabular}[c]{@{}c@{}}HTTP, FTP, Telnet, Mpev video, \\ voice and video teleconference\end{tabular}                          & CLI       \\ \hline
 \end{tabular}
 }
-\label{tab:app-level-tg}
+\label{tab:app-level-tg3}
 \end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % REPLAY ENGINES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{table}[]
+\begin{table}[ht!]
 \centering
 \caption{Summary of replay-engines traffic generators.}
 \scalebox{0.7}{
@@ -155,14 +158,12 @@ TCPivo                                                               & Linux    
 \textbf{NFPA}                                                        & Linux                                                           & hardware-dependent      \\ \hline
 \end{tabular}
 }
-\label{tab:replay-tg}
+\label{tab:replay-tg1}
 \end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Packet-level traffic generators}
-
-
 
 
 \textbf{D-ITG}\cite{ditg-paper}\cite{web-ditg}: D-ITG (Distributed Internet Traffic Generator) is a platform capable to produce IPv4 and IPv6 traffic defined by IDT and PS probabilistic distributions such as constant, uniform, Pareto, Cauch, Normal, Poisson, Gamma, Weibull, and On/Off; both configurable and pre-defined for many applications, from Telnet, through online games. It provides many flow-level options of customization, like duration, start delay and number of packets, support to many link-layer and transport-layer protocols, options, sources and destinations addresses/ports. It has support for \acrshort{NAT} traversal, so it is possible to make experiments between two different networks separated by the cloud. D-ITG can also be used to measure packet loss, jitter, and throughput. D-ITG may be used through a \acrshort{CLI}, scripts, or a API, that can be used to create applications and remotely control other hosts through a daemon. 
@@ -268,7 +269,7 @@ Its most basic operation is to generate a set of HTTP GET requests and measure t
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Traaffic Generators -- Repository Survey}
+\subsection{Traffic Generators -- Repository Survey}
 
 \sloppy
 \begin{table}[ht!]
@@ -372,7 +373,7 @@ In the end, they showed the differences in throughput evaluation of a Cisco 6509
 \subsection{D-ITG}
 
 
-D-ITG\cite{ditg-paper} is a network traffic generator, with many configurable features. The tool provides a platform that meets many emerging requirements for a realistic traffic generation. For example, multi-platform, support of many protocols, distributed operation, sending/receiving flow scalability, generation models, and analytical model based generation high bit/packet rate. You can see different analytical and models and protocols supported by D-ITG at table~\ref{tab:packet-level-tg}.
+D-ITG\cite{ditg-paper} is a network traffic generator, with many configurable features. The tool provides a platform that meets many emerging requirements for a realistic traffic generation. For example, multi-platform, support of many protocols, distributed operation, sending/receiving flow scalability, generation models, and analytical model based generation high bit/packet rate. You can see different analytical and models and protocols supported by D-ITG at table~\ref{tab:packet-level-tg1}.
 
 To the evaluation of realism on analytical model parameterization of D-ITG, the authors used a synthetic replication of a eight players's LAN party of Age of Mythology\footnote{\href{https://www.ageofempires.com/games/aom/}{https://www.ageofempires.com/games/aom/}}. They have captured traffic flows during the party,  then, they modeled its packet size and inter-packet time distributions. They show that the synthetic traffic and the analytical model have similar curves of packet size and inter-packet time; thus it can approximate the empirical data. Also, the bit rate's mean and the standard deviation of the empirical and synthetic data are similar.
 
