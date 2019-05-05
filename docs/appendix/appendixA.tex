@@ -102,7 +102,7 @@ cor(X, Y) = \frac{cov(X, Y)}{\sigma_X \sigma_Y}
 Where:
 
 \begin{equation}
-\sigma_X = \sqrt{  E[X^2] - E[x]^{2} } 
+\sigma_X = \sqrt{  E[X^2] - E[X]^{2} } 
 \end{equation}
 
 
@@ -199,7 +199,7 @@ E\left [  \frac{R(n)}{S(n)} \right ] = Cn^{H}, \quad n \to \infty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Heavy-tailed distributions}
 
-Heavy tailed distributions are probability distributions whose tails are not exponentially bounded.  A distribution of of a real-valued random variable $X$, with cumulative distribution F(x), is said to be heavy tailed, if it satisfies this condition for all $\lambda \in \mathbb{R}$:
+Heavy tailed distributions are probability distributions whose tails are not exponentially bounded.  A distribution of of a real-valued random variable $X$, with cumulative distribution $F(x)$, is said to be heavy tailed, if it satisfies this condition for all $\lambda \in \mathbb{R}$:
 
 \begin{equation}
 	\lim_{x\to\infty} e^{\lambda x} (1 - F(x)) = \infty
@@ -218,8 +218,8 @@ Looking on how the dot plot behaves compared to the linear line, we can see how 
 \item \textbf{Heavy-tailed}: the samples have a predominant heavy-tail effect compared to the estimated by the theoretical values.
 \item \textbf{Linear}: the samples match the theoretical values.
 \item \textbf{Bimodal}: samples present a bimodal pattern.
-\item \textbf{Left skew}: small values are under-represented by the model(~\ref{fig:qqplot-rl-skew}).
-\item \textbf{Right skew}: larger values are under-represented by the model(~\ref{fig:qqplot-rl-skew}).
+\item \textbf{Left skew}: small values are under-represented by the model (~\ref{fig:qqplot-rl-skew}).
+\item \textbf{Right skew}: larger values are under-represented by the model (~\ref{fig:qqplot-rl-skew}).
 \end{itemize}
 
 

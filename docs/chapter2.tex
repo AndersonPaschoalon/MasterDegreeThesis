@@ -28,7 +28,7 @@ We also have high-level  APIs, usually provide by traffic generator, which simpl
 \item DPDK-Pktgen scripting interface (Lua)\cite{web-dpdk-pktgen}.
 \end{itemize}
 
-There are many taxonomies for traffic generators available on the literature. Classify traffic generators is usually "blur" process since packet generators feature many times fall in more than one class. We present two  taxonomies: 
+There are many taxonomies for traffic generators available in the literature. Classify traffic generators is usually "blur" process since packet generators feature many times fall into more than one class. We present two taxonomies:
 
 \begin{itemize}
 \item Traffic generation strategy;
@@ -50,19 +50,19 @@ Model-based traffic generators can be sub-classified based on the abstraction la
 
 \begin{itemize}
 
-\item \textbf{Application-level traffic generators}: they try to emulate the behavior of network applications, simulating real workloads stochastically or responsively 3. As an example, we have Surge, which emulates the communication between clients and web
+\item \textbf{Application-level traffic generators}: they try to emulate the behavior of network applications, simulating real workloads stochastically or responsively\footnote{\textbf{Responsiveness} refers to the ability of responding the changes in real-time. In the traffic generator's context, it refers to the ability of changing inner parameters depending on patterns of arriving packets.}. As an example, we have Surge, which mimics the communication between clients and web
 servers;
 
-\item \textbf{Flow-level traffic generators}: they can reproduce flow characteristics, such as flow duration, start times distributions, and temporal diurnal traffic volumes. Harpoon can extract these parameters from Cisco NetFlow data, collected from routers;
+\item \textbf{Flow-level traffic generators}: they can reproduce flow characteristics, such as flow duration, start times distributions, and temporal traffic volumes. Harpoon can extract these parameters from Cisco NetFlow data, collected from routers;
 
-\item \textbf{Packet-level traffic generators}: it is the most used traffic generators. They can control packet-features like inter-departure times, packet size, throughput and packets per second. For example, D-ITG\cite{ditg-paper}, and TG\cite{web-tg} can control inter-packet times via stochastic distributions. However, most of them only permit the configuration of constant-rate models, by setting the packet rate or the traffic bandwidth, such as Iperf\cite{web-iperf}, BRUNO\cite{bruno-paper} and Ostinato\cite{web-ostinato}.
+\item \textbf{Packet-level traffic generators}: it is the most used traffic generators. They can control packet-features like inter-departure times, packet size, throughput and packets per second. For example, D-ITG\cite{ditg-paper}, and TG\cite{web-tg} can control inter-packet times via stochastic distributions. However, most of them only permit the configuration of constant-rate models, by setting the packet rate or the traffic bandwidth, such as Iperf\cite{web-iperf}, BRUNO\cite{bruno-paper}, and Ostinato\cite{web-ostinato}.
 
-\item \textbf{Multi-level traffic generators}: this is a more recent class of network traffic generator. They take into account existing interaction among each layer of the network stack, to create network traffic as close as possible to reality. The most relevant tool is Swing\cite{swing-paper} which input collected pcap files. 
+\item \textbf{Multi-level traffic generators}: this is a more recent class of network traffic generator. They take into account existing interaction among each layer of the network stack, to create network traffic as close as possible to reality. The most important tool is Swing\cite{swing-paper} which input collected pcap files. 
 
 \end{itemize}
 
 
-We have done an extensive survey on packet generators available on the open-source community, and classified them according to the first taxonomy. Also, we summarized the main features of each one. The result of this work is the tables \label{tab:app-level-tg}, \label{tab:multi-level-tg}, \label{tab:packet-level-tg}, and \label{tab:replay-tg}, in the appendix ~\ref{ap:traffic-gen-survey}. We also have a list of the tool repositories at table~\ref{tab:traffic-gen-links}
+We have done an extensive survey on packet generators available on the open-source community and classified them according to the first taxonomy. Also, we summarized the main features of each one. The result of this work is the tables~\ref{tab:packet-level-tg1},~\ref{tab:multi-level-tg2},~\ref{tab:app-level-tg3}, and~\ref{tab:replay-tg1}, in the appendix ~\ref{ap:traffic-gen-survey}. We also have a list of the tool repositories at table~\ref{tab:traffic-gen-links}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,7 +72,7 @@ We have done an extensive survey on packet generators available on the open-sour
 
 \item \textbf{Software-only traffic generators}: Implementations of traffic generators utterly independent of its running hardware platform. This implementation comprehends most of traffic generator tools, including all previously mentioned. 
 
-\item \textbf{Software and hardware-dependent traffic generators}: are traffic generators implemented in software, but dependent on the underlying hardware. The most preeminent examples of this class used DPDK\cite{web-dpdk} as packet-generator API. DPDK works directly on the \acrshort{NIC} interface, avoiding overheads of the Operational System. As cited on its official website, this approach permits huge precision. As examples we have MoonGen\cite{moongen-paper} and DPDK-PktGen\cite{web-dpdk-pktgen}
+\item \textbf{Software and hardware-dependent traffic generators}: are traffic generators implemented in software, but dependent on the underlying hardware. The most preeminent examples of this class used DPDK\cite{web-dpdk} as packet-generator API. DPDK works directly on the \acrshort{NIC} interface, avoiding Operational Systems overheads. As cited on its official website, this approach permits huge precision. As examples we have MoonGen\cite{moongen-paper} and DPDK-PktGen\cite{web-dpdk-pktgen}
 
 \item \textbf{Hardware traffic generators}: these open-source traffic generators are implemented in hardware description language (VHDL/Verilog), and work on \acrshort{NetFPGA}s. Some examples of implementations are PacketGenerator\cite{pktgen-netfpga-paper}, Caliper\cite{caliper-paper}, and OSNT Packet Generator\cite{osnt-paper}.
 
@@ -80,10 +80,10 @@ We have done an extensive survey on packet generators available on the open-sour
 
 
 \begin{figure}[!ht]
-	\centering
-	\includegraphics[scale=0.4]{figures/ch2/types-workload-tools}
-	\caption{Diagram representing different traffic generators, according to its abstraction layer.}
-	\label{fig:layers-workload-tools}
+    \centering
+    \includegraphics[scale=0.4]{figures/ch2/types-workload-tools}
+    \caption{Diagram representing different traffic generators, according to its abstraction layer.}
+    \label{fig:layers-workload-tools}
 \end{figure}
 
 
@@ -95,7 +95,7 @@ We have done an extensive survey on packet generators available on the open-sour
 
 \subsection{Realistic Network Traffic Generation}
 
-As presented, there is a considerable amount of open-source traffic generators available, each one of them with many different sets of features available. However, on the generation of realistic workload, the set of possibilities become much more restricted. On the other hand, there are many works on characterization, modeling, and simulation of different types of network workload. As stated by Botta et al., a synthetic network traffic generation over real networks should be able to: 
+As presented, there is a considerable amount of open-source traffic generators available, each one of them with many different sets of features available. However, on the generation of realistic workload, the set of possibilities becomes much more restricted. On the other hand, there are many works on characterization, modeling, and simulation of different types of network workload. As stated by Botta et al.\cite{ditg-paper}, a synthetic network traffic generation over real networks should be able to: 
 
 \begin{enumerate}
 \item Capture real traces complexity over different scenarios;
@@ -200,9 +200,9 @@ Lower incomplete Gamma function      & $ \gamma(s, x) = x^{s}\Gamma(s)e^{-x}\sum
 \end{table}
 
 
-Classical models for network traffic generation were the same used in telephone traffic, such as  Poisson or Poisson-related, like Markov and Poisson-batch. They can describe the randomness of an Ethernet link but cannot capture the presence of "burstiness" in a long-term time scale, such as traffic "spikes" on long-range "ripples". Lerand et al.\cite{selfsimilar-ethernet}, points in his seminal work, in 1994, that the nature of the Ethernet traffic is self-similar. It has a fractal-like shape since characteristics seen in a small time scale should appear on a long-scale as well, that have been referred, in the most of the time, as long-range dependence or degree of long-range dependence (LRD). One way to identify if a process is self-similar is by checking its Hurst parameter, or Hurst exponent H, as a measure of the "burstiness" and LRD.  A random process is self-similar and LRD if $0.5 < H <1$\cite{stochastic-selfsimilar}. 
+Classical models for network traffic generation were the same used in telephone traffic, such as  Poisson or Poisson-related. They can describe the randomness of an Ethernet link but cannot capture the presence of "burstiness" in a long-term time scale, such as traffic "spikes" on long-range "ripples". Lerand et al.\cite{selfsimilar-ethernet}, points in his seminal work, in 1994, that the nature of the Ethernet traffic is self-similar. It has a fractal-like shape since characteristics seen in a small time scale should appear on a long-scale as well, that have been referred, in the most of the time, as long-range dependence or degree of long-range dependence (LRD). One way to identify if a process is self-similar is by checking its Hurst parameter, or Hurst exponent H, as a measure of the "burstiness" and LRD.  A random process is self-similar and LRD if $0.5 < H <1$\cite{stochastic-selfsimilar} (appendix~\ref{ap:revision-probability}). 
 
-Willinger et al. pointed out that the Ethernet traffic has a high variability (or infinite variance)\cite{selfsimilar-highvariability}.  Processes with such characteristic are said to be heavy-tailed. In practical terms, that means a sudden discontinuous change can always occur. Heavy tail shows that a stochastic distribution is not exponentially bounded. In other words, some value far from the mean does not have a negligible probability of occurrence. We can express self-similar and heavy-tailed processes using heavy-tailed stochastic distributions, such as Pareto and Weibull. Table~\ref{tab:distributions-equations} shows the reference for these stochastic distributions. In the last column, we indicate if the distribution is or not heavy-tailed. 
+Willinger et al. pointed out that the Ethernet traffic has a high variability (or infinite variance)\cite{selfsimilar-highvariability}.  Processes with such characteristic are said to be heavy-tailed. In practical terms, that means a sudden discontinuous change can always occur. To be heavy-tailed means that the stochastic distribution is not exponentially bounded. In other words, some value far from the mean does not have a negligible probability of occurrence. We can express self-similar and heavy-tailed processes using heavy-tailed stochastic distributions, such as Pareto and Weibull. Table~\ref{tab:distributions-equations} shows the reference for these stochastic distributions. In the last column, we indicate if the distribution is or not heavy-tailed. 
 
 These concepts of  High variability and Self-similarity are called Noah and Joseph Effects\cite{selfsimilar-highvariability}. Willinger et al. point that the superposition of many ON/OFF sources (or packet trains) using ON and OFF times that obey the Noah Effect (heavy-tailed probabilistic functions), also obey the Joseph effect. That means, it is a self-similar process and can be used to describe Ethernet traffic. Some works on the literature on synthetic traffic uses this principle, like sourcesOnOff\cite{sourcesonoff-paper}, or have to heavy-tailed processes, such as like D-ITG.
 
@@ -222,27 +222,27 @@ Furthermore, some later studies advocate the use of more advanced multiscaling m
 \hline
  & \multicolumn{3}{c|}{Traffic Generators} \\ \cline{2-4} 
 \multicolumn{1}{|c|}{Article and setup} &  & \multicolumn{1}{c|}{Maximum bit-rate} & \multicolumn{1}{c|}{Maximum bit-rate} \\
- & \multicolumn{1}{c|}{Toll} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}at small packet \\ sizes\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}at big packet \\ sizes\end{tabular}} \\ \hline
-\textit{\begin{tabular}[c]{@{}l@{}}Comparative study of various \\ Traffic Generator Tools \cite{comparative-trafficgen-tools} ;\end{tabular}} & PackETH & 150 @(64 bytes) & 1745 @(1408 bytes) \\ \cline{2-4} 
-\begin{tabular}[c]{@{}l@{}}setup: Linux (Centos 6.2, \\ Kernel version 2.6.32),\end{tabular} & Ostinato & 135 @(64 bytes) & 2850 @(1408 bytes) \\ \cline{2-4} 
+ & \multicolumn{1}{c|}{Tool} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}at small packet \\ sizes\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}at big packet \\ sizes\end{tabular}} \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textit{Article}: Comparative study of various \\ Traffic Generator Tools \cite{comparative-trafficgen-tools} ;\end{tabular} & PackETH & 150 @(64 bytes) & 1745 @(1408 bytes) \\ \cline{2-4} 
+\begin{tabular}[c]{@{}l@{}}\textit{Setup}: Linux (Centos 6.2, \\ Kernel version 2.6.32),\end{tabular} & Ostinato & 135 @(64 bytes) & 2850 @(1408 bytes) \\ \cline{2-4} 
 \begin{tabular}[c]{@{}l@{}}Inter(R) Xeon(R) CPU with 2.96GHz,\\  RAM of 64GB , NIC Mellanox\end{tabular} & D-ITG & 62 @(64 bytes) & 1950 @(1408 bytes), \\
-\begin{tabular}[c]{@{}l@{}}Technologies MT25418 {[}ConnectXVPI \\ PCIe 2.0 2.5GT/s - IB DDR{]}\end{tabular} &  &  & \begin{tabular}[c]{@{}l@{}}9808 @(1460 bytes, \\ 12 threads)\end{tabular} \\ \cline{2-4} 
-10 Bbps. Protocol: TCP & Iperf & * & \begin{tabular}[c]{@{}l@{}}8450 @(1460 bytes, \\ 12 threads)\end{tabular} \\ \hline
-\textit{\begin{tabular}[c]{@{}l@{}}Performance Monitoring of Various \\ Network Traffic Generators \cite{performance-trafficgen};\end{tabular}} & Iperf & 46.0 @(128 bytes) & 93.1 @(1408 bytes) \\ \cline{2-4} 
-\begin{tabular}[c]{@{}l@{}}Inter(R) Pentium 4(R), CPU \\ with 3.0GHz, RAM 1GB,\end{tabular} & Netperf & 46.0 @(128 bytes) & 89.9 @(1408 bytes) \\ \cline{2-4} 
+\begin{tabular}[c]{@{}l@{}}Technologies MT25418 {[}ConnectXVPI \\ PCIe 2.0 2.5GT/s - IB DDR{]} 10 Bbps. \end{tabular} &  &  & \begin{tabular}[c]{@{}l@{}}9808 @(1460 bytes, \\ 12 threads)\end{tabular} \\ \cline{2-4} 
+\textit{Protocol}: TCP & Iperf & * & \begin{tabular}[c]{@{}l@{}}8450 @(1460 bytes, \\ 12 threads)\end{tabular} \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textit{Article}: Performance Monitoring of Various \\ Network Traffic Generators \cite{performance-trafficgen};\end{tabular} & Iperf & 46.0 @(128 bytes) & 93.1 @(1408 bytes) \\ \cline{2-4} 
+\begin{tabular}[c]{@{}l@{}}\textit{Setup}: Intel (R) Pentium 4(R), CPU \\ with 3.0GHz, RAM 1GB,\end{tabular} & Netperf & 46.0 @(128 bytes) & 89.9 @(1408 bytes) \\ \cline{2-4} 
 \begin{tabular}[c]{@{}l@{}}NIC Intel Pro/100 Adapter \\ (100Mbps),\end{tabular} & D-ITG & 38.1 @(128 bytes) & 83.1 @(1408 bytes) \\ \cline{2-4} 
-\begin{tabular}[c]{@{}l@{}}Hard Drivers Seagate Barracuda \\ 7200 series with 20BG. \\ Protocol:TCP\end{tabular} & IP Traffic & 61.0 @(128 bytes) & 76.7 @(1408 bytes) \\ \hline
+\begin{tabular}[c]{@{}l@{}}Hard Drivers Seagate Barracuda \\ 7200 series with 20BG. \\ \textit{Protocol}:TCP\end{tabular} & IP Traffic & 61.0 @(128 bytes) & 76.7 @(1408 bytes) \\ \hline
 \end{tabular}
 }
 \end{table}
 
-The literature shows that the packet size of a trace may result in a considerable impact in a trace throughput since small packets cause a significant overhead on packet processing\cite{stochastic-selfsimilar}\cite{performance-trafficgen}. Table~\ref{tab:packet-size-impact} summarizes the results from two different works about throughput impact of packet sizes. On packet size distributions’ characterization, we can find many works as well.  For example, Castro et al. pointed that  90\% of \acrshort{UDP} packets were smaller than 500 bytes, and most packets transmitted using \acrshort{TCP} have 40 bytes (acknowledgment) and 1500 bytes (Maximum Transmission Unit, MTU)\cite{packet-distribution-model}. Ostrowsky et al.  found that on UDP traces, the modes of two regions were 120 and 1350 bytes, with a cut-off value of 750 bytes. They also found that roughly UDP packets constituted 20\% of the total number of packets on captures\cite{udp-flows-model}. Castro et al. points on his work that capture traces made on routers were all bimodal, and the majority is TCP. However, the size of each mode may change depending on the application. For example, an \acrshort{HTTP} traffic tends to have a mode closer to the \acrshort{MTU} compared to an \acrshort{FTP} capture\cite{packet-distribution-model}.
+The literature shows that the packet size of a trace may result in a considerable impact in a trace throughput since small packets cause significant overhead on packet processing\cite{stochastic-selfsimilar}\cite{performance-trafficgen}. Table~\ref{tab:packet-size-impact} summarizes the results from two different works about throughput impact of packet sizes. On packet size distributions’ characterization, we can find many works as well.  For example, Castro et al. pointed that  90\% of \acrshort{UDP} packets were smaller than 500 bytes, and most packets transmitted using \acrshort{TCP} have 40 bytes (acknowledgment) and 1500 bytes (Maximum Transmission Unit, MTU)\cite{packet-distribution-model}. Ostrowsky et al.  found that on UDP traces, the modes of two regions were 120 and 1350 bytes, with a cut-off value of 750 bytes. They also found that roughly UDP packets constituted 20\% of the total number of packets on captures\cite{udp-flows-model}. Castro et al. points on his work that captured traces on routers were all bimodal, and the majority is TCP. However, the size of each mode may change depending on the application. For example, an \acrshort{HTTP} traffic tends to have a mode closer to the \acrshort{MTU} compared to an \acrshort{FTP} capture\cite{packet-distribution-model}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Packet-header fields}
 
-Accurate replication of network traffic should be able to control packet headers such as protocols, ports, addresses, and so on. Traffic generators provide support for these features, more frequently in a limited way. Most offer support just common protocols, such as TCP, UDP, and \acrshort{IPv4}. On the other hands, there are some which provide a vast variety of support and control over packet headers like PackETH\cite{web-packeth} and D-ITG\cite{web-ditg}. Other tools are even able to enable someone to extend this feature and develop support to new protocols. For example, Ostinato and Seagull permit the customization and creation of protocols\cite{wp-seagull}.
+Accurate replication of network traffic should be able to control packet headers such as protocols, ports, addresses, and so on. Traffic generators provide support for these features, more frequently in a limited way. Most offer support just standard protocols, such as TCP, UDP, and \acrshort{IPv4}. On the other hands, there are some which provide a vast variety of support and control over packet headers like PackETH\cite{web-packeth} and D-ITG\cite{web-ditg}. Other tools are even able to enable someone to extend this feature and develop support to new protocols. For example, Ostinato and Seagull permit the customization and creation of protocols\cite{wp-seagull}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -252,12 +252,9 @@ Some packet-level traffic generators permit the control of flow generation, most
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Closed-loop(responsive) models}
+\subsection{Closed-loop (responsive) models}
 
-The closed-loop operation means that the traffic generator uses feedback to reconfigure its model. That means the traffic generator can change its behavior at run time according to the observation made in real-time, changing the traffic created. These modifications involve changes on parameters of statistical distributions of inter-departure time and packet size, for example. Swing\cite{swing-paper} and application-level traffic generators like Surge\cite{surge-paper} and GenSyn\cite{gensyn-paper}uses this strategy.
-
-
-
+The closed-loop operation means that the traffic generator uses feedback to reconfigure its model. That means the traffic generator can change its behavior at run time according to the observation made in real-time, changing the traffic created. These modifications involve changes on parameters of statistical distributions of inter-departure time and packet size, for example. Swing\cite{swing-paper} and application-level traffic generators like Surge\cite{surge-paper} and GenSyn\cite{gensyn-paper} uses this strategy.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -277,13 +274,15 @@ Packet-based metrics are the most used metrics in the validation of traffic gene
 \subsection{Flow Based Metrics}
 
 
-Flow-based metrics are becoming more critical since newer network elements, like SDN devices, can execute flow-based operations\cite{validate-trafficgen}\cite{sdn-survey}. Magyesi and Szabó\cite{validate-trafficgen} consider the essential flow metrics, the flow size distribution, and volume. The flow volume stands for the number of flows of traffic. The flow size distribution is a measure of the length on time from the flows in network traffic. The flow volume is proportional to the number of flow instances that a flow-based device should run simultaneously. Moreover, the flow sizes define how much time each of these instances will run.
+Since SDN device, which execute flow-based operations are becoming widespread, flow-based metrics are becoming increasingly relevant\cite{validate-trafficgen}\cite{sdn-survey}. Magyesi and Szabó\cite{validate-trafficgen} consider the essential flow metrics, the flow size distribution, and volume. The flow volume stands for the number of flows of traffic. The flow size distribution is a measure of the time-length of the flows in network traffic. The flow volume corresponds to the number of flows that a device must process simultaneously. Moreover, the flow sizes define how much time each of these instances will run.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fractal and Scaling Characteristics}
 
-Second order characteristics such as "burstiness" and long-range dependence are responsible for the complex nature of internet traffic\cite{validate-trafficgen}. Due to its non-stationary nature, traditional methods fail to extract useful information\cite{validate-trafficgen}. The first analysis made in that way focused on the estimation of the Hurst exponent\cite{selfsimilar-ethernet}. They demonstrated the self-similar nature of the Ethernet traffic. As explained before, self-similar traffic should be in a Hurst exponent $H$, such as $0.5 < H < 1$. Over the years, wavelet-based analysis has become an efficient way to reveal correlations, bursts and scaling nature of the Ethernet traffic\cite{validate-trafficgen}. Many papers have used wavelet-based analysiscite{swing-paper}\cite{non-intrusive-wavelet}\cite{wavelet-analysis-long-range}. Huang et al.\cite{non-intrusive-wavelet} and Abry and Veitch\cite{wavelet-analysis-long-range} offer an extensible explanation of wavelet-based scaling analysis (\acrshort{WSA}) or wavelet multi-resolution energy analysis (\acrshort{WMA}). The explanation about the primary information offered by these two works will be showed below. 
+Second order characteristics such as "burstiness" and long-range dependence are responsible for the complex nature of internet traffic\cite{validate-trafficgen}. Due to its non-stationary nature, traditional methods fail to extract useful information\cite{validate-trafficgen}. The first analysis found in the literature to extract fractal characteristics was made by Lerand et al. estimating the  Hurst exponent\cite{selfsimilar-ethernet}. They demonstrated the self-similar nature of the Ethernet traffic. As explained in the previous section, a self-similar process should have a Hurst exponent valued larger than 0.5 and smaller than 1 ($0.5 < H < 1$).
+
+Over the years, wavelet-based analysis has become an efficient way to reveal correlations, bursts and scaling nature of the Ethernet traffic\cite{validate-trafficgen}. Many papers have used wavelet-based analysiscite{swing-paper}\cite{non-intrusive-wavelet}\cite{wavelet-analysis-long-range}. Huang et al.\cite{non-intrusive-wavelet} and Abry and Veitch\cite{wavelet-analysis-long-range} offer an extensible explanation of wavelet-based scaling analysis (\acrshort{WSA}) or wavelet multi-resolution energy analysis (\acrshort{WMA}).  
 
 First, consider a time series $X_{0,k}$ for $k = 0, 1, ... 2^n$:
 
@@ -297,19 +296,19 @@ Suppose that we coarser $X_{0}$ in another time-series $X_{1}$ with half of the 
 X_{1,k} = \frac{1}{\sqrt{2}}(X_{0,2k} + X_{0,2k+1})
 \end{equation}
 
-If we take the differences, instead of the averages, evaluate the so-called \textit{details}.
+Taking the differences, instead of the averages, evaluate the so-called \textit{details}.
 
 \begin{equation}
 d_{1,k} = \frac{1}{\sqrt{2}}(X_{0,2k} - X_{0,2k+1})
 \end{equation}
 
-We can continue repeating this process, writing more coarse time series $X_{2}$ from $X_{1}$, until we reach $X_{n}$. Therefore, we will get a collection of \textit{details}:
+Continuing repeating this process, writing coarser time series $X_{2}$ from $X_{1}$, until we reach $X_{n}$. Therefore, we will get a collection of \textit{details}:
 
 \begin{equation}
 \{d_{j,k}\} = \{ d_{1,0}, d_{1,1}, ..., d_{1,2^{n/2}}, ..., d_{n, 0} \}
 \end{equation}
 
-This collection of details ${d_{j,k}}$ are called Discrete Haar Wavelet Transform. Using the \textit{details}, we can calculate the energy function $E_{j}$, for each scale $j$, using:
+This collection of details ${d_{j,k}}$ are called Discrete Haar Wavelet Transform. Using the \textit{details}, we can calculate the energy function $E_{j}$, under the scale $j$, using:
 
 \begin{equation}
 E_{j} = \frac{1}{N_{j}} \sum_{k = 0}^{N_{j} - 1} |d_{j,k}|^{2}; \qquad j = 1, 2, ..., n
@@ -317,19 +316,19 @@ E_{j} = \frac{1}{N_{j}} \sum_{k = 0}^{N_{j} - 1} |d_{j,k}|^{2}; \qquad j = 1, 2,
 \\ 
 were $N_{j}$ is the total number of coefficients at scale $j$. If we plot $\log(E_{j})$ as a function o the scale $j$, we will obtain a wavelet multiresolution energy plot.
 
-On energy wavelet multiresolution energy plots, it is possible to capture three different central behavior, according to the scale. On \textbf{periodic time series}, the Energy values will be small. In fact, on perfectly periodic scales $j$, the values of the energy function $E_{j}$ will be zero. So periodicity will be sensed if the value of the energy function decrease. Perfect \textbf{white noise time series} will maintain the same value of the energy function. So an approximately constant value for the energy function $E_{j}$ indicates white noise behavior (which can be represented by a Poisson process\cite{poisson-white-noise}). On \textbf{self-similar time series}, the energy function plot $\log(E_{j})$ grows approximately linearly with the scale $j$. This characteristic explains why it has become a standard for realistic traffic generation analysis. In a single plot, we can quickly identify periodicities, and self-similar and Poisson process characteristics, just seeing if it decays, grow, or remain constant.
+On energy wavelet multiresolution energy plots, it is possible to capture three different central behavior, according to the scale. On \textbf{periodic time series}, the Energy values will be small. Time-series with no error in the time-periods of the scales $j$, the energy values $E_{j}$ will be zero. So periodicity will be sensed if the value of the energy function decrease. Perfect \textbf{white noise time series} maintains the same value of the energy function. So an approximately constant value for the energy function $E_{j}$ indicates white noise behavior (which can be represented by a Poisson process\cite{poisson-white-noise}). On \textbf{self-similar time series}, the energy function  $\log(E_{j})$ grows approximately linearly with the scale $j$. Following these rules, we can quickly identify periodicities, and self-similar and Poisson process characteristics, just seeing if it decays, growths, or constant-shapes on wavelet energy plots.
 
 Later studies suggested the use of multi-fractal models, instead of the self-similar models (also called monofractal)\cite{validate-trafficgen}\cite{udp-flows-model}. Since there is a lack of multiscaling analysis on validation of traffic generation in the literature, this type of analysis will stay for future works.
 
 \begin{figure*}[ht!]
-	\centering
-	\includegraphics[width=0.6\textwidth]{figures/ch2/qqplot-tutorial}
-	\caption{ How information about may be extracted from QQplots.}
-	\label{fig:qqplot-tutorial}
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/ch2/qqplot-tutorial}
+    \caption{ How information about may be extracted from QQplots.}
+    \label{fig:qqplot-tutorial}
 \end{figure*}
 
 
-Another way to analyze scaling characteristics is through QQplots. \acrshort{QQplot} is a visual method to compare sample data with a specific stochastic distribution. It orders the sample data values from the smallest to largest, then plots these values against the expected value given by the probability distribution function. The data sample values appear along the y-axis and the expected values along the x-axis. The more linear, the more the data is likely to be expressed by this specific stochastic distribution. 
+Another way to analyze scaling characteristics is through \textit{QQplots} (appendix~\ref{ap:revision-probability}). \textit{\acrshort{QQplot}} is a visual method to compare sample data with a specific stochastic distribution. It orders the sample data values from the smallest to largest, then plots these values against the expected value given by the probability distribution function. The data sample values appear along the y-axis and the expected values along the x-axis. The more linear, the more the data is likely to be expressed by this specific stochastic distribution. 
 
 Depending on how the plot behaves, some features of the empirical dataset compared to the theoretical can be observed. Figure~\ref{fig:qqplot-tutorial} presents a summary.
 
