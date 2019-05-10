@@ -63,7 +63,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 
 \subsection{Modeling optimizations}
 
-\textbf{[A.1]} The primary issue of SIMITAR now is optimizing data processing for creating the Compact Trace Descriptor. The performance becomes an issue when processing large pcap files with more dozens of thousands of flows. The time expended for processing traces, in this case, is exceeding tens of hours. In the current implementation, the linear regression execution is mono-thread, and the stop criterion is just the number of iterations. Parallel processing, and creating stop criteria based on convergence in addition to the number of iterations will improve the performance, along with some code optimizations. Make the XML less verbose will help as well.
+\textbf{[A.1]} The primary issue of SIMITAR now is optimizing data processing for creating the Compact Trace Descriptor. The performance becomes an issue when processing large \textit{pcap} files with more dozens of thousands of flows. The time expended for processing traces, in this case, is exceeding tens of hours. In the current implementation, the linear regression execution is mono-thread, and the stop criterion is just the number of iterations. Parallel processing, and creating stop criteria based on convergence in addition to the number of iterations will improve the performance, along with some code optimizations. Make the XML less verbose will help as well.
 
 \subsection{TinyFlows and flow merging}
 
@@ -107,7 +107,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 \end{figure}
 
 
-\textbf{[B.2-4]} Expand SIMITAR to other traffic generator tools(figure~\ref{fig:dpdk-flow}). D-ITG offers many stochastic functions for customization of inter-packet times, Ostinato provides a rich set of headers and protocols, and DPDK a high performance on packet generation. Each tool can offer a different result on traffic generation,  each with their benefits. 
+\textbf{[B.2-4]} Expand SIMITAR to other traffic generator tools (Figure~\ref{fig:dpdk-flow}). D-ITG offers many stochastic functions for customization of inter-packet times, Ostinato provides a rich set of headers and protocols, and DPDK a high performance on packet generation. Each tool can offer a different result on traffic generation,  each with their benefits. 
 
 \subsection{ZigBee protocol Support}
 
@@ -147,7 +147,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 \end{figure}
 
 
-\textbf{[D.1]} Develop a component able to extract useful QoS information from the generated traffic is essential on the applicability and utility of our tool(figure~\ref{fig:traffic-measurer}). This can be done by:
+\textbf{[D.1]} Develop a component able to extract useful QoS information from the generated traffic is essential on the applicability and utility of our tool (Figure~\ref{fig:traffic-measurer}). This can be done by:
 \begin{itemize}
 \item Counting the transmitted and received packets, to estimate the \textit{\textbf{packet-loss}} and the \textit{\textbf{throughput}}.
 \item Apply techniques of passive measurement of \textit{\textbf{available bandwidth}}, such as the ones used by Pathload\cite{web-pathload} and pathChirp\cite{pathchirp-paper}\cite{web-pathchirp}.
@@ -164,7 +164,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 \end{figure}
 
 
-\textbf{[D.2]} PcapGen, a pcap generator tool: Create a component capable of generating synthetic pcap files, using Compact Trace Descriptors files, using TCPDump\cite{web-tcpdump} and Mininet\cite{web-mininet}.  We present a diagram of this idea in figure~\ref{fig:pcap-gen}. This expansion would enable SIMITAR to work as trace library for pcap-based benchmark tools.
+\textbf{[D.2]} PcapGen, a \textit{pcap} generator tool: Create a component capable of generating synthetic \textit{pcap} files, using Compact Trace Descriptors files, using TCPDump\cite{web-tcpdump} and Mininet\cite{web-mininet}.  We present a diagram of this idea in Figure~\ref{fig:pcap-gen}. This expansion would enable SIMITAR to work as trace library for \textit{pcap-based} benchmark tools.
 
 \subsection{Python/Lua Flow Generator}
 
@@ -213,11 +213,11 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
     \label{fig:control-system}
 \end{figure}
 
-\textbf{[E.6]} Study the viability of the application of a feedback system to control the parameters of the synthetic traffic; for example, Mean inter-packet time and Hurst Exponent(figure~\ref{fig:control-system}).
+\textbf{[E.6]} Study the viability of the application of a feedback system to control the parameters of the synthetic traffic; for example, Mean inter-packet time and Hurst Exponent (Figure~\ref{fig:control-system}).
 
 \subsection{Traffic generation based on Generative Adversarial Networks (GANs)}
 
-\textbf{[E.7]} Other promising technology on controlling features can be the usage of Generative Adversarial Networks, also called \acrshort{GAN}s\cite{gans-paper}. GAN is a type of neural network used usually used on image synthesis, as we can see in figure~\ref{fig:gans-example}. We could apply the GAN to generate matrixes of features: inter-packet times, flows, protocols, packet sizes and so on(figure~\ref{fig:color-maps}). Then, apply this matrix of features to synthesize network traffic. 
+\textbf{[E.7]} Other promising technology on controlling features can be the usage of Generative Adversarial Networks, also called \acrshort{GAN}s\cite{gans-paper}. GAN is a type of neural network used usually used on image synthesis, as we can see in Figure~\ref{fig:gans-example}. We could apply the GAN to generate matrixes of features: inter-packet times, flows, protocols, packet sizes and so on (Figure~\ref{fig:color-maps}). Then, apply this matrix of features to synthesize network traffic. 
 
 % GANs example
 \begin{figure}[!ht]
@@ -245,7 +245,7 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
         \includegraphics[height=40mm]{figures/ch6/colormap_wan.png}
     }
     \hspace{0mm}
-    \caption{Color-map of inter-packet times from pcaps used on chapter~\ref{ch:modeling-evaluation}.}
+    \caption{Color-map of inter-packet times from pcaps used on Chapter~\ref{ch:modeling-evaluation}.}
     \label{fig:color-maps}
 \end{figure}
 %\clearpage
@@ -268,4 +268,4 @@ E                                             & \multicolumn{2}{l}{\cellcolor[HT
 
 \subsection{Traffic Generator Tools Survey}
 
-\textbf{[E.11]} The idea is to consolidate the already collected knowledge on traffic generators (chapter~\ref{ch:literature-review} and appendix~\ref{ap:traffic-gen-survey}), with other topics of relevance in these subjects, inspired in the same structure used by other surveys.
+\textbf{[E.11]} The idea is to consolidate the already collected knowledge on traffic generators (Chapter~\ref{ch:literature-review} and Appendix~\ref{ap:traffic-gen-survey}), with other topics of relevance in these subjects, inspired in the same structure used by other surveys.

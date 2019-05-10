@@ -1,5 +1,7 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Computer Networks Review}
 \label{ap:networks}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Network Stack}
 
@@ -8,13 +10,13 @@ Network Stack\cite{kurose} or Protocol stack is the implementation of computer n
     \item \textit{\textbf{Application-layer}}: This layer is responsible for delivery to the processes the data.This layers deliver \textbf{Data}. Some protocols are HTTP, HTTPS, Telnet, DNS, FPT, and SMTP.
     \item \textit{\textbf{Transport-layer}}: It is responsible for establishing the communication between hosts (end-to-end communication) and deliver reliability to the data. This layer delivers \textbf{Segments}. The main protocols are TCP and UDP.
     \item \textit{\textbf{Newtwork-layer}}: It is responsible for the path determination and addressing between the end-points. This layer delivers \textbf{Packets}. As examples of protocols we have IP (IPv4 and IPv6), and ICMP. 
-    \item \textit{\textbf{Link-layer}}: It is responsible for the communication and data delivery between hosts and adjacent nodes on LANs and WANs. This layer delivers \textbf{Frames}. Some protocols are \acrshort{ARP}, \acrshort{MAC}(Ethernet), and Wi-Fi (IEEE 802.11) protocols, Bluetooth protocols, and ZigBee(IEEE 802.15) protocols. 
+    \item \textit{\textbf{Link-layer}}: It is responsible for the communication and data delivery between hosts and adjacent nodes on LANs and WANs. This layer delivers \textbf{Frames}. Some protocols are \acrshort{ARP}, \acrshort{MAC} (Ethernet), and Wi-Fi (IEEE 802.11) protocols, Bluetooth protocols, and ZigBee (IEEE 802.15) protocols. 
     \item \textit{\textbf{Physical-layer}}: This layer is the hardware implementation of the Link-layer protocols, and is responsible for the bit transmission. 
 \end{itemize}
 
 \section{Software Defined Networking (SDN)}
 
-Software Defined Network\cite{sdn-survey} is a network achitecture where the forwarding plane(switches and routers, the data plane), and the network control logic (networking policies, the control plane) are separated, introducing the ability of program the network.  SDN architecture has four main pillars:
+Software Defined Network\cite{sdn-survey} is a network achitecture where the forwarding plane (switches and routers, the data plane), and the network control logic (networking policies, the control plane) are separated, introducing the ability of program the network.  SDN architecture has four main pillars:
 \begin{enumerate}[label=\roman*]
     \item The control plane and the data plane are decoupled: control functionalities are removed from network devices;
     \item The forwarding policies are flow-based, instead of destination-based; 

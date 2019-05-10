@@ -77,7 +77,7 @@ Based on the provided context, we defined a set of targets for our research:
 	
 	\item \textbf{Design}: Create a general method for modeling and parameterization of Ethernet traffic;
 	
-	\item \textbf{Development}:  Create a self-configurable tool that observes and uses real network traffic, and reproduce its behavior characteristics, avoiding the storage of large pcap files. 
+	\item \textbf{Development}:  Create a self-configurable tool that observes and uses real network traffic, and reproduce its behavior characteristics, avoiding the storage of large \textit{pcap} files. 
 	
 \end{enumerate}
 
@@ -85,15 +85,15 @@ Towards the above-stated objectives, we  had identified a set of requirements of
 
 \begin{itemize}
 
-\item \textbf{Auto-configurable}: It must be able to extract data from real traffic and store in a database, and use it to parametrize its traffic model. It must be able to obtain data from real-time traffics and from pcap files;
+\item \textbf{Auto-configurable}: It must be able to extract data from real traffic and store in a database, and use it to parametrize its traffic model. It must be able to obtain data from real-time traffics and from \textit{pcap} files;
 
 \item \textbf{Technology independent}: It must have a flow-based abstract model for traffic generation, not attached to any specific technology.
 
 \item \textbf{Extensibility}: traffic modeling and generation must be decoupled. Ideally, it must be able to use as a traffic generator engine any library or traffic generator tool;
 
-\item \textbf{Simple usage}: It must be easy to use. It has to take as input a Compact Trace Descriptor, just as a traffic replay engine (such as TCPreplay) would take a pcap file;
+\item \textbf{Simple usage}: It must be easy to use. It has to take as input a Compact Trace Descriptor, just as a traffic replay engine (such as TCPreplay) would take a \textit{pcap} file;
 
-\item \textbf{Human readable model}: it must produce a human-readable file as output that describes our traffic using our abstract model. We call this file a Compact Trace Descriptor(\acrshort{CDT});
+\item \textbf{Human readable model}: it must produce a human-readable file as output that describes our traffic using our abstract model. We call this file a Compact Trace Descriptor (\acrshort{CDT});
 
 \item \textbf{Traffic generation programmability}: It must have what we call traffic generation programmability. The compact trace descriptor must be simple and easy to read. That way, the user may want to create our custom traffic, in a platform agnostic way.
 
@@ -109,7 +109,7 @@ Towards the above-stated objectives, we  had identified a set of requirements of
     \label{fig:dev-cicle}
 \end{figure}
 
-We have adopted a spiral procedure of development, as suggested Sommerville on \textit{Software Engineering}\cite{sommerville}, but adapted to an academic research process. Figure ~\ref{fig:dev-cicle} shows the model of development we had adopted. It had four main phases: 
+We have adopted a spiral procedure of development, as suggested Sommerville on \textit{Software Engineering}\cite{sommerville}, but adapted to an academic research process. Figure~\ref{fig:dev-cicle} shows the model of development we had adopted. It had four main phases: 
 
 \begin{enumerate}
     \item \textit{Requirements (working plan)};
@@ -124,10 +124,10 @@ On the \textbf{Requirements phase}, we create tasks,  formalized on \textit{Work
 \section{Outline}
 
 
-In this introductory chapter, we had presented an abstract of state of affairs, and the main goals of our research. \textit{\textbf{Chapter~\ref{ch:literature-review}}} presents a survey on open-source traffic generator tools, summarizing the benefits, and features supported by each one. The chapter offers a  review of topics on realistic traffic generation and defines important concepts on network traffic modeling; such as self-similarity and heavy-tailed distributions. Also, the chapter presents a survey on techniques for validating traffic generator tools 
+In this introductory Chapter, we had presented an abstract of state of affairs, and the main goals of our research. \textit{\textbf{Chapter~\ref{ch:literature-review}}} presents a survey on open-source traffic generator tools, summarizing the benefits, and features supported by each one. The chapter offers a  review of topics on realistic traffic generation and defines important concepts on network traffic modeling; such as self-similarity and heavy-tailed distributions. Also, the chapter presents a survey on techniques for validating traffic generator tools 
 
 \textit{\textbf{Chapter~\ref{ch:architecture}}} presents \textit{SIMITAR} traffic generator. We describe its low-level requirements and define an architecture and their algorithms.  We explain its operation and suggest some use cases. In \textit{\textbf{Chapter~\ref{ch:modeling-evaluation}}} we go deep on the modeling process we had developed for our traffic generator. We validate the effectiveness of Information Criteria \acrshort{AIC} and \acrshort{BIC} as a method selection of stochastic models for  Ethernet traffic.  We also discuss some other algorithms we developed such as \textit{calcOnOff} and the application protocol guesser. In \textit{\textbf{Chapter~\ref{ch:validation}}}, we define a set of metrics based on previous tests on validation of traffic generators found in the literature. Here, we focus on the packet, flow, and scaling metrics. We test our tool in an emulated SDN testbed with Mininet\cite{web-mininet}\footnote{\textbf{Mininet} is a network emulator. It can run a collection of  hosts, switches, routers and links over a single Linux kernel, using lightweight virtualization\cite{web-mininet-repo}.}, using OpenDayLight\cite{web-opendaylight} as a controller. 
 
-\textit{\textbf{Chapter~\ref{ch:future-work}}}  highlights future actions to improve SIMITAR on realism and performance along with other future research avenues, including improving its computational performance, expand it to new APIs of traffic generation and calibration of its constants. Finally, we end the work presentation with a conclusion ( \textit{\textbf{chapter~\ref{ch:conclusion}}}).
+\textit{\textbf{Chapter~\ref{ch:future-work}}}  highlights future actions to improve SIMITAR on realism and performance along with other future research avenues, including improving its computational performance, expand it to new APIs of traffic generation and calibration of its constants. Finally, we end the work presentation with a conclusion ( \textit{\textbf{Chapter~\ref{ch:conclusion}}}).
 
-\textit{\textbf{Appendices}} \textit{\textbf{~\ref{ap:revision-probability}}}, \textit{\textbf{~\ref{ap:networks}}}, and \textit{\textbf{~\ref{ap:traffic-gen-survey}}} provide supplementary materials for Chapter\textit{\textbf{~\ref{ch:literature-review}}}: Review of Mathematical Concepts, Computer Networks, and Traffic Generators. Appendix\textit{\textbf{~\ref{ap:aditional-plots}}} provides charts in addition to those presented in Chapter~\ref{ch:modeling-evaluation}, and Appendix\textit{\textbf{~\ref{ap:uml}}} complements the presentation of the architecture discussed in Chapter 03 by presenting SIMITAR  UML class-diagrams.
+\textit{\textbf{Appendices}} \textit{\textbf{~\ref{ap:revision-probability}}}, \textit{\textbf{~\ref{ap:networks}}}, and \textit{\textbf{~\ref{ap:traffic-gen-survey}}} provide supplementary materials for Chapter\textit{\textbf{~\ref{ch:literature-review}}}: Review of Mathematical Concepts, Computer Networks, and Traffic Generators. Appendix\textit{\textbf{~\ref{ap:aditional-plots}}} provides charts in addition to those presented in Chapter~\ref{ch:modeling-evaluation}, and Appendix\textit{\textbf{~\ref{ap:uml}}} complements the presentation of the architecture discussed in Chapter~\ref{ch:architecture} by presenting SIMITAR  UML class-diagrams.

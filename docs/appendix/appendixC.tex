@@ -16,14 +16,14 @@ In this section, we present a short review of many open-source tools available f
 
 \textbf{BRUNO}\cite{bruno-paper} is traffic generator implemented aiming performance and accuracy on timings. It has many configurable parameters that allow emulation of many web server scenarios. \textbf{Divide and conquer}\cite{validate-trafficgen}: is a replay engine that works in a distributed manner. It can split traces among multiple commodity PCs, and reply packets, to produce realistic traffic. 
 
-Some others mentioned tools \cite{web-ditg} we were not able to find any reference of available features are: \textbf{UDPgen}, \textbf{Network Traffic Generator}, \textbf{Packet Shell}, \textbf{Real-Time Voice Traffic Generator}, \textbf{PIM-SM Protocol Independent Multicast Packet Generator}, \textbf{TTCP}, \textbf{SPAK, Packet Generator}, \textbf{TfGen}, \textbf{TrafGen} and \textbf{Mtools}. Table ~\ref{tab:traffic-gen-links} presents an updated list of links for download.
+Some others mentioned tools \cite{web-ditg} we were not able to find any reference of available features are: \textbf{UDPgen}, \textbf{Network Traffic Generator}, \textbf{Packet Shell}, \textbf{Real-Time Voice Traffic Generator}, \textbf{PIM-SM Protocol Independent Multicast Packet Generator}, \textbf{TTCP}, \textbf{SPAK, Packet Generator}, \textbf{TfGen}, \textbf{TrafGen} and \textbf{Mtools}. Table~\ref{tab:traffic-gen-links} presents an updated list of links for download.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Traffic Generators - Feature Survey}
 
 
-Tables ~\ref{tab:packet-level-tg1}, ~\ref{tab:multi-level-tg2}, ~\ref{tab:app-level-tg3}, and ~\ref{tab:replay-tg1} is presented a survey of of the main features of such tools, such as support for Operational systems, protocols, stochastic functions available for traffic generation, and traffic generator class. Some free, but not open-source, traffic generators are listed as well. 
+Tables~\ref{tab:packet-level-tg1}, ~\ref{tab:multi-level-tg2}, ~\ref{tab:app-level-tg3}, and ~\ref{tab:replay-tg1} is presented a survey of of the main features of such tools, such as support for Operational systems, protocols, stochastic functions available for traffic generation, and traffic generator class. Some free, but not open-source, traffic generators are listed as well. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PACKET-LEVEL TGS
@@ -174,7 +174,7 @@ It is also possible to add any unimplemented protocols, through scripts defined 
 
 \textbf{Seagull}\cite{wp-seagull}\cite{web-seagull}: an Open Source Multi-protocol traffic generator 2009]: Seagull is a traffic generator and test open-source tool, released by HP. 
 It has support of many protocols, from link layer to application layer, and its support is easily extended, via XML dictionaries. As the documentation argues, the protocol extension flexibility is one of the main features. It supports high speeds, and is reliable, being tested through hundreds of hours. 
-It can also generate traffic using three statistical models: uniform(constant), best-effort and Poisson. 
+It can also generate traffic using three statistical models: uniform (constant), best-effort and Poisson. 
 
 
 \textbf{BRUTE}\cite{web-brute}: Is a traffic generator that operates on the top of Linux 2.4-6 and 2.6.x, not currently being supported on newer versions. It also supports some stochastic functions (constant, poison, trimodal) for departure time burst, and can simulate VoIP traffic.
@@ -191,7 +191,7 @@ It can also generate traffic using three statistical models: uniform(constant), 
 \textbf{sourcesOnOff}\cite{sourcesonoff-paper} \cite{web-sourcesonoff}:  sourcesOnOff is a new traffic generator released on 2014, that aims to generate realistic synthetic traffic using probabilistic models to control on and off time of traffic flows. As shown on the paper, it is able to guarantee self-similarity, an has support to many probabilistic distributions for the on/off times: Weibull, Pareto, Exponential and Gaussian. Supports TCP and UDP over IPv4.
 
 
-\textbf{TG}\cite{web-tg}: TG is a traffic generator that can generate and receive one-way packet streams transmitted from the UNIX user level process between source and traffic sink nodes. A simple specification language controls it, that enables the craft of different lengths and interarrival times distributions, such as Constant, uniform, exponential and on/off(markov2). 
+\textbf{TG}\cite{web-tg}: TG is a traffic generator that can generate and receive one-way packet streams transmitted from the UNIX user level process between source and traffic sink nodes. A simple specification language controls it, that enables the craft of different lengths and interarrival times distributions, such as Constant, uniform, exponential and ON/OFF (markov2). 
 
 \footnote{not open-source}\textbf{MGEN}\cite{web-mgen}: MGEN (Multi-Generator) is a traffic generator developed by the Naval Research Laboratory (NRL) PROTocol Engineering Advanced Networking (PROTEAN) Research Group. It can be used to emulate the traffic patterns of unicast and/or multicast UDP and TCP IP applications. It supports many different types of stochastic functions, nominated periodic, Poisson, burst jitter and clone which can control inter-departure times and packet size. 
 
@@ -205,17 +205,17 @@ It can also generate traffic using three statistical models: uniform(constant), 
 
 \textbf{Nping}\cite{web-nping}: active hosts, as a traffic generator for network stack stress testing, ARP poisoning, Denial of Service attacks, route tracing, etc. Nping CLI permits the users control over protocols headers. 
 
-\textbf{TCPreplay}\cite{web-tcpreplay}: TCPreplay is a user-level replay engine, that can use pcap files as input, and then forward, packets in a network interface. It can modify some header parameters as well. 
+\textbf{TCPreplay}\cite{web-tcpreplay}: TCPreplay is a user-level replay engine, that can use \textit{pcap} files as input, and then forward, packets in a network interface. It can modify some header parameters as well. 
 
 
 \textbf{TCPivo}\cite{tcpivo-paper}\cite{web-tcpivo}: TCPivo is a high-speed traffic replay engine that is able to read traffic traces, and replay packets in a network interface, working at the kernel level. It is not currently supported kernel versions greater than 2.6. 
 
-\textbf{NetFPGA PacketGenerator}\cite{web-netfpgapacketgenerator}: NetFPGA Packet Generator is a hardware-based traffic generator and capture tool, build over the NetFPGA 1G, and open \acrshort{FPGA} platform with 4 ethernet interfaces of 1 Gigabit of bandwidth each. It is a replay engine tool which uses as input pcap files. It is able to accurately control the delay between the frames, with the default delay being the same in the pcap file. It is also able to capture packets and report statistics of the traffic. 
+\textbf{NetFPGA PacketGenerator}\cite{web-netfpgapacketgenerator}: NetFPGA Packet Generator is a hardware-based traffic generator and capture tool, build over the NetFPGA 1G, and open \acrshort{FPGA} platform with 4 ethernet interfaces of 1 Gigabit of bandwidth each. It is a replay engine tool which uses as input \textit{pcap} files. It is able to accurately control the delay between the frames, with the default delay being the same in the \textit{pcap} file. It is also able to capture packets and report statistics of the traffic. 
 
 
 \textbf{NetFPGA Caliper}\cite{web-caliper}: is a hardware-based traffic generator, build on NetFPGA 1G, built over NetThreads platform, an FPGA microprocessor which support threads programming. Different form NetFPGA Packet Generator, Caliper can produce live packets. It is written in C. 
 
-\textbf{NetFPGA OSNT}\cite{web-osnt}:  OSNT (Open Source Network Tester) is hardware based network traffic generator built over the NetFPGA 10G. As NetFPGA 1G, NetFPGA 10G is an FPGA platform with 4 ethernet interfaces, but with 10 Gigabits of bandwidth. OSNT is a replay engine and is loaded with pcap traces. 
+\textbf{NetFPGA OSNT}\cite{web-osnt}:  OSNT (Open Source Network Tester) is hardware based network traffic generator built over the NetFPGA 10G. As NetFPGA 1G, NetFPGA 10G is an FPGA platform with 4 ethernet interfaces, but with 10 Gigabits of bandwidth. OSNT is a replay engine and is loaded with \textit{pcap} traces. 
 
 
 \textbf{Dpdk Pktgen}\cite{web-dpdk-pktgen}: Pktgen is a traffic generator measurer built over DPDK. DPDK is a development kit, a set of libraries and drivers for fast packet processing. DPDK was designed to run on any processor but has some limitation in terms of supported NICs, that can be found on its website.
@@ -252,7 +252,7 @@ Its most basic operation is to generate a set of HTTP GET requests and measure t
 
 \textbf{Swing}\cite{swing-paper} \cite{web-swing}: Swing is a closed-loop multi-layer and network responsive generator. It can read capture traces and captures the packet interactions of many applications, being able to models distributions for the user, application, and network behavior, stochastic and responsively. Swing can model user behavior, REEs, connection, packets, and network. 
 
-\footnote{not open-source}\textbf{LiTGen}(Lightweight Traffic Generator)\cite{litgen-paper} is an open-loop, multilevel traffic generator. It can model wireless network traffic in a peer user and application basis. This tool model the traffic in three different levels: packet level, object level (smaller parts of an application session), and session level.
+\footnote{not open-source}\textbf{LiTGen} (Lightweight Traffic Generator)\cite{litgen-paper} is an open-loop, multilevel traffic generator. It can model wireless network traffic in a peer user and application basis. This tool model the traffic in three different levels: packet level, object level (smaller parts of an application session), and session level.
 
 
 \footnote{not open-source}\textbf{EAR}\cite{ear-paper}: traffic generator that uses a technique called“EventReproduction Ratio” to mimic wireless IEEE 802.11 protocol behavior. 
@@ -325,9 +325,7 @@ LegoTG                  &                                                       
 \section{Validation of Ethernet traffic generators: some use cases}
 
 
-
-
-In this section, we list some use cases of validation of Ethernet traffic generators. Our validation methods used in chapter 4 and 5 were based on them. We are going to present seven different study cases on validation of related traffic generators. They are Swing,   Harpoon [Sommers et al. 2004], D-ITG [Botta et al. 2012], sourcesOnOff  [Varet2014], MoonGen [Emmerich et al.2015], LegoTG [Bartlett e Mirkovic2015] and NFPA [Csikor et al. 2015].
+In this section, we list some use cases of validation of Ethernet traffic generators. Our validation methods used in Chapter~\ref{ch:modeling-evaluation} and~\ref{ch:validation} were based on them. We are going to present seven different study cases on validation of related traffic generators. They are Swing,   Harpoon~\ref{harpoon-validation}, D-ITG~\ref{ditg-paper}, sourcesOnOff~\ref{sourcesonoff-paper}, MoonGen~\ref{moongen-paper}, LegoTG~\ref{legotg-paper} and NFPA~\ref{nfpa-paper}.
 
 \subsection{Swing}
 
@@ -373,7 +371,7 @@ In the end, they showed the differences in throughput evaluation of a Cisco 6509
 \subsection{D-ITG}
 
 
-D-ITG\cite{ditg-paper} is a network traffic generator, with many configurable features. The tool provides a platform that meets many emerging requirements for a realistic traffic generation. For example, multi-platform, support of many protocols, distributed operation, sending/receiving flow scalability, generation models, and analytical model based generation high bit/packet rate. You can see different analytical and models and protocols supported by D-ITG at table~\ref{tab:packet-level-tg1}.
+D-ITG\cite{ditg-paper} is a network traffic generator, with many configurable features. The tool provides a platform that meets many emerging requirements for a realistic traffic generation. For example, multi-platform, support of many protocols, distributed operation, sending/receiving flow scalability, generation models, and analytical model based generation high bit/packet rate. You can see different analytical and models and protocols supported by D-ITG at Table~\ref{tab:packet-level-tg1}.
 
 To the evaluation of realism on analytical model parameterization of D-ITG, the authors used a synthetic replication of a eight players's LAN party of Age of Mythology\footnote{\href{https://www.ageofempires.com/games/aom/}{https://www.ageofempires.com/games/aom/}}. They have captured traffic flows during the party,  then, they modeled its packet size and inter-packet time distributions. They show that the synthetic traffic and the analytical model have similar curves of packet size and inter-packet time; thus it can approximate the empirical data. Also, the bit rate's mean and the standard deviation of the empirical and synthetic data are similar.
 
@@ -385,12 +383,12 @@ The validation methods used on sourcesOnOff are:
 
 \begin{itemize}
 \item A visual comparison between On time and Off time of the original trace and the stochastic fitting;
-\item QQplots, which aim to evaluate the correlation between inter-trains duration of real and generated traffic;
+\item \textit{QQplots}, which aim to evaluate the correlation between inter-trains duration of real and generated traffic;
 \item Measurement of the measured throughput's autocorrelation~\ref{ap:revision-probability} of the real and synthetic traffic;
 \item Hurst exponent computation of the real and the synthetic trace;
 \end{itemize}
 
-The results pointed to an excellent stochastic fitting, better for On-time values. On the other hand, the correlation value of the QQplot was more significant on the Off time values (99.8\% versus 97.9\%). In the real and synthetic traces, the throughput's autocorrelation  remained between an upper limit of 5\%. Finally, the ratio between the evaluated Hurst exponent always remained smaller than 12%.
+The results pointed to an excellent stochastic fitting, better for On-time values. On the other hand, the correlation value of the \textit{QQplot} was more significant on the Off time values (99.8\% versus 97.9\%). In the real and synthetic traces, the throughput's autocorrelation  remained between an upper limit of 5\%. Finally, the ratio between the evaluated Hurst exponent always remained smaller than 12\%.
 
 \subsection{MoonGen}
 

@@ -42,7 +42,7 @@ There are many taxonomies for traffic generators available in the literature. Cl
 Traffic generators can be classified into two main groups: replay engines\cite{sourcesonoff-paper} and model-based tools:
 
 \begin{itemize}
-\item \textbf{Replay engines}: These tools can read pcap files, and inject copies of the packet on a network interface. Eg.: TCPReplay\cite{web-tcpreplay}, TCPivo\cite{tcpivo-paper}, D-ITG\cite{ditg-paper}.
+\item \textbf{Replay engines}: These tools can read \textit{pcap} files, and inject copies of the packet on a network interface. Eg.: TCPReplay\cite{web-tcpreplay}, TCPivo\cite{tcpivo-paper}, D-ITG\cite{ditg-paper}.
 \item \textbf{Model-based traffic generators}: they generate synthetic traffic, controlling one or more feature of the traffic; such as header fields, packet sizes and inter-packet times.  
 \end{itemize}
 
@@ -57,12 +57,12 @@ servers;
 
 \item \textbf{Packet-level traffic generators}: it is the most used traffic generators. They can control packet-features like inter-departure times, packet size, throughput and packets per second. For example, D-ITG\cite{ditg-paper}, and TG\cite{web-tg} can control inter-packet times via stochastic distributions. However, most of them only permit the configuration of constant-rate models, by setting the packet rate or the traffic bandwidth, such as Iperf\cite{web-iperf}, BRUNO\cite{bruno-paper}, and Ostinato\cite{web-ostinato}.
 
-\item \textbf{Multi-level traffic generators}: this is a more recent class of network traffic generator. They take into account existing interaction among each layer of the network stack, to create network traffic as close as possible to reality. The most important tool is Swing\cite{swing-paper} which input collected pcap files. 
+\item \textbf{Multi-level traffic generators}: this is a more recent class of network traffic generator. They take into account existing interaction among each layer of the network stack, to create network traffic as close as possible to reality. The most important tool is Swing\cite{swing-paper} which input collected \textit{pcap} files. 
 
 \end{itemize}
 
 
-We have done an extensive survey on packet generators available on the open-source community and classified them according to the first taxonomy. Also, we summarized the main features of each one. The result of this work is the tables~\ref{tab:packet-level-tg1},~\ref{tab:multi-level-tg2},~\ref{tab:app-level-tg3}, and~\ref{tab:replay-tg1}, in the appendix ~\ref{ap:traffic-gen-survey}. We also have a list of the tool repositories at table~\ref{tab:traffic-gen-links}.
+We have done an extensive survey on packet generators available on the open-source community and classified them according to the first taxonomy. Also, we summarized the main features of each one. The result of this work is the Tables~\ref{tab:packet-level-tg1},~\ref{tab:multi-level-tg2},~\ref{tab:app-level-tg3}, and~\ref{tab:replay-tg1}, in the Appendix~\ref{ap:traffic-gen-survey}. We also have a list of the tool repositories at Table~\ref{tab:traffic-gen-links}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,7 +137,7 @@ We are going to discuss metrics on validation of traffic generators in the next 
 
 \begin{table}[t!]
 \centering
-\caption{Probability density function (\acrshort{PDF}) and Cumulative distribution function (\acrshort{CDF}) of some random variables, and if this stochastic distribution has or not self-similarity property. Some functions used to express these distributions are defined at the table ~\ref{tab:distributions-definitions} }
+\caption{Probability density function (\acrshort{PDF}) and Cumulative distribution function (\acrshort{CDF}) of some random variables, and if this stochastic distribution has or not self-similarity property. Some functions used to express these distributions are defined at the Table~\ref{tab:distributions-definitions} }
 \label{tab:distributions-equations}
 \scalebox{0.82}{ 
 \begin{tabular}{lcccr}
@@ -200,7 +200,7 @@ Lower incomplete Gamma function      & $ \gamma(s, x) = x^{s}\Gamma(s)e^{-x}\sum
 \end{table}
 
 
-Classical models for network traffic generation were the same used in telephone traffic, such as  Poisson or Poisson-related. They can describe the randomness of an Ethernet link but cannot capture the presence of "burstiness" in a long-term time scale, such as traffic "spikes" on long-range "ripples". Lerand et al.\cite{selfsimilar-ethernet}, points in his seminal work, in 1994, that the nature of the Ethernet traffic is self-similar. It has a fractal-like shape since characteristics seen in a small time scale should appear on a long-scale as well, that have been referred, in the most of the time, as long-range dependence or degree of long-range dependence (LRD). One way to identify if a process is self-similar is by checking its Hurst parameter, or Hurst exponent H, as a measure of the "burstiness" and LRD.  A random process is self-similar and LRD if $0.5 < H <1$\cite{stochastic-selfsimilar} (appendix~\ref{ap:revision-probability}). 
+Classical models for network traffic generation were the same used in telephone traffic, such as  Poisson or Poisson-related. They can describe the randomness of an Ethernet link but cannot capture the presence of "burstiness" in a long-term time scale, such as traffic "spikes" on long-range "ripples". Lerand et al.\cite{selfsimilar-ethernet}, points in his seminal work, in 1994, that the nature of the Ethernet traffic is self-similar. It has a fractal-like shape since characteristics seen in a small time scale should appear on a long-scale as well, that have been referred, in the most of the time, as long-range dependence or degree of long-range dependence (LRD). One way to identify if a process is self-similar is by checking its Hurst parameter, or Hurst exponent H, as a measure of the "burstiness" and LRD.  A random process is self-similar and LRD if $0.5 < H <1$\cite{stochastic-selfsimilar} (Appendix~\ref{ap:revision-probability}). 
 
 Willinger et al. pointed out that the Ethernet traffic has a high variability (or infinite variance)\cite{selfsimilar-highvariability}.  Processes with such characteristic are said to be heavy-tailed. In practical terms, that means a sudden discontinuous change can always occur. To be heavy-tailed means that the stochastic distribution is not exponentially bounded. In other words, some value far from the mean does not have a negligible probability of occurrence. We can express self-similar and heavy-tailed processes using heavy-tailed stochastic distributions, such as Pareto and Weibull. Table~\ref{tab:distributions-equations} shows the reference for these stochastic distributions. In the last column, we indicate if the distribution is or not heavy-tailed. 
 
@@ -334,7 +334,7 @@ Later studies suggested the use of multi-fractal models, instead of the self-sim
 \end{figure*}
 
 
-Another way to analyze scaling characteristics is through \textit{QQplots} (appendix~\ref{ap:revision-probability})\cite{paper-qqplot}\cite{web-qq-tuto1}\cite{web-qq-tuto2}. \textit{\acrshort{QQplot}} is a visual method to compare sample data with a specific stochastic distribution.  To create a \textit{QQplot}, we must order the orders the measured data values (\textbf{samples}) from the smallest to largest. Then, we have to plots the samples against the expected value given by the model we want to validate. The \textbf{sample} values appear along the \textbf{y-axis} and the \textbf{theoretical} values along the \textbf{x-axis}, as we represent on the figure~\ref{fig:qqplot-tutorial}. Finally, we draw a line with 45 degrees of inclination, representing how the samples would behave if they had the same behavior of the theoretical model. The more linear, the more the data is likely to be expressed by this specific stochastic distribution. Also, Depending on how the curve be behaves, some features of the empirical dataset compared to the theoretical can be observed, such as \textbf{heavy-tail}, \textbf{light-tail}, \textbf{bimodal} behavior, and the \textbf{curve skew}(Figure~\ref{fig:qqplot-tutorial}). We present a complete tutorial about this subject in the appendix~\ref{ap:revision-probability}.
+Another way to analyze scaling characteristics is through \textit{QQplots} (Appendix~\ref{ap:revision-probability})\cite{paper-qqplot}\cite{web-qq-tuto1}\cite{web-qq-tuto2}. \textit{\acrshort{QQplot}} is a visual method to compare sample data with a specific stochastic distribution.  To create a \textit{QQplot}, we must order the orders the measured data values (\textbf{samples}) from the smallest to largest. Then, we have to plots the samples against the expected value given by the model we want to validate. The \textbf{sample} values appear along the \textbf{y-axis} and the \textbf{theoretical} values along the \textbf{x-axis}, as we represent on the Figure~\ref{fig:qqplot-tutorial}. Finally, we draw a line with 45 degrees of inclination, representing how the samples would behave if they had the same behavior of the theoretical model. The more linear, the more the data is likely to be expressed by this specific stochastic distribution. Also, Depending on how the curve be behaves, some features of the empirical dataset compared to the theoretical can be observed, such as \textbf{heavy-tail}, \textbf{light-tail}, \textbf{bimodal} behavior, and the \textbf{curve skew} (Figure~\ref{fig:qqplot-tutorial}). We present a complete tutorial about this subject in the Appendix~\ref{ap:revision-probability}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{QoS/QoE Related Metrics}
