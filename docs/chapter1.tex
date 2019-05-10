@@ -38,7 +38,7 @@ Aiming to address these gaps, this dissertation introduces \acrshort{SIMITAR}, a
         sourcesOnOff          & \textbf{no}      & yes               & yes                   & \textbf{no}   \\
         Iperf                & \textbf{no}      & \textbf{no}       & yes                   & \textbf{no}   \\ 
         \rowcolor[HTML]{C0C0C0} 
-        SIMITAR          & yes      & yes               & yes                   & yes   \\ \hline
+        \textbf{SIMITAR}          & \textbf{yes}      & \textbf{yes}               & \textbf{yes}                   & \textbf{yes}   \\ \hline
     \end{tabular}
     }
     \label{tab:related-work}
@@ -61,7 +61,7 @@ Traffic generators can be classified into two main groups: replay engines\cite{s
 Model-based tools have their limitations as well. Traffic generators that emulate the applications,  are designed to represent only specific scenarios on computer networking, and are not enough to represent a large variety of scenarios. Many  traffic generator tools only offer constant-rate and Poisson models, which does not represent well the complexity of internet traffic\cite{selfsimilar-ethernet}. Other tools such as D-ITG offer dozens of parameters and models to be configured, but delegate to the user the task of creating, validate and script his traffic model. To the best of our knowledge, we found only two open-source auto-configurable tools: Swing and Harpoon.  However, none of them has an extensible architecture, which turns supporting modern and fast \acrshort{I/O} \acrshort{API}s (such as DPDK\cite{web-dpdk}) a hard task. Table~\ref{tab:related-work} present a summary of the above mentioned features for some relevant traffic generators: Swing\cite{swing-paper}, Harpoon\cite{harpoon-validation}, sourcesOnOff\cite{sourcesonoff-paper}, D-ITG\cite{ditg-paper}, Iperf\cite{web-iperf}, Ostinato\cite{web-ostinato} and LegoTG\cite{legotg-paper}.
 
 
-\section{Problem Statement}
+\section{Objectives, Requirements, and Methodology}
 
 
 Based on the provided context, we defined a set of targets for our research:
@@ -69,11 +69,11 @@ Based on the provided context, we defined a set of targets for our research:
 
 \begin{enumerate}
 
-	\item \textbf{Research Topic I}:  Survey open-source Ethernet workload tools and address features each one has. We wanted to know the existing solutions, innovation points on the current state of affairs, and how can we some could be integrated and reused by our solution;
+	\item \textbf{Survey}: Evaluate open-source Ethernet workload tools and address features each one has. We wanted to know the existing solutions, innovation points on the current state of affairs, and how can we some could be integrated and reused by our solution;
 	
-	\item \textbf{Research Topic II}: Study the characterization and mathematical modeling of Ethernet traffic, what are the best models and challenges. 
+	\item \textbf{Background studies}: Study the characterization and mathematical modeling of Ethernet traffic, what are the best models and challenges. 
 	
-	\item \textbf{Research Topic III}: Define what realistic traffic generation is, and how to measure if any synthetic traffic is realistic or not. 
+	\item \textbf{Definition of Realistic Traffic}: Define what realistic traffic generation is, and how to measure if any synthetic traffic is realistic or not. 
 	
 	\item \textbf{Design}: Create a general method for modeling and parameterization of Ethernet traffic;
 	
@@ -93,7 +93,7 @@ Towards the above-stated objectives, we  had identified a set of requirements of
 
 \item \textbf{Simple usage}: It must be easy to use. It has to take as input a Compact Trace Descriptor, just as a traffic replay engine (such as TCPreplay) would take a pcap file;
 
-\item \textbf{ Human readable model}: it must produce a human-readable file as output that describes our traffic using our abstract model. We call this file a Compact Trace Descriptor(\acrshort{CDT});
+\item \textbf{Human readable model}: it must produce a human-readable file as output that describes our traffic using our abstract model. We call this file a Compact Trace Descriptor(\acrshort{CDT});
 
 \item \textbf{Traffic generation programmability}: It must have what we call traffic generation programmability. The compact trace descriptor must be simple and easy to read. That way, the user may want to create our custom traffic, in a platform agnostic way.
 
@@ -104,7 +104,7 @@ Towards the above-stated objectives, we  had identified a set of requirements of
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.4]{figures/ch1/dev-cicle}
+    \includegraphics[scale=0.3]{figures/ch1/dev-cicle}
     \caption{Spiral research and development procedure}
     \label{fig:dev-cicle}
 \end{figure}
@@ -112,20 +112,22 @@ Towards the above-stated objectives, we  had identified a set of requirements of
 We have adopted a spiral procedure of development, as suggested Sommerville on \textit{Software Engineering}\cite{sommerville}, but adapted to an academic research process. Figure ~\ref{fig:dev-cicle} shows the model of development we had adopted. It had four main phases: 
 
 \begin{enumerate}
-    \item \textit{Requirements (Working Plan)};
+    \item \textit{Requirements (working plan)};
     \item \textit{Design (research 1)};
     \item \textit{Development (prototyping/codding)};
     \item \textit{Preparation (research 2)}.
 \end{enumerate}
 
-On the \textbf{Requirements phase}, we create tasks,  formalized on \textit{Working Plans} documents.  These tasks should cover the whole process. On the \textbf{Design (research 1) phase}, where the focus of the research are related works. We research on literature to learn about topics defined by the task, to help we design our solutions. On this step, during the initial phases of the project,  we also conceived the architecture along with \acrshort{UML} diagrams\footnote{Unified Modeling Language (UML) is a modeling language designed to provide a standardized way of representing and design systems\cite{uml}.}. Some small changes are inevitable, but structural changes turn to be impractical on later phases. The next phase is the \textbf{Development phase}. It is the prototyping and coding phase.  The last is the \textbf{Preparation phase} when we evaluate the results achieved on the Development phase, and we go back to research again,  aiming to prepare the next \textit{Working Plan}.  On this phase, the focus of the research is on points of innovation.
+On the \textbf{Requirements phase}, we create tasks,  formalized on \textit{Working Plans} documents.  These tasks should cover the whole process. On the \textbf{Design (research 1) phase}, where the focus of the research are related works. We research on literature to learn about topics defined by the task, to help we design our solutions. On this step, during the initial phases of the project,  we also conceived the architecture along with \acrshort{UML} diagrams\footnote{\textbf{Unified Modeling Language (UML)} is a modeling language designed to provide a standardized way of representing and design systems\cite{uml}.}. Some small changes are inevitable, but structural changes turn to be impractical on later phases. The next phase is the \textbf{Development phase}. It is the prototyping and coding phase.  The last is the \textbf{Preparation phase} when we evaluate the results achieved on the Development phase, and we go back to research again,  aiming to prepare the next \textit{Working Plan}.  On this phase, the focus of the research is on points of innovation.
 
 
-\section{Document Overview}
+\section{Outline}
 
 
 In this introductory chapter, we had presented an abstract of state of affairs, and the main goals of our research. \textit{\textbf{Chapter~\ref{ch:literature-review}}} presents a survey on open-source traffic generator tools, summarizing the benefits, and features supported by each one. The chapter offers a  review of topics on realistic traffic generation and defines important concepts on network traffic modeling; such as self-similarity and heavy-tailed distributions. Also, the chapter presents a survey on techniques for validating traffic generator tools 
 
-\textit{\textbf{Chapter~\ref{ch:architecture}}} presents \textit{SIMITAR} traffic generator. We describe its low-level requirements and define an architecture and their algorithms.  We explain its operation and suggest some use cases. In \textit{\textbf{Chapter~\ref{ch:modeling-evaluation}}} we go deep on the modeling process we had developed for our traffic generator. We validate the effectiveness of Information Criteria \acrshort{AIC} and \acrshort{BIC} as a method selection of stochastic models for  Ethernet traffic.  We also discuss some other algorithms we developed such as \textit{calcOnOff} and the application protocol guesser. In \textit{\textbf{Chapter~\ref{ch:validation}}}, we define a set of metrics based on previous tests on validation of traffic generators found in the literature. Here, we focus on the packet, flow, and scaling metrics. We test our tool in an emulated SDN testbed with Mininet\cite{web-mininet}\footnote{Mininet is a network emulator. It can run a collection of  hosts, switches, routers and links over a single Linux kernel, using lightweight virtualization\cite{web-mininet-repo}.}, using OpenDayLight\cite{web-opendaylight} as a controller. 
+\textit{\textbf{Chapter~\ref{ch:architecture}}} presents \textit{SIMITAR} traffic generator. We describe its low-level requirements and define an architecture and their algorithms.  We explain its operation and suggest some use cases. In \textit{\textbf{Chapter~\ref{ch:modeling-evaluation}}} we go deep on the modeling process we had developed for our traffic generator. We validate the effectiveness of Information Criteria \acrshort{AIC} and \acrshort{BIC} as a method selection of stochastic models for  Ethernet traffic.  We also discuss some other algorithms we developed such as \textit{calcOnOff} and the application protocol guesser. In \textit{\textbf{Chapter~\ref{ch:validation}}}, we define a set of metrics based on previous tests on validation of traffic generators found in the literature. Here, we focus on the packet, flow, and scaling metrics. We test our tool in an emulated SDN testbed with Mininet\cite{web-mininet}\footnote{\textbf{Mininet} is a network emulator. It can run a collection of  hosts, switches, routers and links over a single Linux kernel, using lightweight virtualization\cite{web-mininet-repo}.}, using OpenDayLight\cite{web-opendaylight} as a controller. 
 
 \textit{\textbf{Chapter~\ref{ch:future-work}}}  highlights future actions to improve SIMITAR on realism and performance along with other future research avenues, including improving its computational performance, expand it to new APIs of traffic generation and calibration of its constants. Finally, we end the work presentation with a conclusion ( \textit{\textbf{chapter~\ref{ch:conclusion}}}).
+
+\textit{\textbf{Appendices}} \textit{\textbf{~\ref{ap:revision-probability}}}, \textit{\textbf{~\ref{ap:networks}}}, and \textit{\textbf{~\ref{ap:traffic-gen-survey}}} provide supplementary materials for Chapter\textit{\textbf{~\ref{ch:literature-review}}}: Review of Mathematical Concepts, Computer Networks, and Traffic Generators. Appendix\textit{\textbf{~\ref{ap:aditional-plots}}} provides charts in addition to those presented in Chapter~\ref{ch:modeling-evaluation}, and Appendix\textit{\textbf{~\ref{ap:uml}}} complements the presentation of the architecture discussed in Chapter 03 by presenting SIMITAR  UML class-diagrams.

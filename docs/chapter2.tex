@@ -36,7 +36,7 @@ There are many taxonomies for traffic generators available in the literature. Cl
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Traffic generators by strategy}
+\subsection{Strategy}
 
 
 Traffic generators can be classified into two main groups: replay engines\cite{sourcesonoff-paper} and model-based tools:
@@ -66,7 +66,7 @@ We have done an extensive survey on packet generators available on the open-sour
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{According to the implementation of traffic generators}
+\subsection{Implementation}
 
 \begin{itemize}
 
@@ -280,45 +280,51 @@ Since SDN device, which execute flow-based operations are becoming widespread, f
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fractal and Scaling Characteristics}
 
+\smallskip \noindent \textbf{\textit{Hurst Exponent}}
+
 Second order characteristics such as "burstiness" and long-range dependence are responsible for the complex nature of internet traffic\cite{validate-trafficgen}. Due to its non-stationary nature, traditional methods fail to extract useful information\cite{validate-trafficgen}. The first analysis found in the literature to extract fractal characteristics was made by Lerand et al. estimating the  Hurst exponent\cite{selfsimilar-ethernet}. They demonstrated the self-similar nature of the Ethernet traffic. As explained in the previous section, a self-similar process should have a Hurst exponent valued larger than 0.5 and smaller than 1 ($0.5 < H < 1$).
+
+\smallskip \noindent \textbf{\textit{Wavelet-based Analysis}}
 
 Over the years, wavelet-based analysis has become an efficient way to reveal correlations, bursts and scaling nature of the Ethernet traffic\cite{validate-trafficgen}. Many papers have used wavelet-based analysiscite{swing-paper}\cite{non-intrusive-wavelet}\cite{wavelet-analysis-long-range}. Huang et al.\cite{non-intrusive-wavelet} and Abry and Veitch\cite{wavelet-analysis-long-range} offer an extensible explanation of wavelet-based scaling analysis (\acrshort{WSA}) or wavelet multi-resolution energy analysis (\acrshort{WMA}).  
 
-First, consider a time series $X_{0,k}$ for $k = 0, 1, ... 2^n$:
+We will now make a brief derivation of the energy curves used in wavelet analysis (WMA). First, consider a time series $X_{0,k}$ for $k = 0, 1, ... 2^n$:
 
 \begin{equation}
 \{X_{0,k}\} = \{ X_{0,0}, X_{0,1}, ... ,X_{0,2^{n}} \}
 \end{equation} 
 
-Suppose that we coarser $X_{0}$ in another time-series $X_{1}$ with half of the original resolution, but using  $ \sqrt[]{2} $ as normalization factor:
+\noindent Then, we roughly approximate $X_ {0} $ in another time-series $X_ {1} $ with half of the original resolution, but using $ \sqrt[]{2} $ as normalization factor:
 
 \begin{equation}
+\label{eq:wavelet-av}
 X_{1,k} = \frac{1}{\sqrt{2}}(X_{0,2k} + X_{0,2k+1})
 \end{equation}
 
-Taking the differences, instead of the averages, evaluate the so-called \textit{details}.
+\noindent Taking the differences, instead of the averages (equation~\ref{eq:wavelet-av}), evaluate the so-called \textit{details}.
 
 \begin{equation}
 d_{1,k} = \frac{1}{\sqrt{2}}(X_{0,2k} - X_{0,2k+1})
 \end{equation}
 
-Continuing repeating this process, writing coarser time series $X_{2}$ from $X_{1}$, until we reach $X_{n}$. Therefore, we will get a collection of \textit{details}:
+\noindent  Continuing this process respectively , writing coarser time series $X_{2}$ from $X_{1}$, until we reach $X_{n}$. Therefore, we will get a collection of \textit{details}:
 
 \begin{equation}
 \{d_{j,k}\} = \{ d_{1,0}, d_{1,1}, ..., d_{1,2^{n/2}}, ..., d_{n, 0} \}
 \end{equation}
 
-This collection of details ${d_{j,k}}$ are called Discrete Haar Wavelet Transform. Using the \textit{details}, we can calculate the energy function $E_{j}$, under the scale $j$, using:
-
+\noindent  This collection of details ${d_{j,k}}$ are called Discrete Haar Wavelet Transform. Using the \textit{details}, we can calculate the energy function $E_{j}$, under the scale $j$, using:
 \begin{equation}
 E_{j} = \frac{1}{N_{j}} \sum_{k = 0}^{N_{j} - 1} |d_{j,k}|^{2}; \qquad j = 1, 2, ..., n
 \end{equation} 
-\\ 
-were $N_{j}$ is the total number of coefficients at scale $j$. If we plot $\log(E_{j})$ as a function o the scale $j$, we will obtain a wavelet multiresolution energy plot.
 
-On energy wavelet multiresolution energy plots, it is possible to capture three different central behavior, according to the scale. On \textbf{periodic time series}, the Energy values will be small. Time-series with no error in the time-periods of the scales $j$, the energy values $E_{j}$ will be zero. So periodicity will be sensed if the value of the energy function decrease. Perfect \textbf{white noise time series} maintains the same value of the energy function. So an approximately constant value for the energy function $E_{j}$ indicates white noise behavior (which can be represented by a Poisson process\cite{poisson-white-noise}). On \textbf{self-similar time series}, the energy function  $\log(E_{j})$ grows approximately linearly with the scale $j$. Following these rules, we can quickly identify periodicities, and self-similar and Poisson process characteristics, just seeing if it decays, growths, or constant-shapes on wavelet energy plots.
+\noindent  were $N_{j}$ is the total number of coefficients at scale $j$. Plotting a graph of $\log(E_{j})$ as a function o the scale $j$, we will obtain a wavelet multiresolution energy curve.
 
-Later studies suggested the use of multi-fractal models, instead of the self-similar models (also called monofractal)\cite{validate-trafficgen}\cite{udp-flows-model}. Since there is a lack of multiscaling analysis on validation of traffic generation in the literature, this type of analysis will stay for future works.
+On energy wavelet multiresolution energy curves, it is possible to capture three central behaviors, according to the time-scale.  On \textbf{periodic time series}, the Energy values will be small. Time-series with no error in the time-periods of the scales $j$, the energy values $E_{j}$ will be zero. So periodicity will be sensed if the value of the energy function decrease. Perfect \textbf{white noise time series} maintains the same value of the energy function. So an approximately constant value for the energy function $E_{j}$ indicates white noise behavior (which can be represented by a Poisson process\cite{poisson-white-noise}). On \textbf{self-similar time series}, the energy function  $\log(E_{j})$ grows approximately linearly with the scale $j$. Following these rules, we can quickly identify periodicities, and self-similar and Poisson process characteristics, just seeing if it decays, growths, or constant-shapes on wavelet energy plots.
+
+Later studies suggested the use of multi-fractal models, instead of the self-similar models (also called monofractal)\cite{validate-trafficgen}\cite{udp-flows-model}. Since there is a lack of multiscaling analysis in validation of traffic generation in the literature, this type of analysis will stay for future works.
+
+\smallskip \noindent \textbf{\textit{QQplots Analysis}}
 
 \begin{figure*}[ht!]
     \centering
@@ -328,10 +334,7 @@ Later studies suggested the use of multi-fractal models, instead of the self-sim
 \end{figure*}
 
 
-Another way to analyze scaling characteristics is through \textit{QQplots} (appendix~\ref{ap:revision-probability}). \textit{\acrshort{QQplot}} is a visual method to compare sample data with a specific stochastic distribution. It orders the sample data values from the smallest to largest, then plots these values against the expected value given by the probability distribution function. The data sample values appear along the y-axis and the expected values along the x-axis. The more linear, the more the data is likely to be expressed by this specific stochastic distribution. 
-
-Depending on how the plot behaves, some features of the empirical dataset compared to the theoretical can be observed. Figure~\ref{fig:qqplot-tutorial} presents a summary.
-
+Another way to analyze scaling characteristics is through \textit{QQplots} (appendix~\ref{ap:revision-probability})\cite{paper-qqplot}\cite{web-qq-tuto1}\cite{web-qq-tuto2}. \textit{\acrshort{QQplot}} is a visual method to compare sample data with a specific stochastic distribution.  To create a \textit{QQplot}, we must order the orders the measured data values (\textbf{samples}) from the smallest to largest. Then, we have to plots the samples against the expected value given by the model we want to validate. The \textbf{sample} values appear along the \textbf{y-axis} and the \textbf{theoretical} values along the \textbf{x-axis}, as we represent on the figure~\ref{fig:qqplot-tutorial}. Finally, we draw a line with 45 degrees of inclination, representing how the samples would behave if they had the same behavior of the theoretical model. The more linear, the more the data is likely to be expressed by this specific stochastic distribution. Also, Depending on how the curve be behaves, some features of the empirical dataset compared to the theoretical can be observed, such as \textbf{heavy-tail}, \textbf{light-tail}, \textbf{bimodal} behavior, and the \textbf{curve skew}(Figure~\ref{fig:qqplot-tutorial}). We present a complete tutorial about this subject in the appendix~\ref{ap:revision-probability}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{QoS/QoE Related Metrics}

@@ -4,7 +4,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
+%\section{Introduction}
 
 
 This chapter describes in-depth the implementation of the traffic modeling algorithms mentioned in Chapter 3. The first section gives a brief survey of other works that presented methodologies for a parameterizing stochastic process to describe internet traffic (inter-packet times and packet-trains). This introduction shows a scenario where there is no "one-fits-all" model. The best model always depends on the type of traffic. 
@@ -18,7 +18,7 @@ We use refer to two different cost functions on this chapter. The first is the G
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Literature Review on internet traffic modeling}
+\section{Background}
 
 
 There are many works devoted to studying the nature of the Ethernet traffic\cite{selfsimilar-ethernet}. Classic Ethernet models used Poisson related processes to model traffic\footnote{In our study case we used two Poisson related processes, both using exponential distributions: Exponential(Me) and Exponential(LR). Exponential distributions are considered continuous versions of the Poisson process.  Since we are using time as a real number, we preferred to use just exponential distributions, for simplicity.}. A Poisson process represents the probability of events occur with a known average rate, and independently of the last occurrence\cite{book-poisson}. 
@@ -30,12 +30,152 @@ There are plenty of works in the literature which proposes processes and methodo
 Kreban and Clearwater\cite{hierarchical-dynamics-interarrival-times}  presented a model for times between job submissions from multiple users over a supercomputer. They have shown that the Weibull probability functions can express well small and high values of inter-job submission times. They also have tested exponential, lognormal and Pareto distributions. The Exponential distribution has not represented well long-range values because of it had felt-off too fast. On the other hand, the Pareto problem was that it had felt too slow. Lognormal have fitted well small values, but its performance had been weak on larger ones. Kronewitter\cite{optimal-scheduling-of-heavy-tailed-traffic} has presented a model of scheduling traffic of many heavy-tail sources. On his work, he had used many Pareto sources to represent the traffic. To estimate Pareto shape (parameter $\alpha$) he had used linear regression.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Automatized selection of inter-packet times models using \textit{AIC} and \textit{BIC}}
 
-\subsection{Cross-validation Methodology}
+\section{\texttt{calcOnOff}: an algorithm for estimating flow packet-train periods}
+
+
+As we discussed in chapter~\ref{ch:architecture},  we developed an algorithm we call \texttt{calcOnOff}, listed on algorithm~\ref{alg:calcOnOff}. This procedure estimates the sizes of packet trains, as periods between packet trains in a flow context. 
+This procedure receives as input values:
+
+\begin{enumerate}
+\item  \textbf{\texttt{arrivalTime}}: the list of packets arrivals on time on the flow. For example, if we have five packets arriving every two seconds, we would have: \texttt{arrivalTime = [0, 2, 4,  6, 8]};
+\item  \texttt{deltaTime}: the list of inter-packet times on the flow. Following the same example presented before, we would have: \texttt{deltaTime = [2, 2, 2, 2]}. 
+\item  \textbf{\texttt{cutTime}}: the time threshold that defines if we are still in the same train of packets, or a new one. 
+\item  \textbf{\texttt{minOnTime}}: is the minimum length of flow ON time. minOnTime were used mainly to avoid ON times of zero seconds, in the case of only one packet, or when the time between packets is smaller than the operational system precision. 
+\item  \textbf{\texttt{psSizeList}}: the list of packet sizes in bytes. 
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ALGORITHM CALC-ON-OFF
+\begin{algorithm}[pt!]
+    \caption{calcOnOff}
+    \label{alg:calcOnOff}
+    \begin{algorithmic}[1]
+        \small
+        \Function{calcOnOff}{$arrivalTime, deltaTime, cutTime, minOnTime$}%\Comment{Where A - array, p - left, q - middle, r - right}
+        \State $m = deltaTime.length() - 1$
+        \State $j = 0$
+        \State $lastOff = 0$
+        \State $pktCounterSum = 0$
+        \State $fileSizeSum = 0$
+        \For{$i = 0:m$}
+        \State $pktCounterSum = pktCounterSum + 1$
+        \State $fileSizeSum = fileSizeSum + psSizeList[i, 1]$
+        \If{$deltaTime[i] > cutTime$} 
+        \If{$i == 1$} \Comment{if the first is session-off time}
+        \State $j++$
+        \State $onTimes.push(minOnTime)$
+        \State $offTimes.push(deltaTime[i])$
+        \State $pktCounter.push(pktCounterSum)$
+        \State $fileSize.push(fileSizeSum)$
+        \State $pktCounterSum = 0$
+        \State $fileSizeSum = 0$
+        \Else \Comment{base case} 
+        \State $pktCounter.push(pktCounterSum)$
+        \State $fileSize.push(fileSizeSum)$
+        \State $pktCounterSum = 0$
+        \State $fileSizeSum = 0$
+        \If{$j == 0$}
+        \State $onTimes.push(arrivalTime[i - 1])$
+        \State $offTimes.push(deltaTime[i])$
+        \Else \Comment{others on times} 
+        \State  $onTimes.push(max(deltaTime[i-1] - deltaTime[lastOff], minOnTime))$ 
+        \State  $offTimes.push(deltaTime[i])$
+        \EndIf
+        \State $lastOff = i$
+        \EndIf 
+        \EndIf       
+        \EndFor
+        \State $pktCounterSum = pktCounterSum + 1$
+        \State $fileSizeSum = fileSizeSum + psSizeList[m]$
+        \If{$lastOff == m - 1$} \Comment{ if last is session-off }
+        \State $onTimes.push(minOnTime)$ % on time
+        \Else \Comment{ base last case}
+        \If{$lastOff \neq 0$}
+        \State $onTimes.push(arrivalTime[m] - arrivalTime[lastOff])$ 
+        \Else 
+        \State $onTimes.push(arrivalTime[m])$ \Comment{there was just on time}
+        \EndIf
+        \EndIf
+        \State $pktCounter.push(pktCounterSum)$
+        \State $fileSize.push(fileSizeSum)$
+        \State \textbf{return} $onTimes, offTimes, pktCounter, fileSize$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+
+For example, suppose a list of arrival times: 
+
+
+\texttt{arrivalTime  = [0.0, 0.3  0.5, 0.6, 4.0, 4.3, 4.4 , 10.0] }
+
+We would have the follow list of inter-packet times: 
+
+\texttt{deltaTime = [0.3, 0.2, 0.1, 3.4,  0.3, 0.1, 5.6]}
+
+Suppose the list of packet sizes is:
+
+\texttt{psSizeList = [10, 20, 10, 30, 10, 40, 10, 50]}
+
+
+With a \texttt{minOnTime} of 0.1 and a \texttt{cutTime} of 3 seconds, we would have the following output:
+
+\texttt{onTimes = [0.6, 0.4, 0.1]}
+
+\texttt{offTimes  = [3.4, 5.6]}
+
+\texttt{pktCounter  = [4, 3, 1]}
+
+\texttt{fileSize  = [70, 60, 50]}
+
+Figure~\ref{fig:on-off} shows the same example, but with a text visualization, to simplify the visualization of the grouped data.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/ch4/on-off}
+    \caption{Textual representation of the input and output data of calcOnOff.}
+    \label{fig:on-off}
+\end{figure}
+
+
+\section{Typical header fields by Application protocols}
+
+
+We also developed a simple test to guess the application protocol, based on the port numbers and the transport protocol used by each flow. If a flow matches the port number, and the transport protocol, it matches an application protocol, following the rules on table~\ref{tab:application-protocols}. 
+
+
+\begin{table}[ht!]
+    \centering
+    \caption{Application match table}
+    \label{tab:application-protocols}
+    \begin{tabular}{lll}
+        \hline
+        Application Protocol & Transport Protocols & Transport Ports \\ \hline
+        \acrshort{HTTPS}               & TCP                & 443             \\
+        FTP                 & TCP                & 20, 21          \\
+        HTTP                & TCP                & 80              \\
+        \acrshort{BGP}                 & TCP                & 179             \\
+        \acrshort{DHCP}                & UDP                & 67, 68          \\
+        \acrshort{SNMP}                & UDP, TCP           & 161             \\
+        \acrshort{DNS}                 & UDP, TCP           & 53              \\
+        \acrshort{SSH}                 & UDP, TCP           & 22              \\
+        Telnet              & UDP, TCP           & 23              \\
+        \acrshort{TACACS}              & UDP, TCP           & 49              \\ \hline
+    \end{tabular}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Automatized Selection of Inter-Packet Times}
+
+
 
 There many consolidate works which have investigated the nature of internet traffic, and many others that had proposed processes to describe network traffic on specific scenarios. But not as many on model choice automation.  We propose and evaluate the use of the information criteria $BIC$ (Bayesian Information Criterion) and $AIC$ (Akaike Information Criterion) as suitable methods for automated model selection for inter-packet times.  
+
+
+\subsection{Cross-validation Methodology}
 
 We then define our cross-validation method based on a cost function $J_M$,  which is an aggregator of traditional and critical metrics used on validation of stochastic models and traffic generators: Correlation(quality of the model), Average inter packet-time (related with the traffic Throughput), and Hurst Exponent (traffic fractal level).  $J_M$ assign weights from the best to the worst representation for each property of each trace model by using randomly generated data with our stochastic fittings. Through this process, we choose the best-fitted traffic model under evaluation. Afterward, we compare the results achieved by $AIC$/$BIC$ and our cost function. Given the approach mentioned above, we show that $AIC$/$BIC$ methods provide an intelligent stochastic process selection strategy for inter-packet times models.
 We summarize the validation process in the steps below:
@@ -47,7 +187,7 @@ We summarize the validation process in the steps below:
 \item Finally, we had two independent rankings, the one we wanted to validate, and others based on the literature. We compared the results.
 \end{enumerate}
   
-We also present some \textit{QQplots}, to visually compare the random-generated data and the original data-set. 
+We also present some \textit{QQplots} to visually compare the random-generated data and the original data-set. 
 
 
 \subsection{Datasets}
@@ -81,7 +221,7 @@ We have adopted five stochastic functions (\textbf{Weibull}, \textbf{Normal}, \t
 The data that have been used for modeling was the training dataset. $AIC$, $BIC$ and the cost function have used the cross-validation dataset. Since the time samples resolution used were of $10^{-6}$s, all values equal to zero had been set to $5\cdot10^{-8}$s, to avoid division by zero. To avoid divergence in tangent operation used  Cauchy linearization process, we have floor-limited and upper-limited the inter-packet CDF values by  $10^{-6}$ and $0.999999$, respectively. We implemented this prototype using Octave and Python. We upload all the code and data from these experiments on Github\cite{aic-bic-repo}. 
 
 
-\subsubsection{Linear regression (Gradient descendant)}
+\subsubsection{Linear Regression (Gradient descendant)}
 
 
 Linear regression is a method for estimating the best linear curve in the format:
@@ -254,14 +394,14 @@ The mean packet rate per second can be estimated by:
 
 \begin{equation}
 \label{eq:pps-mean}
-packet throughput = 1 / (mean inter-packet time)
+packet\_throughput = 1 / (mean\_inter\_packet time)
 \end{equation}
 
 So knowing the average packet size, we can estimate the byte by:
 
 \begin{equation}
 \label{eq:th-mean}
-byte throughput = (average packet size)/(mean inter-packet time)
+byte\_throughput = (average\_packet\_size)/(mean\_inter\_packet\_time)
 \end{equation}
 
 Therefore a good approximation on the average inter-packet time means a reasonable estimate on the traffic throughout as well. Another metric cited by the authors in the scope is the analysis of inter-packet size distributions. Researchers typically make distribution analyzes via graphical interpretation. Seeing its importance, we show as an example one of our results on that matter, now on figure XX. This figure shows the comparison of four  CDF functions estimations for the \textit{lan-firewall-pcap}, with the cross-validation data. Works such as \cite{ditg-paper} \cite{sourcesonoff-paper}\cite{do-you-trust}\cite{harpoon-validation}\cite{moongen-paper}\cite{modelling-of-self-similar} did the same task, for their own purposes using the PDF or CDF distributions. We opted to present the CDF plot because we found it easier for discussion. However, since the goal of our work is to compare $AIC$ and $BIC$  with other possible rankings inspired in the literature, we had to abstract these plots in a single metric that represents the fitting quality. To this end, we use the (already mentioned)  Pearson correlation coefficient.
@@ -296,7 +436,7 @@ Although model $m_1$, if used for traffic generation would perform well on the t
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Results}
+\section{Results}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -622,9 +762,9 @@ We divided our analysis into 5 steps:
 \begin{enumerate}
     \item \textit{CDF plots}
     \item \textit{QQplots}
-    \item \textit{AIC} and \textit{BIC}
+    \item \textit{AIC and BIC}
     \item \textit{Correlation, Hurst Exponent, Mean, and Standard Deviation} 
-    \item  \textit{AIC} and \textit{BIC} vs. $\boldsymbol{J_M}$ 
+    \item  \textit{AIC and BIC vs. J\textsubscript{M} }
 \end{enumerate} 
 
 \smallskip \noindent \textbf{\textit{CDF plots}}
@@ -646,7 +786,7 @@ On the QQplots(figure~\ref{fig:qq-skype}) we have observed that the original dat
 Also we can identify a right-skew for Exponential(LR), Exponential(Me) and Pareto(MLH), and a left-skew for Cauchy, Pareto(LR) and Weibull.  On the other hand, the Normal distribution have presented a bi-modal behavior -- The first mode is on zero (since we zeroed all values smaller than zero), and the second, is close to the the average.
 
 
-\smallskip \noindent  \textbf{\textit{AIC} and \textit{BIC}}
+\smallskip \noindent  \textbf{\textit{AIC and BIC}}
 
 The calculated values for $AIC$, $BIC$, and processes parameters for all the traces are in table~\ref{tab:prototype-results}. We have verified in all cases  that the difference between $BIC$ and $AIC$ for a given process was always smaller compared to the difference between the values of a same criteria but among different processes to represent the same traffic. In another words, changing the criteria matter less than changing the process distribution. In our study,  $AIC$ and $BIC$ always have pointed to the same model ordering (figure ~\ref{fig:aic-bic-order}).
 
@@ -665,7 +805,7 @@ This result have indicated that, if the dataset is large enough, $AIC$ and $BIC$
 In Figures ~\ref{fig:correlation-hurst-skype-pcap}, ~\ref{fig:correlation-hurst-lan-gateway-pcap}, and ~\ref{fig:correlation-hurst-wan-pcap}, and  ~\ref{fig:correlation-hurst-Lan-pcap} we show the results of properties calculated for each of the simulations of the stochastic processes: Correlation, Exponent of Hurst, Mean and Standard deviation. Each figure represents a different pcap file. The red horizontal line represents the value of the original traffic. Analyzing the quality of $AIC$ and $BIC$ on \textit{skype-pcap}, based on the figure results we see that concerning Correlation and Self-similarity it picked the right model: Weibull. Also regarding the average packet rate and dispersion, it is still one of the best choices. On regarding to the Mean, Exponential(Me) and Cauchy had the best performances. Regarding to the Standard Deviation, Exponential(Me) and Exponential(LR) had the best performance. Not by chance, Exponential(Me) $AIC$ and $BIC$ presented as the second best option. Comparing the results of the figures with the order suggested by AIC to BIC(Figure ~\ref{fig:aic-bic-order}), we noticed that the best ranked models showed a good performance in the metrics in general. We show the cost function $J_M$, able to summarize all the primary metrics in a single number, in figure~\ref{fig:cost-function}. All these results are abstracted by the cost function $J_M$. 
 
 
-\smallskip \noindent  \textbf{\textit{AIC} and \textit{BIC} vs. $\boldsymbol{J_M}$ } 
+\smallskip \noindent  \textbf{\textit{AIC and BIC vs. J\textsubscript{M} }} 
 
 Table~\ref{tab:prototype-results} summarizes the estimates obtained  for $AIC$, $BIC$, and the stochastic process estimated parameters for all \textit{pcap} traces. Each model order is graphically presented in Figure ~\ref{fig:aic-bic-order}.  For all \textit{pcap} experiments, we verify that the difference between $BIC$ and $AIC$ for a given function is always smaller than its value among different distributions. As shown in the table~\ref{tab:prototype-results}, $AIC$ and $BIC$ criteria always pointed to the same model ordering. Table~\ref{tab:aic-bic-diff} presents the percentage difference between the obtained values. We verify that their values tend to converge when the dataset increases. 
 
@@ -682,10 +822,20 @@ Also, can point that $AIC$/$BIC$ tended to prioritize most of the heavy-tailed p
 Finally, we point out the $AIC$ and $BIC$ presented a bias in favor of Pareto(MLH). Even though it was never ranked as the best model, it was always better positioned by $AIC$ and $BIC$ than by $J$. We explain this result by the fact that $AIC$ and $BIC$ calculation uses the model likelihood, and the  Pareto(MLH) maximizes it.  This effect is clear on the \textit{lan-firewall-pcap}. On the figure~\ref{fig:lan-firewall-cdf} we plot the cross-validation dataset, the best fitting pointed by both methods (Weibull), and the second-best indicated by $J$ (Pareto(LR)) and by $AIC$/$BIC$(Pareto(MLH)). Even though Pareto(MLH) has a good performance representing small values, about 10\% of the inter-packet times are higher than 10 seconds, a prohibitive high value. It makes the Pareto(LR) overhaul performance better.
 
 
-\subsection{Conclusion}
+ 
 
 
-In this work, we introduce and evaluate a method based on $BIC$ and $AIC$ for analytic selection criteria of the best stochastic process to model network traffic. We use a cross-validation methodology based on random data generation following the selected models and cost function measurements. We observe that both $AIC$ or $BIC$ and the cost function were able to pick the first models in the same order, corroborating to our hypothesis of Akaike and Bayesian information criteria as reliable model selectors for network inter-packet times. We can conclude that $BIC$ and $AIC$ are suitable alternatives to derive realistic network traffic models for synthetic traffic generation. The only cave we point is on the use of the Maximum Likelihood method, that can over-prioritized some models over others with better performance. We summarize the implementation used on SIMITAR on algorithm~\ref{alg:stochasticModelFitting}.
+
+
+\section{Conclusions}
+
+
+In this section, we explained on details methods mentioned in chapter~\ref{ch:architecture}. 
+After,  revisiting some classical works on modeling inter-packet times and packet trains,  we resent the methods used to estimate packet trains periods (Algorithm~\ref{alg:calcOnOff}) and make the application classification (Table~\ref{tab:application-protocols}). We then presented the use of information criteria ($AIC$ and $BIC$) as tools for automatic selection of stochastic processes for inter-packet times. Since information criteria have not been tested for our study-case yet, were never tested for our study case, we developed an independent cross-validation method, based on traditional metrics for traffic validation. Since both procedures have converged to similar results, we conclude that $AIC$ and $BIC$ are reliable tools. However, we have to pay attention to processes parameterized the maximum likelihood method, since they tend to be prioritized, even performing poorly.  We abstracted this method for automatically select stochastic processes in Algorithm~\ref{alg:stochasticModelFitting}. 
+ 
+ 
+
+We introduced and evaluated a method based on $BIC$ and $AIC$ for analytic selection criteria of the best stochastic process to model network traffic. We use a cross-validation methodology based on random data generation following the selected models and cost function measurements. We observe that both $AIC$ or $BIC$ and the cost function were able to pick the first models in the same order, corroborating to our hypothesis of Akaike and Bayesian information criteria as reliable model selectors for network inter-packet times. We can conclude that $BIC$ and $AIC$ are suitable alternatives to derive realistic network traffic models for synthetic traffic generation. The only cave we point is on the use of the Maximum Likelihood method, that can over-prioritized some models over others with better performance. We summarize the implementation used on SIMITAR on algorithm~\ref{alg:stochasticModelFitting}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ALGORITHM stochasticModelFitting
@@ -711,151 +861,3 @@ In this work, we introduce and evaluate a method based on $BIC$ and $AIC$ for an
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
-
-
-
-\section{\texttt{calcOnOff}: an algorithm for estimating flow packet-train periods}
-
-
-As we discussed in chapter~\ref{ch:architecture},  we developed an algorithm we call \texttt{calcOnOff}, listed on algorithm~\ref{alg:calcOnOff}. This procedure estimates the sizes of packet trains, as periods between packet trains in a flow context. 
-This procedure receives as input values:
-
-\begin{enumerate}
-\item  \textbf{\texttt{arrivalTime}}: the list of packets arrivals on time on the flow. For example, if we have five packets arriving every two seconds, we would have: \texttt{arrivalTime = [0, 2, 4,  6, 8]};
-\item  \texttt{deltaTime}: the list of inter-packet times on the flow. Following the same example presented before, we would have: \texttt{deltaTime = [2, 2, 2, 2]}. 
-\item  \textbf{\texttt{cutTime}}: the time threshold that defines if we are still in the same train of packets, or a new one. 
-\item  \textbf{\texttt{minOnTime}}: is the minimum length of flow ON time. minOnTime were used mainly to avoid ON times of zero seconds, in the case of only one packet, or when the time between packets is smaller than the operational system precision. 
-\item  \textbf{\texttt{psSizeList}}: the list of packet sizes in bytes. 
-\end{enumerate}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% ALGORITHM CALC-ON-OFF
-\begin{algorithm}[pt!]
-    \caption{calcOnOff}
-    \label{alg:calcOnOff}
-    \begin{algorithmic}[1]
-        \small
-        \Function{calcOnOff}{$arrivalTime, deltaTime, cutTime, minOnTime$}%\Comment{Where A - array, p - left, q - middle, r - right}
-        \State $m = deltaTime.length() - 1$
-        \State $j = 0$
-        \State $lastOff = 0$
-        \State $pktCounterSum = 0$
-        \State $fileSizeSum = 0$
-        \For{$i = 0:m$}
-        \State $pktCounterSum = pktCounterSum + 1$
-        \State $fileSizeSum = fileSizeSum + psSizeList[i, 1]$
-        \If{$deltaTime[i] > cutTime$} 
-        \If{$i == 1$} \Comment{if the first is session-off time}
-        \State $j++$
-        \State $onTimes.push(minOnTime)$
-        \State $offTimes.push(deltaTime[i])$
-        \State $pktCounter.push(pktCounterSum)$
-        \State $fileSize.push(fileSizeSum)$
-        \State $pktCounterSum = 0$
-        \State $fileSizeSum = 0$
-        \Else \Comment{base case} 
-        \State $pktCounter.push(pktCounterSum)$
-        \State $fileSize.push(fileSizeSum)$
-        \State $pktCounterSum = 0$
-        \State $fileSizeSum = 0$
-        \If{$j == 0$}
-        \State $onTimes.push(arrivalTime[i - 1])$
-        \State $offTimes.push(deltaTime[i])$
-        \Else \Comment{others on times} 
-        \State  $onTimes.push(max(deltaTime[i-1] - deltaTime[lastOff], minOnTime))$ 
-        \State  $offTimes.push(deltaTime[i])$
-        \EndIf
-        \State $lastOff = i$
-        \EndIf 
-        \EndIf       
-        \EndFor
-        \State $pktCounterSum = pktCounterSum + 1$
-        \State $fileSizeSum = fileSizeSum + psSizeList[m]$
-        \If{$lastOff == m - 1$} \Comment{ if last is session-off }
-        \State $onTimes.push(minOnTime)$ % on time
-        \Else \Comment{ base last case}
-        \If{$lastOff \neq 0$}
-        \State $onTimes.push(arrivalTime[m] - arrivalTime[lastOff])$ 
-        \Else 
-        \State $onTimes.push(arrivalTime[m])$ \Comment{there was just on time}
-        \EndIf
-        \EndIf
-        \State $pktCounter.push(pktCounterSum)$
-        \State $fileSize.push(fileSizeSum)$
-        \State \textbf{return} $onTimes, offTimes, pktCounter, fileSize$
-        \EndFunction
-    \end{algorithmic}
-\end{algorithm}
-
-
-For example, suppose a list of arrival times: 
-
-
-\texttt{arrivalTime  = [0.0, 0.3  0.5, 0.6, 4.0, 4.3, 4.4 , 10.0] }
-
-We would have the follow list of inter-packet times: 
-
-\texttt{deltaTime = [0.3, 0.2, 0.1, 3.4,  0.3, 0.1, 5.6]}
-
-Suppose the list of packet sizes is:
-
-\texttt{psSizeList = [10, 20, 10, 30, 10, 40, 10, 50]}
-
-
-With a \texttt{minOnTime} of 0.1 and a \texttt{cutTime} of 3 seconds, we would have the following output:
-
-\texttt{onTimes = [0.6, 0.4, 0.1]}
-
-\texttt{offTimes  = [3.4, 5.6]}
-
-\texttt{pktCounter  = [4, 3, 1]}
-
-\texttt{fileSize  = [70, 60, 50]}
-
-Figure~\ref{fig:on-off} shows the same example, but with a text visualization, to simplify the visualization of the grouped data.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{figures/ch4/on-off}
-    \caption{Textual representation of the input and output data of calcOnOff.}
-    \label{fig:on-off}
-\end{figure}
-
-
-\section{Typical header fields by Application protocols}
-
-
-We also developed a simple test to guess the application protocol, based on the port numbers and the transport protocol used by each flow. If a flow matches the port number, and the transport protocol, it matches an application protocol, following the rules on table~\ref{tab:application-protocols}. 
-
-
-\begin{table}[ht!]
-    \centering
-    \caption{Application match table}
-    \label{tab:application-protocols}
-    \begin{tabular}{lll}
-        \hline
-        Application Protocol & Transport Protocols & Transport Ports \\ \hline
-        \acrshort{HTTPS}               & TCP                & 443             \\
-        FTP                 & TCP                & 20, 21          \\
-        HTTP                & TCP                & 80              \\
-        \acrshort{BGP}                 & TCP                & 179             \\
-        \acrshort{DHCP}                & UDP                & 67, 68          \\
-        \acrshort{SNMP}                & UDP, TCP           & 161             \\
-        \acrshort{DNS}                 & UDP, TCP           & 53              \\
-        \acrshort{SSH}                 & UDP, TCP           & 22              \\
-        Telnet              & UDP, TCP           & 23              \\
-        \acrshort{TACACS}              & UDP, TCP           & 49              \\ \hline
-    \end{tabular}
-\end{table}
-
-
-\section{Conclusions}
-
-
-In this section, we explained on details methods mentioned in chapter~\ref{ch:architecture}. 
-In this first section,  we revisited some classical works on modeling inter-packet times and packet trains. 
-
-On the second we proposed the use of information criteria ($AIC$ and $BIC$) as tools for automatic selection of stochastic processes for inter-packet times. Since information criteria have not been tested for our study-case yet, were never tested for our study case, we developed an independent cross-validation method, based on traditional metrics for traffic validation. Since both procedures have converged to similar results, we conclude that $AIC$ and $BIC$ are reliable tools. However, we have to pay attention to processes parameterized the maximum likelihood method, since they tend to be prioritized, even performing poorly.  We abstracted this method for automatically select stochastic processes in algorithm~\ref{alg:stochasticModelFitting}. 
-
-In the third and fourth section, we also present the methods used to estimate packet trains periods (algorithm~\ref{alg:calcOnOff}) and make the application classification (table~\ref{tab:application-protocols}). 
